@@ -14,7 +14,7 @@ public class SemesterRegistration {
 
 	private String studentEnrollmentId;
 	private String semester;
-	private List<Course> registeredCourses = new ArrayList<Course>();
+	private List<Course> optedCourses = new ArrayList<Course>();
 
 	/**
 	 * @return the studentEnrollmentId
@@ -45,17 +45,17 @@ public class SemesterRegistration {
 	}
 
 	/**
-	 * @return the registeredCourses
+	 * @return the optedCourses
 	 */
-	public List<Course> getRegisteredCourses() {
-		return registeredCourses;
+	public List<Course> getOptedCourses() {
+		return optedCourses;
 	}
 
 	/**
-	 * @param registeredCourses the registeredCourses to set
+	 * @param optedCourses the optedCourses to set
 	 */
-	public void setRegisteredCourses(List<Course> registeredCourses) {
-		this.registeredCourses = registeredCourses;
+	public void setOptedCourses(List<Course> optedCourses) {
+		this.optedCourses = optedCourses;
 	}
 
 }

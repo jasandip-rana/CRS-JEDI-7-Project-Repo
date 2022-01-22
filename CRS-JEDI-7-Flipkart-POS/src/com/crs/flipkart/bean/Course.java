@@ -16,6 +16,7 @@ public class Course {
 	private String departmentName;
 	private String professorId;
 	private List<String> registeredStudents = new ArrayList<String>();
+	private float courseFee;
 
 	/**
 	 * @return the courseId
@@ -84,6 +85,20 @@ public class Course {
 	 */
 	public void setRegisteredStudents(List<String> registeredStudents) {
 		this.registeredStudents = registeredStudents;
+	}
+
+	/**
+	 * @return the courseFee
+	 */
+	public float getCourseFee() {
+		return courseFee;
+	}
+
+	/**
+	 * @param courseFee the courseFee to set
+	 */
+	public void setCourseFee(float courseFee) {
+		this.courseFee = courseFee;
 	}
 
 }

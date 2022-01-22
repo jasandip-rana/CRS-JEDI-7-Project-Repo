@@ -3,6 +3,9 @@
  */
 package com.crs.flipkart.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Raj
  *
@@ -13,6 +16,7 @@ public class Student extends User {
 	private String branch;
 	private String batch;
 	private boolean isVerified;
+	private List<Course> registeredCourses = new ArrayList<Course>();
 
 	/**
 	 * @return the studentEnrollmentId
@@ -69,6 +73,20 @@ public class Student extends User {
 	 */
 	public void setVerified(boolean isVerified) {
 		this.isVerified = isVerified;
+	}
+
+	/**
+	 * @return the registeredCourses
+	 */
+	public List<Course> getRegisteredCourses() {
+		return registeredCourses;
+	}
+
+	/**
+	 * @param registeredCourses the registeredCourses to set
+	 */
+	public void setRegisteredCourses(List<Course> registeredCourses) {
+		this.registeredCourses = registeredCourses;
 	}
 
 }
