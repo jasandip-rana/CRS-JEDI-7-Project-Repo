@@ -13,6 +13,7 @@ public class Course {
 
 	private String courseId;
 	private String courseName;
+	private String departmentName;
 	private String professorId;
 	private List<String> registeredStudents = new ArrayList<String>();
 
@@ -42,6 +43,19 @@ public class Course {
 	 */
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+	/**
+	 * @return the departmentName
+	 */
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	/**
+	 * @param departmentName the departmentName to set
+	 */
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 
 	/**
