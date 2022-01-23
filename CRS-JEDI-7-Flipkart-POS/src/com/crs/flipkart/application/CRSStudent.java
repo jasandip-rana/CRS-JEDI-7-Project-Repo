@@ -117,18 +117,21 @@ public class CRSStudent {
 			default:
 				System.out.println("Invalid option");
 			}
-		}while(choice!=5);
+		}while(choice!=6);
 	}
 	public void addCourse(String studentID)
 	{
 		System.out.print("Enter the course id : ");
+		sc.nextLine();
 		String courseID = sc.nextLine();
+//		System.out.println(courseID);
 		String status=semesterRegistrationService.addCourse(studentID,courseID);
 		System.out.println(status);
 	}
 	public void dropCourse(String studentID)
 	{
 		System.out.print("Enter the course id : ");
+		sc.nextLine();
 		String courseID = sc.nextLine();
 		String status=semesterRegistrationService.dropCourse(studentID,courseID);
 		System.out.println(status);

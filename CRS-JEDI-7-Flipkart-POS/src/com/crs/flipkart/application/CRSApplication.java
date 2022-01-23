@@ -35,23 +35,28 @@ public class CRSApplication {
 				crsApplication.login();
 				break;
 			case 2: //Student registration
+				crsApplication.registerStudent();
 				break;
 			case 3: // exit
 				break;
 			default:
-				System.out.println("Invalid option\n");
+				System.out.print("Invalid option\n");
 			}
 		}while(choice!=3);
 	}
 	public void login()
 	{
 		Scanner sc = new Scanner(System.in);
+		
+		String role;
+		System.out.print("-----------------Login------------------\n");
+		System.out.print("Enter your role (Student/Professor/Admin) : ");
+		role = sc.nextLine();
 
 		String userId,password;
-			System.out.println("-----------------Login------------------");
-			System.out.println("Email:");
+			System.out.print("Email:");
 			userId = sc.next();
-			System.out.println("Password:");
+			System.out.print("Password:");
 			password = sc.next();
 			loggedIn = true;
 						
@@ -59,9 +64,6 @@ public class CRSApplication {
 			if(loggedIn)
 			{
 				 //String role = userInterface.getRole(userId);
-				String role;
-				System.out.println("Enter your role (Student/Professor/Admin) : ");
-				role = sc.nextLine();
 				switch(role) {
 				case "Admin":
 					// Admin functionality
@@ -70,7 +72,6 @@ public class CRSApplication {
 					// Professor functionality
 					break;
 				case "Student":
-					
 					String studentId = userId;
 					boolean isApproved=true;//studentInterface.isApproved(studentId);
 					if(isApproved) {
@@ -78,7 +79,7 @@ public class CRSApplication {
 						student.create_menu(studentId);
 						
 					} else {
-						System.out.println("Failed to login, you have not been approved by the administration!");
+						System.out.print("Failed to login, you have not been approved by the administration!");
 						loggedIn=false;
 					}
 					break;
@@ -88,7 +89,7 @@ public class CRSApplication {
 			}
 			else
 			{
-				System.out.println("Invalid Credentials!");
+				System.out.print("Invalid Credentials!");
 			}
 			
 	
@@ -99,19 +100,19 @@ public class CRSApplication {
 
 		String userId,name,password,address,branchName, semester;
 			//input all the student details
-			System.out.println("---------------Student Registration-------------");
-			System.out.println("Name:");
+			System.out.print("---------------Student Registration-------------\n");
+			System.out.print("Name:");
 			name=sc.nextLine();
-			System.out.println("Email:");
+			System.out.print("Email:");
 			userId=sc.next();
-			System.out.println("Password:");
+			System.out.print("Password:");
 			password=sc.next();
 			sc.nextLine();
-			System.out.println("Branch:");
+			System.out.print("Branch:");
 			branchName=sc.nextLine();
-			System.out.println("Batch:");
+			System.out.print("Batch:");
 			semester=sc.nextLine();
-			System.out.println("Address:");
+			System.out.print("Address:");
 			address=sc.nextLine();
 			
 			

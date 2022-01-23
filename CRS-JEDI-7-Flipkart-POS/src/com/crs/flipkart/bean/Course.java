@@ -18,6 +18,19 @@ public class Course {
 	private List<String> registeredStudents = new ArrayList<String>();
 	private float courseFee;
 
+	
+	
+	public Course(String courseId, String courseName, String departmentName, String professorId,
+			List<String> registeredStudents, float courseFee) {
+		super();
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.departmentName = departmentName;
+		this.professorId = professorId;
+		this.registeredStudents = registeredStudents;
+		this.courseFee = courseFee;
+	}
+
 	/**
 	 * @return the courseId
 	 */
