@@ -27,7 +27,7 @@ public class CRSApplication {
 		int choice;
 		do
 		{
-			System.out.print("---------------------WELCOME-----------------\n1. Login\n2. Student Registration\n3. Exit\nOption : ");
+			System.out.print("---------------------WELCOME-----------------\n1. Login\n2. Student Registration\n3. Update Password\n4. Exit\nOption : ");
 			choice = sc.nextInt();
 			switch(choice)
 			{
@@ -37,21 +37,22 @@ public class CRSApplication {
 			case 2: //Student registration
 				crsApplication.registerStudent();
 				break;
-			case 3: // exit
+			case 3: // update password
+				break;
+			case 4: // exit
 				break;
 			default:
 				System.out.print("Invalid option\n");
 			}
-		}while(choice!=3);
+		}while(choice!=4);
 	}
 	public void login()
 	{
 		Scanner sc = new Scanner(System.in);
 		
-		String role;
 		System.out.print("-----------------Login------------------\n");
-		System.out.print("Enter your role (Student/Professor/Admin) : ");
-		role = sc.nextLine();
+//		System.out.print("Enter your role (Student/Professor/Admin) : ");
+//		role = sc.nextLine();
 
 		String userId,password;
 			System.out.print("Email:");
@@ -59,11 +60,18 @@ public class CRSApplication {
 			System.out.print("Password:");
 			password = sc.next();
 			loggedIn = true;
-						
+					
+			String role = "Student";
+			// Role defaulted to student instead of a database call.
+			
 			//true->role->student->approved
+			
 			if(loggedIn)
 			{
 				 //String role = userInterface.getRole(userId);
+				
+				
+				
 				switch(role) {
 				case "Admin":
 					// Admin functionality

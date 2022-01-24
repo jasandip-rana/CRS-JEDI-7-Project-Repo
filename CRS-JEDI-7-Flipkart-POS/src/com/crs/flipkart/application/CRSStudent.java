@@ -18,8 +18,8 @@ public class CRSStudent {
 
 	Scanner sc = new Scanner(System.in);
 	private boolean is_registered;
-	SemesterRegistrationService semesterRegistrationService = new SemesterRegistrationService();
-	StudentService studentService = new StudentService();
+	SemesterRegistrationInterface semesterRegistrationService = new SemesterRegistrationService();
+	StudentInterface studentService = new StudentService();
 	
 	public void create_menu(String studentId) {
 		

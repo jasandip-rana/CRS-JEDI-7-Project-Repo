@@ -12,7 +12,7 @@ import com.crs.flipkart.bean.GradeCard;
  * @author Shubham
  *
  */
-public class StudentService {
+public class StudentService implements StudentInterface {
 
 	public List<Course> viewRegisteredCourses(String studentID) {
 		// TODO Auto-generated method stub
