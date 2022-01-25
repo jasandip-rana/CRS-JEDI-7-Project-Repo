@@ -3,6 +3,8 @@
  */
 package com.crs.flipkart.business;
 
+import java.util.List;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.Student;
@@ -17,6 +19,11 @@ public class AdminService implements AdminInterface {
 	CatalogDaoInterface courseList = new CatalogDaoService();
 	StudentInterface student = new StudentService();
 	ProfessorInterface professor = new ProfessorService();
+	
+	public List<Course> viewCourse()
+	{
+		return null;
+	}
 	
 	public String addCourse(Course newCourse)
 	{
@@ -46,6 +53,12 @@ public class AdminService implements AdminInterface {
 	public String approveStudent(Student newStudent)
 	{
 		return "";
+	}
+
+	@Override
+	public List<Professor> viewProfessorList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

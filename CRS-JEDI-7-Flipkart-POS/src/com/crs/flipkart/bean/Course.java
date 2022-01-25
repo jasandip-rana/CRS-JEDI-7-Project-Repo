@@ -19,6 +19,11 @@ public class Course {
 	private int studentCount;
 
 	
+	public Course()
+	{
+		
+	}
+	
 	/**
 	 * @param courseId
 	 * @param courseName
