@@ -3,11 +3,12 @@ package com.crs.flipkart.business;
 import java.util.*;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.dao.*;
 
 public class SemesterRegistrationService implements SemesterRegistrationInterface{
 
 	
-	CatalogInterface catalogService = new CatalogService();
+	CatalogDaoInterface catalogService = new CatalogDaoService();
 	
 	List<Course> optedCourses = new ArrayList<Course>();
 
@@ -17,7 +18,7 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
 		
 		for(Course course : courseList)
 		{
-			if(course.getRegisteredStudents().size() >= 10)
+			if(course.getStudentCount() >= 10)
 				courseList.remove(course);
 		}
 		

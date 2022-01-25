@@ -13,22 +13,29 @@ public class Course {
 
 	private String courseId;
 	private String courseName;
+	private float courseFee;
 	private String departmentName;
 	private String professorId;
-	private List<String> registeredStudents = new ArrayList<String>();
-	private float courseFee;
+	private int studentCount;
 
 	
-	
-	public Course(String courseId, String courseName, String departmentName, String professorId,
-			List<String> registeredStudents, float courseFee) {
+	/**
+	 * @param courseId
+	 * @param courseName
+	 * @param courseFee
+	 * @param departmentName
+	 * @param professorId
+	 * @param studentCount
+	 */
+	public Course(String courseId, String courseName, float courseFee, String departmentName, String professorId,
+			int studentCount) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
+		this.courseFee = courseFee;
 		this.departmentName = departmentName;
 		this.professorId = professorId;
-		this.registeredStudents = registeredStudents;
-		this.courseFee = courseFee;
+		this.studentCount = studentCount;
 	}
 
 	/**
@@ -87,20 +94,6 @@ public class Course {
 	}
 
 	/**
-	 * @return the registeredStudents
-	 */
-	public List<String> getRegisteredStudents() {
-		return registeredStudents;
-	}
-
-	/**
-	 * @param registeredStudents the registeredStudents to set
-	 */
-	public void setRegisteredStudents(List<String> registeredStudents) {
-		this.registeredStudents = registeredStudents;
-	}
-
-	/**
 	 * @return the courseFee
 	 */
 	public float getCourseFee() {
@@ -113,5 +106,21 @@ public class Course {
 	public void setCourseFee(float courseFee) {
 		this.courseFee = courseFee;
 	}
+
+
+	/**
+	 * @return the studentCount
+	 */
+	public int getStudentCount() {
+		return studentCount;
+	}
+
+	/**
+	 * @param studentCount the studentCount to set
+	 */
+	public void setStudentCount(int studentCount) {
+		this.studentCount = studentCount;
+	}
+
 
 }

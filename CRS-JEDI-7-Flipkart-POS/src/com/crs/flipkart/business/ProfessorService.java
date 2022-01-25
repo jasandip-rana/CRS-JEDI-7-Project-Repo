@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.dao.CatalogDaoInterface;
+import com.crs.flipkart.dao.CatalogDaoService;
 
 /**
  * @author Shubham
@@ -14,7 +16,7 @@ import com.crs.flipkart.bean.Student;
  */
 public class ProfessorService implements ProfessorInterface {
 
-	CatalogInterface catalogService = new CatalogService();
+	CatalogDaoInterface catalogService = new CatalogDaoService();
 	
 	public List<Course> viewCourses()
 	{

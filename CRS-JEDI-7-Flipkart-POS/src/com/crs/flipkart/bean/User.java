@@ -9,23 +9,39 @@ package com.crs.flipkart.bean;
  */
 public class User {
 
-	private int userId;
+	private String userId;
 	private String name;
 	private String email;
 	private String password;
+	private int role;
 
+	
 	/**
 	 * @return the userId
 	 */
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
 	/**
 	 * @param userId the userId to set
 	 */
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	/**
+	 * @return the role
+	 */
+	public int getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role the role to set
+	 */
+	public void setRole(int role) {
+		this.role = role;
 	}
 
 	/**

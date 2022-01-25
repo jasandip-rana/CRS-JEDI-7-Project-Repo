@@ -77,7 +77,7 @@ public class CRSStudent {
 		courseList = semesterRegistrationService.viewCourses();
 		for(Course course: courseList)
 		{
-			if(course.getRegisteredStudents().size()<10)
+			if(course.getStudentCount()<10)
 				System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
 		}
 	}

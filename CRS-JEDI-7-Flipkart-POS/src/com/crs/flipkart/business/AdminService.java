@@ -6,6 +6,7 @@ package com.crs.flipkart.business;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.dao.*;
 
 /**
  * @author Shubham
@@ -13,7 +14,7 @@ import com.crs.flipkart.bean.Student;
  */
 public class AdminService implements AdminInterface {
 
-	CatalogInterface courseList = new CatalogService();
+	CatalogDaoInterface courseList = new CatalogDaoService();
 	StudentInterface student = new StudentService();
 	ProfessorInterface professor = new ProfessorService();
 	
