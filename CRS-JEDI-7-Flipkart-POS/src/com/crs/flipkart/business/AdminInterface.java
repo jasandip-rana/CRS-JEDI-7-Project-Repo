@@ -19,9 +19,9 @@ public interface AdminInterface {
 	public String addCourse(Course newCourse);
 	public String dropCourse(String courseId);
 	public String approveStudent(Student newStudent);
-	public List<Professor> viewProfessorList();
+	public List<String> viewProfessorList();
 	public String addProfessor(Professor newProfessor);
 	public String dropProfessor(String professorId);
-	public String generateGradeCard(String studentId);
+	public String generateGradeCard(String studentId,String semester);
 	
 }

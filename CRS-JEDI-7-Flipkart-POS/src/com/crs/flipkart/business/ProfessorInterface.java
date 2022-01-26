@@ -15,7 +15,7 @@ import com.crs.flipkart.bean.Student;
 public interface ProfessorInterface {
 
 	public List<Course> viewCourses();
-	public String indicateCourse(String courseId);
-	public String gradeStudent(String studentId, String courseId, float grade);
-	public List<Student> viewEnrolledStudents(String courseId);
+	public String indicateCourse(String professorId,String courseId);
+	public String gradeStudent(String studentId, String courseId, float grade,String semester);
+	public List<String> viewEnrolledStudents(String courseId);
 }

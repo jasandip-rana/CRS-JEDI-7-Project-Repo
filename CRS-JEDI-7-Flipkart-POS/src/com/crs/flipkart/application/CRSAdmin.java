@@ -5,6 +5,7 @@ package com.crs.flipkart.application;
 
 import java.util.*;
 
+import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.business.*;
 
 /**
@@ -14,6 +15,7 @@ import com.crs.flipkart.business.*;
 public class CRSAdmin {
 
 	AdminInterface adminService = new AdminService();
+	Scanner sc=new Scanner(System.in);
 	public void create_menu()
 	{
 		Scanner sc = new Scanner(System.in);
@@ -84,44 +86,63 @@ public class CRSAdmin {
 			
 		}while(CRSApplication.loggedIn);
 	}
-	
+	public void viewCourses() {
+		// TODO Auto-generated method stub
+		List<Course>courseList=adminService.viewCourse();
+		for(Course course: courseList)
+		{
+			
+				System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
+		}
+		
+	}
+	public void addCourse() {
+		// TODO Auto-generated method stub
+		Course course=new Course();
+		System.out.print("Enter the course Id :");
+		course.setCourseId(sc.next());
+		System.out.print("Enter the course name :");
+		course.setCourseName(sc.nextLine());
+		System.out.print("Enter the course fee :");
+		course.setCourseFee(sc.nextFloat());
+		System.out.println("Enter the department name :");
+		course.setDepartmentName(sc.nextLine());
+		course.setProfessorId(null);
+		course.setStudentCount(0);
+		System.out.println(adminService.addCourse(course));
+	}
+	public void dropCourse() {
+		// TODO Auto-generated method stub
+		System.out.print("Enter the course Id :");
+		String courseId=sc.next();
+		System.out.println(adminService.dropCourse(courseId));
+		
+	}
 	public void approveStudent() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public void dropProfessor() {
-		// TODO Auto-generated method stub
 		
 	}
-
 	public void addProfessor() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void generateGradeCard() {
+	public void dropProfessor() {
 		// TODO Auto-generated method stub
 		
 	}
-
 	public void viewProfessorList() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void dropCourse() {
+	public void generateGradeCard() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Enter the student Id :");
+		String studentId=sc.next();
+		System.out.println("Enter the semester :");
+		String semester=sc.next();
+		System.out.println(adminService.generateGradeCard(studentId, semester));
 	}
-
-	public void addCourse() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void viewCourses() {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 }

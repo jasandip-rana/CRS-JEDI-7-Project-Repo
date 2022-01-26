@@ -19,6 +19,15 @@ public class Professor extends User{
 	/**
 	 * @return the professorId
 	 */
+	public Professor(String userId, String name, String email, String password, int role, 
+			 float salary, String department, Date doj) {
+        super(userId, name, email, password, role);
+        this.professorId=userId;
+        this.salary = salary;
+        this.department = department;
+        this.doj=doj;
+    }
+	
 	public String getProfessorId() {
 		return professorId;
 	}

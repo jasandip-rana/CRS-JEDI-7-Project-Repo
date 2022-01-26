@@ -16,23 +16,21 @@ import com.crs.flipkart.dao.*;
  */
 public class AdminService implements AdminInterface {
 
-	CatalogDaoInterface courseList = new CatalogDaoService();
-	StudentInterface student = new StudentService();
-	ProfessorInterface professor = new ProfessorService();
 	
+	AdminDaoInterface adminService=new AdminDaoService();
 	public List<Course> viewCourse()
 	{
-		return null;
+		return adminService.viewCourses();
 	}
 	
 	public String addCourse(Course newCourse)
 	{
-		return "";
+		return adminService.addCourse(newCourse);
 	}
 	
 	public String dropCourse(String courseId)
 	{
-		return "";
+		return adminService.dropCourse(courseId);
 	}
 	
 	public String addProfessor(Professor newProfessor)
@@ -45,20 +43,20 @@ public class AdminService implements AdminInterface {
 		return "";
 	}
 	
-	public String generateGradeCard(String studentId)
+	public String generateGradeCard(String studentId, String semester)
 	{
-		return "";
+		return adminService.generateGradeCard(studentId, semester);
 	}
 	
 	public String approveStudent(Student newStudent)
 	{
-		return "";
+		return adminService.approveStudent(newStudent);
 	}
 
 	@Override
-	public List<Professor> viewProfessorList() {
+	public List<String> viewProfessorList() {
 		// TODO Auto-generated method stub
-		return null;
+		return adminService.viewProfessorList();
 	}
 	
 }

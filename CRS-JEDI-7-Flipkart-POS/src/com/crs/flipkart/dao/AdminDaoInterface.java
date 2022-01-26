@@ -16,7 +16,7 @@ public interface AdminDaoInterface {
 
 	String approveStudent(Student newStudent);
 
-	List<Professor> viewProfessorList();
+	List<String> viewProfessorList();
 
 	String generateGradeCard(String studentId, String semester);
 

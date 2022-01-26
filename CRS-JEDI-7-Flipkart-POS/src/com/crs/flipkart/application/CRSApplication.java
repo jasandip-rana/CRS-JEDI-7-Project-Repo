@@ -69,12 +69,17 @@ public class CRSApplication {
 		if (user!=null) {
 			CRSApplication.loggedIn=true;
 			switch (user.getRole()) {
+			
 			case 0:
-				// Admin functionality
+				CRSAdmin admin=new CRSAdmin ();
+				admin.create_menu();
 				break;
 			case 1:
-				// Professor functionality
-				break;
+				String professorId=user.getUserId();
+				CRSProfessor professor = new CRSProfessor();
+					professor.create_menu(professorId);
+					break;
+
 			case 2:
 				String studentId = user.getUserId();
 				boolean isApproved = studentService.isApproved(studentId);
