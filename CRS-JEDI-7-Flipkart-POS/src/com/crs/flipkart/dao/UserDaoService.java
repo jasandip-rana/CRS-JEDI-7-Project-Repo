@@ -51,7 +51,6 @@ public class UserDaoService implements UserDaoInterface {
 	            PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_USER_QUERY);
 	            Random rand = new Random();
 	            long id = 100000000+rand.nextInt(100000000);
-	            System.out.println(id);
 	            String userId = role.charAt(0)+Long.toString(id);
 	            ps.setString(1, userId);
 	            ps.setString(2, name);

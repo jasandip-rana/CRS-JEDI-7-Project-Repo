@@ -18,12 +18,12 @@ import com.crs.flipkart.constants.*;
 public class CatalogDaoService implements CatalogDaoInterface {
 
 	public static Connection conn = dbUtil.getConnection();
-	List<Course> courseList = new ArrayList<Course>();
+	
 
 	@Override
 	public List<Course> viewCourses() {
+		List<Course> courseList = new ArrayList<Course>();
 		try {
-
 			PreparedStatement ps = conn.prepareStatement(SQLQueries.FETCH_COURSES);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

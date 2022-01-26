@@ -64,8 +64,7 @@ public class CRSApplication {
 		
 
 		if (user!=null) {
-			// String role = userInterface.getRole(userId);
-
+			CRSApplication.loggedIn=true;
 			switch (user.getRole()) {
 			case 0:
 				// Admin functionality

@@ -147,7 +147,7 @@ public class CRSStudent {
 	}
 	public void submitChoice(String studentID)
 	{
-		String status = semesterRegistrationService.submitChoice(studentID);
+		String status = semesterRegistrationService.submitOptedCourses(studentID);
 		System.out.println(status);
 	}
 	public void viewRegisteredCourses(String studentID)

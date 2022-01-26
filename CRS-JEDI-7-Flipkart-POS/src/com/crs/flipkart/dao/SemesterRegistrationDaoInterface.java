@@ -1,20 +1,16 @@
-package com.crs.flipkart.business;
+package com.crs.flipkart.dao;
 
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
 
-public interface SemesterRegistrationInterface {
-
-	List<Course> viewCourses();
-
-	boolean verifyCourse(String courseId);
+public interface SemesterRegistrationDaoInterface {
 
 	String addCourse(String studentId, String courseId);
 
-	String dropCourse(String studentId, String courseId);
-
 	List<Course> viewOptedCourses(String studentId);
+
+	String dropCourse(String studentId, String courseId);
 
 	String submitOptedCourses(String studentId);
 
