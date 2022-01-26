@@ -43,4 +43,15 @@ public class SQLQueries {
 	public static final String ADD_GRADE = "INSERT INTO grade(studentId, courseId, gpa, semester) values(?, ?, ?, ?)";
 
 	public static final String VIEW_ENROLLED_STUDENTS = "SELECT user.userId, user.name from user INNER JOIN optedCourses ON user.userId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ?"; 
+	
+	public static final String ADD_PAYMENT = "insert into payment(studentId,referenceId,amount,paymentMode) values (?,?, ?, ?)";
+	
+	public static final String FETCH_GRADECARD = "SELECT * FROM gradecard WHERE studentId = ? ";
+	public static final String FETCH_GRADE= "SELECT * FROM grade WHERE studentId = ? ";
+	
+	public static final String VERIFY_EMAIL= "SELECT * FROM user where email = ?";
+	public static final String IS_APPROVED= "SELECT * FROM student where studentId= ?";
+
+
+
 }

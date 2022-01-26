@@ -6,6 +6,8 @@ package com.crs.flipkart.application;
 import java.util.Scanner;
 
 import com.crs.flipkart.bean.*;
+import com.crs.flipkart.business.StudentInterface;
+import com.crs.flipkart.business.StudentService;
 import com.crs.flipkart.business.UserInterface;
 import com.crs.flipkart.business.UserService;
 
@@ -21,6 +23,7 @@ public class CRSApplication {
 
 	static boolean loggedIn = false;
 	UserInterface userService = new UserService();
+	StudentInterface studentService = new StudentService();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -74,7 +77,7 @@ public class CRSApplication {
 				break;
 			case 2:
 				String studentId = user.getUserId();
-				boolean isApproved = true;// studentInterface.isApproved(studentId);
+				boolean isApproved = studentService.isApproved(studentId);
 				if (isApproved) {
 					CRSStudent student = new CRSStudent();
 					student.create_menu(studentId);
@@ -113,5 +116,6 @@ public class CRSApplication {
 		System.out.println(userService.registerStudent(name,email, password, branchName, batch));
 
 	}
+	
 
 }

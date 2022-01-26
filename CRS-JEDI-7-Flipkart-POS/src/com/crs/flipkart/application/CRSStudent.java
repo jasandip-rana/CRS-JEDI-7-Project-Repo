@@ -173,6 +173,8 @@ public class CRSStudent {
 	}
 	public void makePayment(String studentID)
 	{
+		String[] modeOfPayment = {"Netbanking","Card","Cheque","Cash"};
+		
 		float totalFee = studentService.getTotalFee(studentID);
 		System.out.println("Fees to be paid : "+totalFee);
 		System.out.println("1. Netbanking");
@@ -181,10 +183,12 @@ public class CRSStudent {
 		System.out.println("4. Cash");
 		System.out.println("5. Exit");
 		System.out.println("Option : ");
+		
 		int choice = sc.nextInt();
+		
 		if(choice!=5)
 		{
-			String status = studentService.makePayment(studentID,choice);
+			String status = studentService.makePayment(studentID,modeOfPayment[choice-1],totalFee);
 			System.out.println(status);
 		}
 	}

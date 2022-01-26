@@ -44,9 +44,11 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 	@Override
 	public List<Course> viewOptedCourses(String studentId) {
 		List<Course> courseList = new ArrayList<Course>();
+
 		try {
 			PreparedStatement ps = conn.prepareStatement(SQLQueries.FETCH_OPTED_COURSES);
 			ps.setString(1, studentId);
+
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
@@ -59,6 +61,8 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 				Course course = new Course(courseId,courseName,courseFee,department,professorId,studentCount);
 				courseList.add(course);
 			}
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
