@@ -9,6 +9,8 @@ import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.dao.CatalogDaoInterface;
 import com.crs.flipkart.dao.CatalogDaoService;
+import com.crs.flipkart.dao.ProfessorDaoInterface;
+import com.crs.flipkart.dao.ProfessorDaoService;
 
 /**
  * @author Shubham
@@ -16,11 +18,11 @@ import com.crs.flipkart.dao.CatalogDaoService;
  */
 public class ProfessorService implements ProfessorInterface {
 
-	CatalogDaoInterface catalogService = new CatalogDaoService();
+	ProfessorDaoInterface professorService = new ProfessorDaoService();
 	
 	public List<Course> viewCourses()
 	{
-		List<Course> courseList = catalogService.viewCourses();
+		List<Course> courseList = professorService.viewCourses();
 		
 		for(Course course : courseList)
 		{
@@ -31,18 +33,18 @@ public class ProfessorService implements ProfessorInterface {
 		return courseList;
 	}
 	
-	public String indicateCourse(String courseId)
+	public String indicateCourse(String professorId,String courseId)
 	{
-		return "";
+		return professorService.selectCourse(professorId, courseId);
 	}
 	
-	public String gradeStudent(String studentId, String courseId, float grade)
+	public String gradeStudent(String studentId, String courseId, float grade,String semester)
 	{
-		return "";
+		return professorService.addGrade(studentId, courseId, grade, semester);
 	}
 	
-	public List<Student> viewEnrolledStudents(String courseId)
+	public List<String> viewEnrolledStudents(String courseId)
 	{
-		return null;
+		return professorService.viewEnrolledStudents(courseId);
 	}
 }

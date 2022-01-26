@@ -29,7 +29,7 @@ public class SQLQueries {
 	// Query condition modified --> Join removed
 //	public static final String VIEW_PROFESSOR = "SELECT * FROM professor";
 	
-//	public static final String LIST_PROFESSORS = "SELECT professor.id, user.name, user.email, professor.department, professor.designation FROM professor INNER JOIN user ON professor.userId = user.id";
+	public static final String LIST_PROFESSORS = "SELECT professor.id, user.name, user.email, professor.department FROM professor INNER JOIN user ON professor.userId = user.id";
 
 
 	public static final String GET_GRADES = "SELECT * from grade INNER JOIN course ON grade.courseId = course.courseId WHERE grade.studentId = ? AND grade.semester = ?";

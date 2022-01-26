@@ -91,27 +91,29 @@ public class AdminDaoService implements AdminDaoInterface {
     }
 	
 	   @Override
-	public List<Professor> viewProfessorList() {
-//	        try {
-//	            PreparedStatement ps = conn.prepareStatement(SQLQueries.VIEW_PROFESSOR);
-//	            ResultSet rs = ps.executeQuery();
-//	            List<Professor> professors = new ArrayList<Professor>();
-//	            while (rs.next()) {
-//	                Professor p = new Professor();
-//	                p.setProfessorId(rs.getInt("id"));
-//	                p.setUserName(rs.getString("name"));
-//	                p.setUserEmailId(rs.getString("email"));
-//	                p.setDepartment(rs.getString("department"));
-//	                p.setDesignation(rs.getString("designation"));
-//	                professors.add(p);
-//	            }
-//	            return professors;
-//	        } catch (SQLException e) {
-//	            logger.info("Error: " + e.getMessage());
-//	        }
+	public List<String> viewProfessorList() {
+		   try {
+				List<String> professorList = new ArrayList<String>();
+	            PreparedStatement ps = conn.prepareStatement(SQLQueries.LIST_PROFESSORS);
+	      
+	            ResultSet rs = ps.executeQuery(); 
+	            while(rs.next())
+	            {
+	            	professorList.add(rs.getString("professor.professorID") + " " + rs.getString("user.name")+" "+rs.getString("user.email")
+	            	+" "+rs.getString("professor.department"));
+	            }
+	            
+	            int rowAffected = ps.executeUpdate();
+	            if (rowAffected == 1)
+	            	return professorList;
+	            
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+	        }
 	        return null;
-//	    }
-	}
+		}
+     
+
 
 	   @Override
 	public String generateGradeCard(String studentId, String semester)
