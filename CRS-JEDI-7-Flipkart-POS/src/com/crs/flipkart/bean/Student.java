@@ -16,6 +16,7 @@ public class Student extends User {
 	private String branch;
 	private String batch;
 	private boolean isVerified;
+	// isRegistered boolean
 	private List<Course> registeredCourses = new ArrayList<Course>();
 
 	/**
