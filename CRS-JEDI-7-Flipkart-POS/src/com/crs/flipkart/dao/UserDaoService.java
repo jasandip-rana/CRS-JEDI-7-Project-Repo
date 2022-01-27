@@ -21,6 +21,13 @@ public class UserDaoService implements UserDaoInterface {
 
 	public static Connection conn = dbUtil.getConnection();
 
+	/**
+	 * Method to check if a user with given email-id and password exists
+	 * 
+	 * @param emailId of the user
+	 * @param password of the user
+	 * @return returns a User containing user info id found in database or returns null
+	 */
 	@Override
 	public User login(String emailId, String password) {
 		try {
@@ -43,6 +50,15 @@ public class UserDaoService implements UserDaoInterface {
 		}
 	}
 
+	/**
+	 * Method to enter a new user in the database
+	 * 
+	 * @param name of the user
+	 * @param emailId of the user
+	 * @param password of the user
+	 * @param role of the user
+	 * @return returns a string that indicates if the user is successfully entered in the database
+	 */
 	@Override
 	public String createUser(String name, String email, String password, String role) {
 
@@ -84,6 +100,18 @@ public class UserDaoService implements UserDaoInterface {
 		}
 	}
 
+
+	/**
+	 * Method to enter a new student in the database
+	 * 
+	 * @param name of the user
+	 * @param contact number of the user
+	 * @param emailId of the user
+	 * @param password of the user
+	 * @param branch of the user
+	 * @param batch of the user
+	 * @return returns a string that indicates if the student is successfully entered in the database
+	 */
 	@Override
 	public String registerStudent(String name, String contactNumber, String email, String password, String branch, String batch) {
 		try {
@@ -112,6 +140,15 @@ public class UserDaoService implements UserDaoInterface {
 		return "User not created";
 	}
 
+
+	/**
+	 * Method to update password of the user
+	 * 
+	 * @param emailId of the user
+	 * @param old password of the user
+	 * @param new password of the user
+	 * @return returns a string that indicates if the password is changed successfully
+	 */
 	@Override
 	public String updatePassword(String email, String oldPassword, String newPassword) {
 		try {

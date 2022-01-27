@@ -23,6 +23,14 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 
 	public static Connection conn = dbUtil.getConnection();
 	
+
+	/**
+	 * Method to enter a course for the student into the opted course list
+	 * 
+	 * @param student id of the student
+	 * @param course if of the course to be added
+	 * @return returns a string that indicates if the course is successfully opted
+	 */
 	@Override
 	public String addCourse(String studentId, String courseId) {
 		// TODO Auto-generated method stub
@@ -41,6 +49,12 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 		return "Database Error";
 	}
 
+	/**
+	 * Method to return the opted course list for a given student
+	 * 
+	 * @param student id of the student
+	 * @return returns a list of courses that the student has opted
+	 */
 	@Override
 	public List<Course> viewOptedCourses(String studentId) {
 		List<Course> courseList = new ArrayList<Course>();
@@ -71,6 +85,13 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 
 	}
 
+	/**
+	 * Method to remove a course from the opted course list for student
+	 * 
+	 * @param student id of the student
+	 * @param course if of the course to be added
+	 * @return returns a string that indicates if the course is dropped opted
+	 */
 	@Override
 	public String dropCourse(String studentId, String courseId) {
 		// TODO Auto-generated method stub
@@ -88,6 +109,12 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 		return "Database Error";
 	}
 
+	/**
+	 * Method to increase the student count when the student registers for the course successfully
+	 * 
+	 * @param student id of the student
+	 * @return returns a boolean that indicates if the course count is successfully incremented
+	 */
 	public boolean increaseStudentCount(String studentId) {
 		// TODO Auto-generated method stub
 		try {
@@ -106,6 +133,12 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
         }
 	}
 	
+	/**
+	 * Method to submit the courses in the opted course list for a student
+	 * 
+	 * @param student id of the student
+	 * @return returns a string that indicates if the courses are successfully registered in
+	 */
 	@Override
 	public String submitOptedCourses(String studentId) {
 		// TODO Auto-generated method stub

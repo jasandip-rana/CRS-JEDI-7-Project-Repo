@@ -22,6 +22,11 @@ public class CRSStudent {
 	static boolean submittedCourses;
 	static boolean feeStatus;
 	
+	/**
+	 * Method to display student dash-board
+	 * 
+	 * @param studentId of the student
+	 */
 	public void create_menu(String studentId) {
 		int choice;
 		do {
@@ -75,9 +80,11 @@ public class CRSStudent {
 		}while(CRSApplication.loggedIn);
 	}
 	
+	/**
+	 * Method to display all the courses from the catalog
+	 */
 	public void viewCourses()
 	{
-		// Display all the courses from the catalog
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewCourses();
 		for(Course course: courseList)
@@ -86,6 +93,12 @@ public class CRSStudent {
 				System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
 		}
 	}
+	
+	/**
+	 * Method to display semester registration dash-board
+	 * 
+	 * @param studentId of the student
+	 */
 	public void registerSem(String studentID)
 	{
 		if(submittedCourses)
@@ -135,15 +148,26 @@ public class CRSStudent {
 				break;
 		}while(choice!=6);
 	}
+	
+	/**
+	 * Method to add course to opted course for a given student
+	 * 
+	 * @param studentId of the student
+	 */
 	public void addCourse(String studentID)
 	{
 		System.out.print("Enter the course id : ");
 		sc.nextLine();
 		String courseID = sc.nextLine();
-//		System.out.println(courseID);
 		String status=semesterRegistrationService.addCourse(studentID,courseID);
 		System.out.println(status);
 	}
+	
+	/**
+	 * Method to drop courses from opted course for a given student
+	 * 
+	 * @param studentId of the student
+	 */
 	public void dropCourse(String studentID)
 	{
 		System.out.print("Enter the course id : ");
@@ -152,6 +176,12 @@ public class CRSStudent {
 		String status=semesterRegistrationService.dropCourse(studentID,courseID);
 		System.out.println(status);
 	}
+	
+	/**
+	 * Method to view the list of opted courses for a given student
+	 * 
+	 * @param studentId of the student
+	 */
 	public void viewOptedCourses(String studentID)
 	{
 		List<Course> courseList = new ArrayList<Course>();
@@ -161,6 +191,13 @@ public class CRSStudent {
 			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
 		}
 	}
+	
+	/**
+	 * Method to register for the opted course for a given student
+	 * 
+	 * @param studentId of the student
+	 * @return returns a boolean that indicates if the courses are successfully alloted in the database
+	 */
 	public boolean submitChoice(String studentID)
 	{
 		String status = semesterRegistrationService.submitOptedCourses(studentID);
@@ -169,6 +206,13 @@ public class CRSStudent {
 			return true;
 		return false;
 	}
+	
+	
+	/**
+	 * Method to view the list of registered courses for a given student
+	 * 
+	 * @param studentId of the student
+	 */
 	public void viewRegisteredCourses(String studentID)
 	{
 		if(!submittedCourses)
@@ -187,6 +231,12 @@ public class CRSStudent {
 			System.out.println("Please pay your fees as soon as possible.");
 		}
 	}
+	
+	/**
+	 * Method to view the grade card for a given student
+	 * 
+	 * @param studentId of the student
+	 */
 	public void viewGradeCard(String studentID)
 	{
 		if(!feeStatus)
@@ -212,6 +262,13 @@ public class CRSStudent {
 		System.out.println("CGPA : "+gradeCard.getStudentCgpa());
 		System.out.println("\n___________________________________________________________________");
 	}
+	
+	
+	/**
+	 * Method to make payment for a given student
+	 * 
+	 * @param studentId of the student
+	 */
 	public void makePayment(String studentID)
 	{
 		if(!submittedCourses)

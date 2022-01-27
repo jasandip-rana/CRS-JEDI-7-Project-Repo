@@ -25,6 +25,10 @@ public class CRSApplication {
 	UserInterface userService = new UserService();
 	StudentInterface studentService = new StudentService();
 
+	/**
+     * Main function. Program starts execution from here. Displays initial menu
+     */
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// Main screen will have 4 things
@@ -57,6 +61,9 @@ public class CRSApplication {
 		} while (choice != 4);
 	}
 
+	/**
+     * method for all users to login
+     */
 	public void login() {
 		Scanner sc = new Scanner(System.in);
 
@@ -104,6 +111,10 @@ public class CRSApplication {
 		}
 
 	}
+	
+	/**
+     * method for registration of new students
+     */
 	public void registerStudent() {
 		Scanner sc = new Scanner(System.in);
 
@@ -130,6 +141,10 @@ public class CRSApplication {
 		System.out.println(userService.registerStudent(name,contactNumber,email, password, branchName, batch));
 
 	}
+	
+	/**
+     * method for updating the existing password
+     */
 	public void updatePassword()
 	{
 		Scanner sc = new Scanner(System.in);

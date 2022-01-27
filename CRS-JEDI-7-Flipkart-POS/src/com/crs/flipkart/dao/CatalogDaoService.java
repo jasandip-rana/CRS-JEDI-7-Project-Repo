@@ -19,7 +19,11 @@ public class CatalogDaoService implements CatalogDaoInterface {
 
 	public static Connection conn = dbUtil.getConnection();
 	
-
+	/**
+	 * Method to return all the courses in the catalog
+	 * 
+	 * @return returns a list of the courses from the database
+	 */
 	@Override
 	public List<Course> viewCourses() {
 		List<Course> courseList = new ArrayList<Course>();

@@ -25,11 +25,13 @@ public class StudentDaoService implements StudentDaoInterface {
 
 	public static Connection conn = dbUtil.getConnection();
 	
+	
 	/**
-	 * Method to view grade card for a student. 
-	 * Requires student ID as an argument.
-	 * Fetches the data for a student from the grade and gradeCard database.
-	 * Returns the grade card object for that particular student.
+	 * Method to view grade card for a student
+	 * 
+	 * @param student id of the student
+	 * @param course if of the course to be added
+	 * @return returns a grade card for the student
 	 */
 	@Override
 	public GradeCard viewGradeCard(String studentId) {
@@ -77,8 +79,10 @@ public class StudentDaoService implements StudentDaoInterface {
 	
 	
 	/**
-	 * Function to add payment made by a student to the payment database.
-	 * Requires the payment object as an argument. 
+	 * Method to add payment made by a student to the payment database
+	 * 
+	 * @param payment object contains the payment details
+	 * @return returns a string indicating the status of the payment
 	 */
 	@Override
 	public String makePayment(Payment payment) {
@@ -111,8 +115,10 @@ public class StudentDaoService implements StudentDaoInterface {
 	}
 	
 	/**
-	 Function to check if a given student is approved or not.
-	 Requires student ID as an argument.
+	 * Method to check if a student is approved by the admin
+	 * 
+	 * @param student id of the student
+	 * @return returns a boolean indication approval status
 	 */
 	public boolean isApproved(String studentId)
 	{
@@ -137,11 +143,11 @@ public class StudentDaoService implements StudentDaoInterface {
 		}
 	}
 	
-	
 	/**
-	 * Function to check the payment status of a student.
-	 * Requires the student ID as an argument.
-	 * Returns true if the student has made the payment.
+	 * Method to check the payment status of a student
+	 * 
+	 * @param student id of the student
+	 * @return returns true if student has completed the payment
 	 */
 	public boolean getFeeStatus(String studentId)
 	{
@@ -165,10 +171,13 @@ public class StudentDaoService implements StudentDaoInterface {
 			return false;
 		}
 	}
+
+
 	/**
-	 * Function to check if a student has submitted course choices or not.
-	 * Requires student ID as an argument.
-	 * Returns true if the student has submitted the course choices.
+	 * Method to check the registration status of a student
+	 * 
+	 * @param student id of the student
+	 * @return returns true if student has completed the registration
 	 */
 	public boolean submittedCourses(String studentId)
 	{
