@@ -16,13 +16,18 @@ import com.crs.flipkart.utils.dbUtil;
 
 /**
  * @author Shubham
- *
+ * Implementation of admin dao interface
  */
 public class AdminDaoService implements AdminDaoInterface {
 	
 	public static Connection conn = dbUtil.getConnection();
 	UserDaoInterface userDaoService = new UserDaoService();
 	
+	/**
+     * method for getting all courses in the database
+     *
+     * @return returns List of all courses in the database
+     */
 	@Override
 	public List<Course> viewCourses() {
         try {
@@ -46,6 +51,12 @@ public class AdminDaoService implements AdminDaoInterface {
         }
     }
 	
+	/**
+     * method for adding course into database
+     *
+     * @param newCourse		Course object containing details of the course
+     * @return returns status of addCourse operation as a string
+     */
 	@Override
 	public String addCourse(Course newCourse) {
         try {
@@ -64,6 +75,12 @@ public class AdminDaoService implements AdminDaoInterface {
         return "Course not added.";
     }
 	
+	/**
+     * method for removing course from the database
+     *
+     * @param courseId unique Id to represent a course
+     * @return returns status of dropCourse operation as a string
+     */
 	@Override
 	public String dropCourse(String courseId) {
         try {
@@ -78,6 +95,11 @@ public class AdminDaoService implements AdminDaoInterface {
         return "Course not dropped.";
     }
 	
+	/**
+     * method for getting all Pending admission requests
+     *
+     * @return List of students with pending approval request
+     */
 	public List<Student> getPendingStudents()
 	{
 		List<Student> studentList= new ArrayList<Student>();
@@ -99,6 +121,12 @@ public class AdminDaoService implements AdminDaoInterface {
 		return null;
 	}
 	
+	/**
+     * method to approve a student by student id
+     *
+     * @param newStudent	Student object contains details of student to be approved
+     * @return returns status of approveStudent operation as a string
+     */
 	@Override
 	public String approveStudent(Student newStudent) {
         try {
@@ -117,7 +145,13 @@ public class AdminDaoService implements AdminDaoInterface {
         return "Student not approved.";
     }
 	
-	   @Override
+	
+	/**
+     * method for getting all the professors
+     *
+     * @return List of Professors
+     */
+	  @Override
 	public List<Professor> viewProfessorList() {
 		   try {
 				List<Professor> professorList = new ArrayList<Professor>();
@@ -142,6 +176,12 @@ public class AdminDaoService implements AdminDaoInterface {
 	        return null;
 		}
 
+	  /**
+	     * method for adding professor into database
+	     *
+	     * @param newProfessor	Professor object containing details of the professor
+	     * @return returns status of addProfessor operation as a string
+	     */
 	   public String addProfessor(Professor newProfessor) {
 	        try {
 	    		String id = userDaoService.createUser(newProfessor.getName(), newProfessor.getEmail(), newProfessor.getPassword(), "Professor");
@@ -164,6 +204,13 @@ public class AdminDaoService implements AdminDaoInterface {
 	        }
 	        return "Professor not added.";
 	    }
+	   
+	   /**
+	     * method for removing professor from the database
+	     *
+	     * @param professorId		unique Id to represent a course
+	     * @return returns status of dropProfessor operation as a string
+	     */
 	   public String dropProfessor(String professorId) {
 	        try {
 	            PreparedStatement ps = conn.prepareStatement(SQLQueries.REMOVE_USER);
@@ -181,6 +228,13 @@ public class AdminDaoService implements AdminDaoInterface {
 	        return "Professor not dropped.";
 	    }
 
+	   /**
+	     * method for generating grade card and calculating aggregate CGPA of student
+	     *
+	     * @param studentId			unique Id to represent a student
+	     * @param semester			semester for which gradeCard is to be generated
+	     * @return returns status of dropProfessor operation as a string
+	     */
 	   @Override
 	public String generateGradeCard(String studentId, String semester)
 	   {
