@@ -3,6 +3,7 @@
  */
 package com.crs.flipkart.business;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
@@ -23,14 +24,29 @@ public class ProfessorService implements ProfessorInterface {
 	public List<Course> viewCourses()
 	{
 		List<Course> courseList = professorService.viewCourses();
+		List<Course> newCourseList = new ArrayList<Course> ();
 		
 		for(Course course : courseList)
 		{
-			if(course.getProfessorId() != null)
-				courseList.remove(course);
+			if(course.getProfessorId() == null)
+				newCourseList.add(course);
 		}
 		
-		return courseList;
+		return newCourseList;
+	}
+	
+	public List<Course> viewSelectedCourses(String professorId)
+	{
+		List<Course> courseList = professorService.viewCourses();
+		List<Course> newCourseList = new ArrayList<Course> ();
+		
+		for(Course course : courseList)
+		{
+			if(course.getProfessorId() != null && course.getProfessorId().equals(professorId))
+				newCourseList.add(course);
+		}
+		
+		return newCourseList;
 	}
 	
 	public String indicateCourse(String professorId,String courseId)
@@ -47,4 +63,31 @@ public class ProfessorService implements ProfessorInterface {
 	{
 		return professorService.viewEnrolledStudents(courseId);
 	}
+	
+	public boolean validateCourse(String courseId, String professorId) 
+	{
+		List<Course> courseList = professorService.viewCourses();
+		
+		for(Course course : courseList)
+		{
+			if(course.getProfessorId() != null && course.getProfessorId().equals(professorId) && course.getCourseId().equals(courseId))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean validateStudent(String courseId, String studentId) 
+	{
+		List<String> enrolledStudents = professorService.viewEnrolledStudents(courseId);
+		
+		for(String student: enrolledStudents)
+		{
+			if(studentId.equals(student.substring(0,10)))
+				return true;
+		}
+		
+		return false;
+	}
 }
+

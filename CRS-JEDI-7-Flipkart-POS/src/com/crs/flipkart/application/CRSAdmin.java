@@ -135,18 +135,20 @@ public class CRSAdmin {
 	public void addProfessor() {
 		// TODO Auto-generated method stub
 		Professor newProfessor = new Professor();
-		System.out.print("Enter the course Id :");
-		course.setCourseId(sc.nextLine());
-		System.out.print("Enter the course name :");
-		course.setCourseName(sc.nextLine());
-		System.out.print("Enter the course fee :");
-		course.setCourseFee(sc.nextFloat());
+		System.out.print("Enter the professor name :");
+		newProfessor.setName(sc.nextLine());
+		System.out.print("Enter the professor salary :");
+		newProfessor.setSalary(sc.nextFloat());
 		System.out.println("Enter the department name :");
-		course.setDepartmentName(sc.nextLine());
-		course.setProfessorId(null);
-		course.setStudentCount(0);
-		System.out.println(adminService.addCourse(course));
+		newProfessor.setDepartment(sc.nextLine());
+		System.out.println("Enter the doj :");
+		newProfessor.setDoj(sc.nextLine());
+		System.out.println("Enter the contact number:");
+		newProfessor.setContactNumber(sc.next());
+		
+		System.out.println(adminService.addProfessor(newProfessor));
 	}
+	
 	public void dropProfessor() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter the Professor Id :");

@@ -28,11 +28,12 @@ public class CRSProfessor {
 		do {
 			
 				System.out.println("\n\n\n---------------Professor Dashboard---------------\n\n\n");
-				System.out.println("1. View Courses");
-				System.out.println("2. Select Courses");
-				System.out.println("3. Grade Student");
-				System.out.println("4. View Enrolled Students");
-				System.out.println("5. Logout");
+				System.out.println("1. View Available Courses");
+				System.out.println("2. View Selected Courses");
+				System.out.println("3. Select Courses");
+				System.out.println("4. Grade Student");
+				System.out.println("5. View Enrolled Students");
+				System.out.println("6. Logout");
 			
 				choice = sc.nextInt();
 			
@@ -40,24 +41,28 @@ public class CRSProfessor {
 				
 				case 1:
 					
-					viewCourses();
+					viewAvailableCourses();
 					break;
-					
+			
 				case 2: 
+					viewSelectedCourses(professorId);
+					break;
+			
+				case 3: 
 			
 					selectCourses();
 					break;
 					
-				case 3:
+				case 4:
 					
 					gradeStudent();
 					break;
 					
-				case 4:
+				case 5:
 					viewEnrolledStudents();
 					break;
 
-				case 5:
+				case 6:
 					CRSApplication.loggedIn = false;
 					break;			
 					
@@ -68,17 +73,24 @@ public class CRSProfessor {
 		}while(CRSApplication.loggedIn);
 	}
 
-	public void viewCourses() {
+	public void viewAvailableCourses() {
 		// TODO Auto-generated method stub
 		List<Course>courseList=professorService.viewCourses();
 		for(Course course: courseList)
 		{
 			
-				System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
+				System.out.println(course.getCourseId() +" : "+ course.getCourseName());
 		}
 			
 	}
-
+	
+	public void viewSelectedCourses(String professorId) {
+		List<Course>courseList=professorService.viewSelectedCourses(professorId);
+		for(Course course: courseList)
+		{
+				System.out.println(course.getCourseId() +" : "+ course.getCourseName());
+		}
+	}
 	public void selectCourses() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter course Id for selecting course: ");
@@ -91,10 +103,20 @@ public class CRSProfessor {
 		// TODO Auto-generated method stub
 		System.out.print("Enter the semester :");
 		String semester=sc.next();
-		System.out.print("Enter the student ID :");
-		String studentId=sc.next();
 		System.out.println("Enter course ID :");
 		String courseId=sc.next();
+		if(!professorService.validateCourse(courseId, id))
+		{
+			System.out.println("You don't teach this course");
+			return;
+		}
+		System.out.print("Enter the student ID :");
+		String studentId=sc.next();
+		if(!professorService.validateStudent(courseId, studentId))
+		{
+			System.out.println("Student not enrolled in this course");
+			return;
+		}
 		System.out.println("Enter the grade :");
 		float grade=sc.nextFloat();
 	   System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
@@ -106,6 +128,10 @@ public class CRSProfessor {
 		System.out.println("Enter course ID :");
 		String courseId=sc.next();
 		List<String>enrolledStudents=professorService.viewEnrolledStudents(courseId);
+		if(enrolledStudents.size() == 0) {
+			System.out.println("No such course or Student found");
+			return;
+		}
 		for(String student:enrolledStudents)
 			System.out.println(student);
 		

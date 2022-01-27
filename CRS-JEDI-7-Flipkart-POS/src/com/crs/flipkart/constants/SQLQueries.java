@@ -46,7 +46,7 @@ public class SQLQueries {
 
 	public static final String ADD_GRADE = "INSERT INTO grade(studentId, courseId, gpa, semester) values(?, ?, ?, ?)";
 
-	public static final String VIEW_ENROLLED_STUDENTS = "SELECT user.userId, user.name from user INNER JOIN optedCourses ON user.userId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ?"; 
+	public static final String VIEW_ENROLLED_STUDENTS = "SELECT student.studentId, student.name from student INNER JOIN optedCourses ON student.studentId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ?"; 
 	
 	public static final String ADD_PAYMENT = "insert into payment(studentId,referenceId,amount,paymentMode) values (?,?, ?, ?)";
 	

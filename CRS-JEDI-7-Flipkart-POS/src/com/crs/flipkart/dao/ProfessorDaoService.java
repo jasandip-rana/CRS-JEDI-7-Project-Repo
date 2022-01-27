@@ -102,14 +102,15 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.VIEW_ENROLLED_STUDENTS);
             ps.setString(1, courseId);
             ResultSet rs = ps.executeQuery(); 
+            if(rs == null) {
+            	return null;
+            }
             while(rs.next())
             {
-            	enrolledStudents.add(rs.getString("user.userId") + " " + rs.getString("user.name"));
+            	enrolledStudents.add(rs.getString("student.studentId") + " " + rs.getString("student.name"));
             }
             
-            int rowAffected = ps.executeUpdate();
-            if (rowAffected == 1)
-            	return enrolledStudents;
+            return enrolledStudents;
             
         } catch (SQLException e) {
         	e.printStackTrace();
