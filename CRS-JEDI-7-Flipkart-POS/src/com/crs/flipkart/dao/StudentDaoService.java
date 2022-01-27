@@ -24,7 +24,13 @@ import com.crs.flipkart.utils.dbUtil;
 public class StudentDaoService implements StudentDaoInterface {
 
 	public static Connection conn = dbUtil.getConnection();
-
+	
+	/**
+	 * Method to view grade card for a student. 
+	 * Requires student ID as an argument.
+	 * Fetches the data for a student from the grade and gradeCard database.
+	 * Returns the grade card object for that particular student.
+	 */
 	@Override
 	public GradeCard viewGradeCard(String studentId) {
 		GradeCard gradeCard = new GradeCard();
@@ -68,7 +74,12 @@ public class StudentDaoService implements StudentDaoInterface {
 		}
 
 	}
-
+	
+	
+	/**
+	 * Function to add payment made by a student to the payment database.
+	 * Requires the payment object as an argument. 
+	 */
 	@Override
 	public String makePayment(Payment payment) {
 		try {
@@ -99,6 +110,10 @@ public class StudentDaoService implements StudentDaoInterface {
 
 	}
 	
+	/**
+	 Function to check if a given student is approved or not.
+	 Requires student ID as an argument.
+	 */
 	public boolean isApproved(String studentId)
 	{
 		try {
@@ -122,6 +137,12 @@ public class StudentDaoService implements StudentDaoInterface {
 		}
 	}
 	
+	
+	/**
+	 * Function to check the payment status of a student.
+	 * Requires the student ID as an argument.
+	 * Returns true if the student has made the payment.
+	 */
 	public boolean getFeeStatus(String studentId)
 	{
 		try {
@@ -144,6 +165,11 @@ public class StudentDaoService implements StudentDaoInterface {
 			return false;
 		}
 	}
+	/**
+	 * Function to check if a student has submitted course choices or not.
+	 * Requires student ID as an argument.
+	 * Returns true if the student has submitted the course choices.
+	 */
 	public boolean submittedCourses(String studentId)
 	{
 		try {
