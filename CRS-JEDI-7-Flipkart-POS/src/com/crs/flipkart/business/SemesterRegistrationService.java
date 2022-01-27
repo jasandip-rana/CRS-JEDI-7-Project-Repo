@@ -10,11 +10,24 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
 	CatalogDaoInterface catalogService = new CatalogDaoService();
 	SemesterRegistrationDaoInterface semesterRegistrationDaoService = new SemesterRegistrationDaoService();
 
+	
+	 /**
+     * method for getting all the courses from course catalog
+     * 
+     * 
+     * @return list of course 
+     */
 	@Override
 	public List<Course> viewCourses() {
 		return catalogService.viewCourses();
 	}
 	
+	 /**
+     * method for verifying course exists or not in the catalog
+     * 
+     * @param courseId  unique Id to represent a course
+     * @return returns true if course exists in the catalog.
+     */
 	@Override
 	public boolean verifyCourse(String courseId)
 	{
@@ -26,6 +39,13 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
 		return false;
 	}
 	
+	 /**
+     * method for adding course for the student 
+     *
+     * @param studentId  unique Id to represent a student
+     * @param courseId  unique Id to represent a course
+     * @return returns String which represents the status of adding course 
+     */
 	@Override
 	public String addCourse(String studentId, String courseId) {
 		// TODO Auto-generated method stub
@@ -43,6 +63,14 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
 		}
 		return semesterRegistrationDaoService.addCourse(studentId, courseId);
 	}
+	
+	/**
+     * method for dropping course for the student 
+     *
+     * @param studentId  unique Id to represent a student
+     * @param courseId  unique Id to represent a course
+     * @return returns String which represents the status of dropping course 
+     */
 
 	@Override
 	public String dropCourse(String studentId, String courseId) {
@@ -62,10 +90,23 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
 		return "You have not opted this course";
 	}
 
+	/**
+     * method for getting all opted courses by the student 
+     *
+     * @param studentId  unique Id to represent a student
+     * @return list of courses opted by the student 
+     */
 	@Override
 	public List<Course> viewOptedCourses(String studentId) {
 		return semesterRegistrationDaoService.viewOptedCourses(studentId);
 	}
+	
+	/**
+     * method for submitting the course choices of the student 
+     *
+     * @param studentId  unique Id to represent a student
+     * @return returns String which represents the status of submitting course choices 
+     */
 
 	@Override
 	public String submitOptedCourses(String studentId) {
