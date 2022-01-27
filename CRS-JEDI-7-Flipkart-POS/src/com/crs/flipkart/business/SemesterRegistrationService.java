@@ -47,9 +47,6 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
 	@Override
 	public String dropCourse(String studentId, String courseId) {
 		// TODO Auto-generated method stub
-		// Not opted that course
-		// Course doesnt exist
-		// Success
 		if(!verifyCourse(courseId))
 		{
 			return "No such course exists";

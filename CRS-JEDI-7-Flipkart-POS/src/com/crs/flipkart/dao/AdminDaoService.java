@@ -104,8 +104,12 @@ public class AdminDaoService implements AdminDaoInterface {
         try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.APPROVE_ADDMISSION_REQUEST);
             ps.setString(1, newStudent.getStudentEnrollmentId());
-            if(ps.executeUpdate() == 1)
-            	return "Student approved successfully.";
+            ps.executeUpdate();
+            ps = conn.prepareStatement(SQLQueries.INSERT_REGISTRATION);
+            ps.setString(1, newStudent.getStudentEnrollmentId());
+            ps.setString(2, "1");
+            ps.executeUpdate();
+            return "Student approved";
 
         } catch (SQLException e) {
         	e.printStackTrace();
@@ -141,6 +145,8 @@ public class AdminDaoService implements AdminDaoInterface {
 	   public String addProfessor(Professor newProfessor) {
 	        try {
 	    		String id = userDaoService.createUser(newProfessor.getName(), newProfessor.getEmail(), newProfessor.getPassword(), "Professor");
+	    		if(id.equals("User not created")||id.equals("Email already in use"))
+	    			return "Professor not added.";
 	            PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_PROFESSOR);
 	            ps.setString(1, id);
 	            ps.setString(2, newProfessor.getName());
@@ -160,12 +166,15 @@ public class AdminDaoService implements AdminDaoInterface {
 	    }
 	   public String dropProfessor(String professorId) {
 	        try {
-	            PreparedStatement ps = conn.prepareStatement(SQLQueries.DROP_PROFESSOR);
+	            PreparedStatement ps = conn.prepareStatement(SQLQueries.REMOVE_USER);
 	            ps.setString(1, professorId);
-	            ps.setString(2, professorId);
 	            if(ps.executeUpdate()!=0)
-	            	return "Professor dropped successfully.";
-
+	            {
+	            	ps = conn.prepareStatement(SQLQueries.DROP_PROFESSOR);
+	            	ps.setString(1, professorId);
+	            	if(ps.executeUpdate()!=0)
+	            		return "Professor dropped successfully.";
+	            }
 	        } catch (SQLException e) {
 	        	e.printStackTrace();
 	        }
@@ -177,6 +186,8 @@ public class AdminDaoService implements AdminDaoInterface {
 	   {
 		   try {
 	            PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_GRADES);
+	            ps.setString(1, studentId);
+	            ps.setString(2, semester);
 	            ResultSet rs = ps.executeQuery();
 	            float total = 0;
 	            int countCourses = 0;
@@ -193,7 +204,7 @@ public class AdminDaoService implements AdminDaoInterface {
 	            psUpdate.setString(2, semester);
 	            psUpdate.setFloat(3, total);
 	            
-	            if(ps.executeUpdate() == 1)
+	            if(psUpdate.executeUpdate() == 1)
 	            	return "GradeCard generated successfully.";
 	            
 	        } catch (SQLException e) {

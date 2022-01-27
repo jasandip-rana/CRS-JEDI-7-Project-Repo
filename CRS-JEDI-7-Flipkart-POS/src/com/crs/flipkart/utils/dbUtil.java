@@ -3,58 +3,51 @@
  */
 package com.crs.flipkart.utils;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
-
-/**
- * @author Shubham
- *
- */
-
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class dbUtil {
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/crs_database";
-
-	// Database credentials
-	static final String USER = "root";
-	static final String PASS = "root";
-
-	public static Connection conn = null;
-	public static PreparedStatement stmt = null;
-
+	
+	private static Connection connection = null;
+	
 	public static Connection getConnection() {
-		try {
-			// Step 3 Regiater Driver here and create connection
+		
+        if (connection != null)
+            return connection;
+        else {
+            try {
+            	Properties prop = new Properties();
+                InputStream inputStream = dbUtil.class.getClassLoader().getResourceAsStream("./config.properties");
+                prop.load(inputStream);
+                String driver = prop.getProperty("driver");
+                String url = prop.getProperty("url");
+                String user = prop.getProperty("user");
+                String password = prop.getProperty("password");
+                Class.forName(driver);
+                connection = DriverManager.getConnection(url, user, password);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return connection;
+        }
 
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// Step 4 make/open a connection
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-		} catch (SQLException se) {
-			// Handle errors for JDBC
-			se.printStackTrace();
-		} catch (Exception e) {
-			// Handle errors for Class.forName
-			e.printStackTrace();
-		}
-		return conn;
-	}
+    }
 
 	public static boolean closeConnection() {
-		try {
-            if (stmt != null)
-                stmt.close();
-        } 
-		catch (SQLException se2) {
-        	return false;
-        }
         try {
-            if (conn != null)
-                conn.close();
+            if (connection != null)
+                connection.close();
         } 
         catch (SQLException se) {
         	return false;

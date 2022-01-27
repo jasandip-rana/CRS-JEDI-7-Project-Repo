@@ -40,14 +40,15 @@ public class StudentDaoService implements StudentDaoInterface {
 			if (!rs1.next()) {
 				return null;
 			}
-
+			gradeCard.setStudentCgpa(rs1.getFloat("gpa"));
+			gradeCard.setSemester(1);
 			ResultSet rs = ps.executeQuery();
 			List<Grade> gradeList = new ArrayList<Grade>();
 
 			while (rs.next()) {
 				String courseId = rs.getString("courseId");
-				String studentID = rs1.getString("studentId");
-				float gpa = rs1.getFloat("gpa");
+				String studentID = rs.getString("studentId");
+				float gpa = rs.getFloat("gpa");
 
 				Grade grade = new Grade();
 				grade.setCourseId(courseId);
@@ -84,6 +85,12 @@ public class StudentDaoService implements StudentDaoInterface {
 				return "Payment unsuccessfull";
 			}
 
+			ps = conn.prepareStatement(SQLQueries.UPDATE_PAYMENT_STATUS);
+			ps.setString(1, payment.getStudentEnrollmentId());
+			rs= ps.executeUpdate();
+			if (rs == 0) {
+				return "Payment unsuccessfull";
+			}
 			return "Payment Successfull. Reference Id : " + payment.getReferenceId();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -115,7 +122,7 @@ public class StudentDaoService implements StudentDaoInterface {
 		}
 	}
 	
-	public boolean isRegistered(String studentId)
+	public boolean getFeeStatus(String studentId)
 	{
 		try {
 
@@ -147,7 +154,7 @@ public class StudentDaoService implements StudentDaoInterface {
 			
 			if(rs.next())
 			{
-				if(rs.getInt("isAlloted")==1)
+				if(rs.getInt("registrationStatus")==1)
 					return true;
 				
 			}

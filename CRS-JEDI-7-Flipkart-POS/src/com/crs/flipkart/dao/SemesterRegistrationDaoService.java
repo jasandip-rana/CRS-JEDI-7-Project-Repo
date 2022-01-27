@@ -116,7 +116,11 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
             if(rs==4)
             {
             	increaseStudentCount(studentId);
-            	return "Successfully submitted courses";
+            	ps = conn.prepareStatement(SQLQueries.UPDATE_REGISTRATION_STATUS);
+                ps.setString(1, studentId);
+                int rs1=ps.executeUpdate();
+                if(rs1==1)
+                	return "Successfully submitted courses";
             }
         } catch (SQLException e) {
         	e.printStackTrace();

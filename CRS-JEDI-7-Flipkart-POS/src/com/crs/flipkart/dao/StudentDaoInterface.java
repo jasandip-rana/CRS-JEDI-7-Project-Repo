@@ -11,7 +11,7 @@ public interface StudentDaoInterface {
 	
 	boolean isApproved(String studentId);
 	
-	boolean isRegistered(String studentId);
+	boolean getFeeStatus(String studentId);
 
 	boolean submittedCourses(String studentId);
 

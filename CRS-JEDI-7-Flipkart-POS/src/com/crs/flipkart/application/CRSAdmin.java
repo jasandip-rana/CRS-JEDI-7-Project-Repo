@@ -19,8 +19,11 @@ public class CRSAdmin {
 		Scanner sc = new Scanner(System.in);
 		int choice;
 		do {
-			
-				System.out.println("\n\n\n---------------Admin Dashboard---------------\n\n\n");
+
+				System.out.println("\n\n___________________________________________________________________");
+				System.out.println("");
+				System.out.println("                            ADMIN DASHBOARD                        ");          
+				System.out.println("___________________________________________________________________\n");
 				System.out.println("1. View Courses");
 				System.out.println("2. Add Courses");
 				System.out.println("3. Drop Courses");
@@ -98,11 +101,17 @@ public class CRSAdmin {
 		Course course=new Course();
 		System.out.print("Enter the course Id :");
 		course.setCourseId(sc.nextLine());
+		if(adminService.verifyCourse(course.getCourseId()))
+		{
+			System.out.println("Course already exists");
+			return;
+		}
 		System.out.print("Enter the course name :");
 		course.setCourseName(sc.nextLine());
 		System.out.print("Enter the course fee :");
 		course.setCourseFee(sc.nextFloat());
-		System.out.println("Enter the department name :");
+		sc.nextLine();
+		System.out.print("Enter the department name :");
 		course.setDepartmentName(sc.nextLine());
 		course.setProfessorId(null);
 		course.setStudentCount(0);
@@ -111,9 +120,8 @@ public class CRSAdmin {
 	public void dropCourse() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter the course Id :");
-		String courseId=sc.next();
+		String courseId=sc.nextLine();
 		System.out.println(adminService.dropCourse(courseId));
-		
 	}
 	public void approveStudent() {
 		// TODO Auto-generated method stub
@@ -137,38 +145,47 @@ public class CRSAdmin {
 		Professor newProfessor = new Professor();
 		System.out.print("Enter the professor name :");
 		newProfessor.setName(sc.nextLine());
+		sc.nextLine();
+		System.out.print("Enter email : ");
+		newProfessor.setEmail(sc.nextLine());
+		System.out.print("Enter password : ");
+		newProfessor.setPassword(sc.nextLine());
 		System.out.print("Enter the professor salary :");
 		newProfessor.setSalary(sc.nextFloat());
-		System.out.println("Enter the department name :");
+		sc.nextLine();
+		System.out.print("Enter the department name :");
 		newProfessor.setDepartment(sc.nextLine());
-		System.out.println("Enter the doj :");
+		System.out.print("Enter the doj :");
 		newProfessor.setDoj(sc.nextLine());
-		System.out.println("Enter the contact number:");
-		newProfessor.setContactNumber(sc.next());
-		
+		System.out.print("Enter the contact number:");
+		newProfessor.setContactNumber(sc.nextLine());
 		System.out.println(adminService.addProfessor(newProfessor));
 	}
 	
 	public void dropProfessor() {
 		// TODO Auto-generated method stub
-		System.out.print("Enter the Professor Id :");
-		String professorId=sc.next();
-		System.out.println(adminService.dropProfessor(professorId));
+		viewProfessorList();
+		List<Professor> professorList = adminService.viewProfessorList();
+		System.out.print("Enter the serial number :");
+		int index=sc.nextInt();
+		System.out.println(adminService.dropProfessor(professorList.get(index-1).getProfessorId()));
 		
 	}
 	public void viewProfessorList() {
 		// TODO Auto-generated method stub
 		List<Professor> professorList = adminService.viewProfessorList();
+		int i=1;
 		for(Professor professor:professorList)
 		{
-			System.out.println("ID : "+professor.getProfessorId()+"     Name : "+professor.getName()+"    Department : "+professor.getDepartment());
+			System.out.println(i+". ID : "+professor.getProfessorId()+"     Name : "+professor.getName()+"    Department : "+professor.getDepartment());
+			i++;
 		}
 	}
 	public void generateGradeCard() {
 		// TODO Auto-generated method stub
-		System.out.println("Enter the student Id :");
+		System.out.print("Enter the student Id :");
 		String studentId=sc.next();
-		System.out.println("Enter the semester :");
+		System.out.print("Enter the semester :");
 		String semester=sc.next();
 		System.out.println(adminService.generateGradeCard(studentId, semester));
 	}

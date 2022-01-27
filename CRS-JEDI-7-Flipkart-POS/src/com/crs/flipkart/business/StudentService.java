@@ -70,9 +70,9 @@ public class StudentService implements StudentInterface {
 		return studentDaoService.isApproved(studentId);
 	}
 	
-	public boolean isRegistered(String studentId)
+	public boolean getFeeStatus(String studentId)
 	{
-		return studentDaoService.isRegistered(studentId);
+		return studentDaoService.getFeeStatus(studentId);
 	}
 	public boolean submittedCourses(String studentId)
 	{

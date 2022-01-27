@@ -22,6 +22,16 @@ public class AdminService implements AdminInterface {
 	{
 		return adminDaoService.viewCourses();
 	}
+	public boolean verifyCourse(String courseId)
+	{
+		List<Course> courseList=viewCourse();
+		for(Course course:courseList)
+		{
+			if(course.getCourseId().equals(courseId))
+				return true;
+		}
+		return false;
+	}
 	
 	public String addCourse(Course newCourse)
 	{

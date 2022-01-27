@@ -17,6 +17,7 @@ public interface AdminInterface {
 
 	public List<Course> viewCourse();
 	public String addCourse(Course newCourse);
+	public boolean verifyCourse(String courseId);
 	public String dropCourse(String courseId);
 	public List<Student> getPendingStudents();
 	public String approveStudent(Student newStudent);

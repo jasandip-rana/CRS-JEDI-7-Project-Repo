@@ -83,7 +83,7 @@ public class ProfessorService implements ProfessorInterface {
 		
 		for(String student: enrolledStudents)
 		{
-			if(studentId.equals(student.substring(0,10)))
+			if(studentId.equals(student.substring(0,9)))
 				return true;
 		}
 		

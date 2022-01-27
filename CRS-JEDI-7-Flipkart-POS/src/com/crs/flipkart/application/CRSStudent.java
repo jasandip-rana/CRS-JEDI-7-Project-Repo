@@ -20,15 +20,18 @@ public class CRSStudent {
 	SemesterRegistrationInterface semesterRegistrationService = new SemesterRegistrationService();
 	StudentInterface studentService = new StudentService();
 	static boolean submittedCourses;
-	static boolean isRegistered;
+	static boolean feeStatus;
 	
 	public void create_menu(String studentId) {
 		int choice;
 		do {
 
 				submittedCourses = studentService.submittedCourses(studentId);
-				isRegistered = studentService.isRegistered(studentId);
-				System.out.println("---------------Student Dashboard---------------");
+				feeStatus = studentService.getFeeStatus(studentId);
+				System.out.println("\n\n_____________________________________________________________________________");
+				System.out.println("");
+				System.out.println("                              STUDENT DASHBOARD                              ");
+				System.out.println("_____________________________________________________________________________\n");
 				System.out.println("1. View Courses");
 				System.out.println("2. Semester Registration");
 				System.out.println("3. View Registered Courses");
@@ -91,9 +94,13 @@ public class CRSStudent {
 			return;
 		}
 		int choice;
+		boolean submittedChoice=false;
 		do
 		{
-			System.out.println("---------------Student Registration Dashboard---------------");
+			System.out.println("\n\n_____________________________________________________________________________");
+			System.out.println("");
+			System.out.println("                      SEMESTER REGISTRATION DASHBOARD                        ");
+			System.out.println("_____________________________________________________________________________\n");
 			System.out.println("1. View Courses");
 			System.out.println("2. Add Course");
 			System.out.println("3. Drop Course");
@@ -117,13 +124,15 @@ public class CRSStudent {
 				viewOptedCourses(studentID);
 				break;
 			case 5:
-				submitChoice(studentID);
+				submittedChoice=submitChoice(studentID);
 				break;
 			case 6:
 				break;
 			default:
 				System.out.println("Invalid option");
 			}
+			if(submittedChoice)
+				break;
 		}while(choice!=6);
 	}
 	public void addCourse(String studentID)
@@ -152,10 +161,13 @@ public class CRSStudent {
 			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
 		}
 	}
-	public void submitChoice(String studentID)
+	public boolean submitChoice(String studentID)
 	{
 		String status = semesterRegistrationService.submitOptedCourses(studentID);
 		System.out.println(status);
+		if(!(status.equals("Please select some other courses as some courses are filled and dropped from the list")||status.equals("Please select atleast 4 courses")))
+			return true;
+		return false;
 	}
 	public void viewRegisteredCourses(String studentID)
 	{
@@ -170,33 +182,46 @@ public class CRSStudent {
 		{
 			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
 		}
-		if(!isRegistered)
+		if(!feeStatus)
 		{
 			System.out.println("Please pay your fees as soon as possible.");
 		}
 	}
 	public void viewGradeCard(String studentID)
 	{
-		if(!isRegistered)
+		if(!feeStatus)
 		{
-			System.out.println("You have not completed the registration process.");
+			System.out.println("You have not paid the fees yet.");
 			return;
 		}
 		GradeCard gradeCard = studentService.viewGradeCard(studentID);
-		System.out.println("_____________Grade Card_______________");
+		if(gradeCard==null)
+		{
+			System.out.println("Grade card not yet generated");
+			return;
+		}
+		System.out.println("\n\n___________________________________________________________________");
+		System.out.println("");
+		System.out.println("                            GRADE CARD                             ");          
+		System.out.println("___________________________________________________________________\n");
 		System.out.println("ID : "+gradeCard.getStudentEnrollmentId()+"\tSemester : "+gradeCard.getSemester());
 		for(Grade grade:gradeCard.getGradeList())
 		{
 			System.out.println(grade.getCourseId()+" - "+grade.getStudentGrade());
 		}
 		System.out.println("CGPA : "+gradeCard.getStudentCgpa());
-		System.out.println("________________________________________");
+		System.out.println("\n___________________________________________________________________");
 	}
 	public void makePayment(String studentID)
 	{
 		if(!submittedCourses)
 		{
 			System.out.println("You have not yet finalized the courses.");
+			return;
+		}
+		if(feeStatus)
+		{
+			System.out.println("You have paid the fees");
 			return;
 		}
 		String[] modeOfPayment = {"Netbanking","Card","Cheque","Cash"};

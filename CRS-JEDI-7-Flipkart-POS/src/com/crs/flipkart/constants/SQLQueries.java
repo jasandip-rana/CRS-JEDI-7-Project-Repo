@@ -18,23 +18,23 @@ public class SQLQueries {
 	public static final String FETCH_OPTED_COURSES = "Select course.courseId as courseId,courseName,courseFee,department,professorId,studentCount,optedNumber from course join optedcourses where course.courseId = optedcourses.courseId and studentId = ? order by optedcourses.optedNumber";
 	public static final String DROP_OPTED_COURSE = "delete from optedcourses where studentId=? AND courseId = ?";
 	public static final String SUBMIT_OPTED_COURSES = "UPDATE optedcourses SET isAlloted = 1 WHERE studentId = ?";
+	public static final String UPDATE_REGISTRATION_STATUS = "UPDATE semesterregistration set registrationStatus=1 where studentId=?";
 	public static final String INCREMENT_STUDENT_COUNT = "UPDATE course SET studentCount=? where courseId=?";
 	
 	public static final String ADD_COURSE = "insert into course(courseId, courseName, courseFee, department, professorId, studentCount) values (?, ?, ?, ?,null,0)";
 	
-	// Query condition removed --> studentCount = 0
 	public static final String DROP_COURSE = "delete from Course where courseId = ?";
 	
 	public static final String GET_PENDING_STUDENTS = "SELECT name,studentId from student where student.verificationStatus=0";
 	
 	public static final String APPROVE_ADDMISSION_REQUEST = "UPDATE student SET verificationStatus = 1 where studentId = ?";
+	public static final String INSERT_REGISTRATION = "INSERT INTO semesterregistration values (?,?,0)";
 	
-	// Query condition modified --> Join removed
-//	public static final String VIEW_PROFESSOR = "SELECT * FROM professor";
 	
 	public static final String LIST_PROFESSORS = "SELECT professorId, name, department FROM professor";
 	public static final String ADD_PROFESSOR = "insert into professor values (?,?,?,?,?,?)";
-	public static final String DROP_PROFESSOR = "delete from user where userId = ?;delete from professor where professorId=?";
+	public static final String REMOVE_USER = "delete from user where userId = ?";
+	public static final String DROP_PROFESSOR = "delete from professor where professorId=?";
 
 	public static final String GET_GRADES = "SELECT * from grade INNER JOIN course ON grade.courseId = course.courseId WHERE grade.studentId = ? AND grade.semester = ?";
 
@@ -49,13 +49,14 @@ public class SQLQueries {
 	public static final String VIEW_ENROLLED_STUDENTS = "SELECT student.studentId, student.name from student INNER JOIN optedCourses ON student.studentId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ?"; 
 	
 	public static final String ADD_PAYMENT = "insert into payment(studentId,referenceId,amount,paymentMode) values (?,?, ?, ?)";
+	public static final String UPDATE_PAYMENT_STATUS = "UPDATE student set feeStatus=1 where studentId=?";
 	
 	public static final String FETCH_GRADECARD = "SELECT * FROM gradecard WHERE studentId = ? ";
 	public static final String FETCH_GRADE= "SELECT * FROM grade WHERE studentId = ? ";
 	
 	public static final String VERIFY_EMAIL= "SELECT * FROM user where email = ?";
 	public static final String GET_STUDENT= "SELECT * FROM student where studentId= ?";
-	public static final String SUBMITTED_COURSES= "SELECT * FROM optedcourses where studentId= ?";
+	public static final String SUBMITTED_COURSES= "SELECT * FROM semesterregistration where studentId= ?";
 
 
 

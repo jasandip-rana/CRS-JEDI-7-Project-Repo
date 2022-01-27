@@ -26,14 +26,18 @@ public class CRSProfessor {
 		id=professorId;
 		int choice;
 		do {
-			
-				System.out.println("\n\n\n---------------Professor Dashboard---------------\n\n\n");
+
+				System.out.println("\n\n_____________________________________________________________________________");
+				System.out.println("");
+				System.out.println("                           PROFESSOR DASHBOARD                               ");
+				System.out.println("_____________________________________________________________________________\n");
 				System.out.println("1. View Available Courses");
 				System.out.println("2. View Selected Courses");
 				System.out.println("3. Select Courses");
 				System.out.println("4. Grade Student");
 				System.out.println("5. View Enrolled Students");
 				System.out.println("6. Logout");
+				System.out.println("Option : ");
 			
 				choice = sc.nextInt();
 			
