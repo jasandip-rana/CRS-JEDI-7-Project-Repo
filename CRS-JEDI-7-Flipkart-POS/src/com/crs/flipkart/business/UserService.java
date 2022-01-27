@@ -18,9 +18,9 @@ public class UserService implements UserInterface {
 		return userDaoService.login(emailId, password);
 	}
 
-	public String registerStudent(String name, String email, String password, String branch, String batch)
+	public String registerStudent(String name,String contactNumber, String email, String password, String branch, String batch)
 	{
-		return userDaoService.registerStudent(name, email, password, branch, batch);
+		return userDaoService.registerStudent(name,contactNumber, email, password, branch, batch);
 	}
 
 	public String updatePassword(String email, String oldPassword, String newPassword)

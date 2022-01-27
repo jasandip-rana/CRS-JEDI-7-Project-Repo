@@ -44,6 +44,7 @@ public class CRSApplication {
 				crsApplication.registerStudent();
 				break;
 			case 3: // update password
+				crsApplication.updatePassword();
 				break;
 			case 4: // exit
 				break;
@@ -70,17 +71,16 @@ public class CRSApplication {
 			CRSApplication.loggedIn=true;
 			switch (user.getRole()) {
 			
-			case 0:
+			case "Admin":
 				CRSAdmin admin=new CRSAdmin ();
 				admin.create_menu();
 				break;
-			case 1:
+			case "Professor":
 				String professorId=user.getUserId();
 				CRSProfessor professor = new CRSProfessor();
-					professor.create_menu(professorId);
-					break;
-
-			case 2:
+				professor.create_menu(professorId);
+				break;
+			case "Student":
 				String studentId = user.getUserId();
 				boolean isApproved = studentService.isApproved(studentId);
 				if (isApproved) {
@@ -103,11 +103,13 @@ public class CRSApplication {
 	public void registerStudent() {
 		Scanner sc = new Scanner(System.in);
 
-		String email, name, password, branchName, batch;
+		String email, name, password, branchName, batch, contactNumber;
 		// input all the student details
 		System.out.print("---------------Student Registration-------------\n");
 		System.out.print("Name:");
 		name = sc.nextLine();
+		System.out.print("Contact: ");
+		contactNumber = sc.nextLine();
 		System.out.print("Email:");
 		email = sc.next();
 		System.out.print("Password:");
@@ -118,9 +120,23 @@ public class CRSApplication {
 		System.out.print("Batch:");
 		batch = sc.nextLine();
 
-		System.out.println(userService.registerStudent(name,email, password, branchName, batch));
+		System.out.println(userService.registerStudent(name,contactNumber,email, password, branchName, batch));
 
 	}
-	
+	public void updatePassword()
+	{
+		Scanner sc = new Scanner(System.in);
+
+		System.out.print("-----------------Update Password------------------\n");
+
+		String email, oldPassword, newPassword;
+		System.out.print("Email:");
+		email = sc.next();
+		System.out.print("Old Password:");
+		oldPassword = sc.next();
+		System.out.print("New Password:");
+		newPassword = sc.next();
+		System.out.println(userService.updatePassword(email, oldPassword,newPassword));
+	}
 
 }

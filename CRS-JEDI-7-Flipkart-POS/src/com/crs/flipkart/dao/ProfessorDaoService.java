@@ -51,8 +51,15 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         	PreparedStatement psCheck = conn.prepareStatement(SQLQueries.CHECK_VACANT_COURSE);
         	psCheck.setString(1, courseId);
         	ResultSet rs = psCheck.executeQuery();
-        	if(rs.getString("professorId") != null)
+        	if(!rs.next())
+        	{	
         		return "Course already alloted.";
+        	}
+        	else
+        	{
+        		if(rs.getString("professorId") != null)
+					return "Course already alloted";
+        	}
         	
         	
             PreparedStatement ps = conn.prepareStatement(SQLQueries.SELECT_COURSE_FOR_PROF);

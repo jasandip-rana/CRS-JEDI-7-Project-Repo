@@ -69,4 +69,13 @@ public class StudentService implements StudentInterface {
 	{
 		return studentDaoService.isApproved(studentId);
 	}
+	
+	public boolean isRegistered(String studentId)
+	{
+		return studentDaoService.isRegistered(studentId);
+	}
+	public boolean submittedCourses(String studentId)
+	{
+		return studentDaoService.submittedCourses(studentId);
+	}
 }

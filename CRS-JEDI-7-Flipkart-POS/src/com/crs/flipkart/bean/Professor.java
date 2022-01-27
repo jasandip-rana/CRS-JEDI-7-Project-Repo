@@ -14,20 +14,15 @@ public class Professor extends User{
 	private String professorId;
 	private float salary;
 	private String department;
-	private Date doj;
+	private String doj;
 
 	/**
 	 * @return the professorId
 	 */
-	public Professor(String userId, String name, String email, String password, int role, 
-			 float salary, String department, Date doj) {
-        super(userId, name, email, password, role);
-        this.professorId=userId;
-        this.salary = salary;
-        this.department = department;
-        this.doj=doj;
-    }
-	
+	public Professor()
+	{
+		
+	}
 	public String getProfessorId() {
 		return professorId;
 	}
@@ -70,14 +65,14 @@ public class Professor extends User{
 	/**
 	 * @return the doj
 	 */
-	public Date getDoj() {
+	public String getDoj() {
 		return doj;
 	}
 
 	/**
 	 * @param doj the doj to set
 	 */
-	public void setDoj(Date doj) {
+	public void setDoj(String doj) {
 		this.doj = doj;
 	}
 

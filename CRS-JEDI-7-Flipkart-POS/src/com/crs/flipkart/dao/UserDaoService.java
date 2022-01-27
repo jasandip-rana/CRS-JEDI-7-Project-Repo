@@ -32,11 +32,8 @@ public class UserDaoService implements UserDaoInterface {
 			User user = null;
 			if (rs.next()) {
 				user = new User();
-				user.setUserId(rs.getString("userId"));
-				user.setName(rs.getString("name"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
-				user.setRole(rs.getInt("role"));
+				user.setUserId(rs.getString("user.userId"));
+				user.setRole(rs.getString("role"));
 			}
 			return user;
 
@@ -73,16 +70,12 @@ public class UserDaoService implements UserDaoInterface {
 			long id = 10000000 + rand.nextInt(10000000);
 			String userId = role.charAt(0) + Long.toString(id);
 			ps.setString(1, userId);
-			ps.setString(2, name);
-			ps.setString(3, email);
-			ps.setString(4, password);
-			if (role.equals("Professor")) {
-				ps.setInt(5, 1);
-			} else if (role.equals("Student")) {
-				ps.setInt(5, 2);
-			} else
-				ps.setInt(5, 0);
-
+			ps.setString(2, email);
+			ps.setString(3, password);
+			ps.executeUpdate();
+			ps = conn.prepareStatement(SQLQueries.ADD_USER_ROLE);
+			ps.setString(1,userId);
+			ps.setString(2, role);
 			ps.executeUpdate();
 			return userId;
 		} catch (SQLException e) {
@@ -92,7 +85,7 @@ public class UserDaoService implements UserDaoInterface {
 	}
 
 	@Override
-	public String registerStudent(String name, String email, String password, String branch, String batch) {
+	public String registerStudent(String name, String contactNumber, String email, String password, String branch, String batch) {
 		try {
 			String id = createUser(name, email, password, "Student");
 			if (id.equals("User not created") || id.equals("Email already in use")) {
@@ -100,10 +93,12 @@ public class UserDaoService implements UserDaoInterface {
 			} else {
 				PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_STUDENT);
 				ps.setString(1, id);
-				ps.setString(2, branch);
-				ps.setString(3, batch);
-				ps.setInt(4, 0);
-				ps.setInt(5, 0);
+				ps.setString(2, name);
+				ps.setString(3, contactNumber);
+				ps.setString(4, branch);
+				ps.setString(5, batch);
+				ps.setInt(6, 0);
+				ps.setInt(7, 0);
 				
 				System.out.println("ID = "+id);
 				

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import com.crs.flipkart.bean.*;
+import com.crs.flipkart.business.UserInterface;
 import com.crs.flipkart.constants.SQLQueries;
 import com.crs.flipkart.utils.dbUtil;
 
@@ -20,6 +21,7 @@ import com.crs.flipkart.utils.dbUtil;
 public class AdminDaoService implements AdminDaoInterface {
 	
 	public static Connection conn = dbUtil.getConnection();
+	UserDaoInterface userDaoService = new UserDaoService();
 	
 	@Override
 	public List<Course> viewCourses() {
@@ -76,11 +78,32 @@ public class AdminDaoService implements AdminDaoInterface {
         return "Course not dropped.";
     }
 	
+	public List<Student> getPendingStudents()
+	{
+		List<Student> studentList= new ArrayList<Student>();
+		 try {
+	            PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_PENDING_STUDENTS);
+	      
+	            ResultSet rs = ps.executeQuery(); 
+	            while(rs.next())
+	            {
+	            	Student student = new Student();
+	            	student.setStudentEnrollmentId(rs.getString("studentId"));
+	            	student.setName(rs.getString("name"));
+	            	studentList.add(student);
+	            }
+	            return studentList;
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+	        }
+		return null;
+	}
+	
 	@Override
 	public String approveStudent(Student newStudent) {
         try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.APPROVE_ADDMISSION_REQUEST);
-            ps.setString(1, newStudent.getUserId());
+            ps.setString(1, newStudent.getStudentEnrollmentId());
             if(ps.executeUpdate() == 1)
             	return "Student approved successfully.";
 
@@ -91,29 +114,63 @@ public class AdminDaoService implements AdminDaoInterface {
     }
 	
 	   @Override
-	public List<String> viewProfessorList() {
+	public List<Professor> viewProfessorList() {
 		   try {
-				List<String> professorList = new ArrayList<String>();
+				List<Professor> professorList = new ArrayList<Professor>();
 	            PreparedStatement ps = conn.prepareStatement(SQLQueries.LIST_PROFESSORS);
-	      
 	            ResultSet rs = ps.executeQuery(); 
 	            while(rs.next())
 	            {
-	            	professorList.add(rs.getString("professor.professorID") + " " + rs.getString("user.name")+" "+rs.getString("user.email")
-	            	+" "+rs.getString("professor.department"));
+	            	//professorList.add(rs.getString("professor.professorID") + " " + rs.getString("user.name")+" "+rs.getString("user.email")
+	            	//+" "+rs.getString("professor.department"));
+	            	Professor professor = new Professor();
+	            	professor.setProfessorId(rs.getString("professorId"));
+	            	professor.setName(rs.getString("name"));
+	            	professor.setDepartment(rs.getString("department"));
+	            	professorList.add(professor);
 	            }
 	            
-	            int rowAffected = ps.executeUpdate();
-	            if (rowAffected == 1)
-	            	return professorList;
+	            return professorList;
 	            
 	        } catch (SQLException e) {
 	        	e.printStackTrace();
 	        }
 	        return null;
 		}
-     
 
+	   public String addProfessor(Professor newProfessor) {
+	        try {
+	    		String id = userDaoService.createUser(newProfessor.getName(), newProfessor.getEmail(), newProfessor.getPassword(), "Professor");
+	            PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_PROFESSOR);
+	            ps.setString(1, id);
+	            ps.setString(2, newProfessor.getName());
+	            ps.setString(3, newProfessor.getContactNumber());
+	            ps.setFloat(4, newProfessor.getSalary());
+	            ps.setString(5, newProfessor.getDepartment());
+	            ps.setString(6, newProfessor.getDoj());
+	            
+
+	            if(ps.executeUpdate() == 1)
+	            	return "Professor added successfully. Professor id : "+id;
+
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+	        }
+	        return "Professor not added.";
+	    }
+	   public String dropProfessor(String professorId) {
+	        try {
+	            PreparedStatement ps = conn.prepareStatement(SQLQueries.DROP_PROFESSOR);
+	            ps.setString(1, professorId);
+	            ps.setString(2, professorId);
+	            if(ps.executeUpdate()!=0)
+	            	return "Professor dropped successfully.";
+
+	        } catch (SQLException e) {
+	        	e.printStackTrace();
+	        }
+	        return "Professor not dropped.";
+	    }
 
 	   @Override
 	public String generateGradeCard(String studentId, String semester)
@@ -127,6 +184,8 @@ public class AdminDaoService implements AdminDaoInterface {
 	                countCourses++;
 	                total += rs.getFloat("grade.gpa");
 	            }
+	            if(countCourses!=4)
+	            	return "GradeCard generation unsuccessfull.";
 	            total = total/(float)countCourses;
 	            
 	            PreparedStatement psUpdate = conn.prepareStatement(SQLQueries.GENERATE_GRADES);

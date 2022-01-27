@@ -8,10 +8,11 @@ package com.crs.flipkart.constants;
  *
  */
 public class SQLQueries {
-	public static final String ADD_USER_QUERY = "insert into user(userId,name,email,password,role) values (?,?, ?, ?, ?)";
-	public static final String ADD_STUDENT = "insert into student(studentId,branch,batch,verificationStatus,feeStatus) values (?, ?, ?, ?, ?)";
+	public static final String ADD_USER_QUERY = "insert into user(userId,email,password) values (?,?, ?)";
+	public static final String ADD_USER_ROLE = "insert into role(userId,role) values (?,?)";
+	public static final String ADD_STUDENT = "insert into student(studentId,name,contactNumber,branch,batch,verificationStatus,feeStatus) values (?,?,?, ?, ?, ?, ?)";
 	public static final String FETCH_COURSES = "select * from course";
-	public static final String GET_USER_EMAIL_PASSWORD = "SELECT * FROM user WHERE email = ? AND password = ?";
+	public static final String GET_USER_EMAIL_PASSWORD = "SELECT * FROM user JOIN role on user.userId=role.userId WHERE email = ? AND password = ?";
 	public static final String UPDATE_PASSWORD = "UPDATE user SET password = ? WHERE email = ? and password = ?";
 	public static final String ADD_OPTED_COURSE = "insert into optedcourses (studentId,isAlloted,courseId) values ( ?, ?, ?)";
 	public static final String FETCH_OPTED_COURSES = "Select course.courseId as courseId,courseName,courseFee,department,professorId,studentCount,optedNumber from course join optedcourses where course.courseId = optedcourses.courseId and studentId = ? order by optedcourses.optedNumber";
@@ -19,18 +20,21 @@ public class SQLQueries {
 	public static final String SUBMIT_OPTED_COURSES = "UPDATE optedcourses SET isAlloted = 1 WHERE studentId = ?";
 	public static final String INCREMENT_STUDENT_COUNT = "UPDATE course SET studentCount=? where courseId=?";
 	
-	public static final String ADD_COURSE = "insert into course(courseId, courseName, courseFee, department) values (?, ?, ?, ?)";
+	public static final String ADD_COURSE = "insert into course(courseId, courseName, courseFee, department, professorId, studentCount) values (?, ?, ?, ?,null,0)";
 	
 	// Query condition removed --> studentCount = 0
-	public static final String DROP_COURSE = "delete from Course where id = ?";
+	public static final String DROP_COURSE = "delete from Course where courseId = ?";
 	
-	public static final String APPROVE_ADDMISSION_REQUEST = "UPDATE student SET isApproved = 1 where id = ?";
+	public static final String GET_PENDING_STUDENTS = "SELECT name,studentId from student where student.verificationStatus=0";
+	
+	public static final String APPROVE_ADDMISSION_REQUEST = "UPDATE student SET verificationStatus = 1 where studentId = ?";
 	
 	// Query condition modified --> Join removed
 //	public static final String VIEW_PROFESSOR = "SELECT * FROM professor";
 	
-	public static final String LIST_PROFESSORS = "SELECT professor.id, user.name, user.email, professor.department FROM professor INNER JOIN user ON professor.userId = user.id";
-
+	public static final String LIST_PROFESSORS = "SELECT professorId, name, department FROM professor";
+	public static final String ADD_PROFESSOR = "insert into professor values (?,?,?,?,?,?)";
+	public static final String DROP_PROFESSOR = "delete from user where userId = ?;delete from professor where professorId=?";
 
 	public static final String GET_GRADES = "SELECT * from grade INNER JOIN course ON grade.courseId = course.courseId WHERE grade.studentId = ? AND grade.semester = ?";
 
@@ -50,7 +54,8 @@ public class SQLQueries {
 	public static final String FETCH_GRADE= "SELECT * FROM grade WHERE studentId = ? ";
 	
 	public static final String VERIFY_EMAIL= "SELECT * FROM user where email = ?";
-	public static final String IS_APPROVED= "SELECT * FROM student where studentId= ?";
+	public static final String GET_STUDENT= "SELECT * FROM student where studentId= ?";
+	public static final String SUBMITTED_COURSES= "SELECT * FROM optedcourses where studentId= ?";
 
 
 

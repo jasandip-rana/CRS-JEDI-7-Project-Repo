@@ -22,7 +22,6 @@ public class CRSProfessor {
 	public void create_menu(String professorId)
 	{
 		Scanner sc = new Scanner(System.in);
-//		is_registered = true;//getRegistrationStatus(studentId);
 		boolean loggedIn = true;
 		id=professorId;
 		int choice;

@@ -17,16 +17,17 @@ import com.crs.flipkart.business.*;
 public class CRSStudent {
 
 	Scanner sc = new Scanner(System.in);
-	private boolean is_registered;
 	SemesterRegistrationInterface semesterRegistrationService = new SemesterRegistrationService();
 	StudentInterface studentService = new StudentService();
+	static boolean submittedCourses;
+	static boolean isRegistered;
 	
 	public void create_menu(String studentId) {
-		
-		is_registered = true;//getRegistrationStatus(studentId);
 		int choice;
 		do {
-			
+
+				submittedCourses = studentService.submittedCourses(studentId);
+				isRegistered = studentService.isRegistered(studentId);
 				System.out.println("---------------Student Dashboard---------------");
 				System.out.println("1. View Courses");
 				System.out.println("2. Semester Registration");
@@ -34,6 +35,7 @@ public class CRSStudent {
 				System.out.println("4. View grade card");
 				System.out.println("5. Make Payment");
 				System.out.println("6. Logout");
+				System.out.print("Option : ");
 			
 				choice = sc.nextInt();
 			
@@ -83,6 +85,11 @@ public class CRSStudent {
 	}
 	public void registerSem(String studentID)
 	{
+		if(submittedCourses)
+		{
+			System.out.println("You have already finalized your courses.");
+			return;
+		}
 		int choice;
 		do
 		{
@@ -152,15 +159,29 @@ public class CRSStudent {
 	}
 	public void viewRegisteredCourses(String studentID)
 	{
+		if(!submittedCourses)
+		{
+			System.out.println("You have not yet finalized the courses.");
+			return;
+		}
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = studentService.viewRegisteredCourses(studentID);
 		for(Course course: courseList)
 		{
 			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
 		}
+		if(!isRegistered)
+		{
+			System.out.println("Please pay your fees as soon as possible.");
+		}
 	}
 	public void viewGradeCard(String studentID)
 	{
+		if(!isRegistered)
+		{
+			System.out.println("You have not completed the registration process.");
+			return;
+		}
 		GradeCard gradeCard = studentService.viewGradeCard(studentID);
 		System.out.println("_____________Grade Card_______________");
 		System.out.println("ID : "+gradeCard.getStudentEnrollmentId()+"\tSemester : "+gradeCard.getSemester());
@@ -173,6 +194,11 @@ public class CRSStudent {
 	}
 	public void makePayment(String studentID)
 	{
+		if(!submittedCourses)
+		{
+			System.out.println("You have not yet finalized the courses.");
+			return;
+		}
 		String[] modeOfPayment = {"Netbanking","Card","Cheque","Cash"};
 		
 		float totalFee = studentService.getTotalFee(studentID);

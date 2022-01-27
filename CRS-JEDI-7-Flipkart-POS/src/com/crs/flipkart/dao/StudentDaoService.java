@@ -96,7 +96,7 @@ public class StudentDaoService implements StudentDaoInterface {
 	{
 		try {
 
-			PreparedStatement ps = conn.prepareStatement(SQLQueries.IS_APPROVED);
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_STUDENT);
 
 			ps.setString(1, studentId);
 			ResultSet rs = ps.executeQuery();
@@ -110,6 +110,50 @@ public class StudentDaoService implements StudentDaoInterface {
 			
 			return false;
 		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean isRegistered(String studentId)
+	{
+		try {
+
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_STUDENT);
+
+			ps.setString(1, studentId);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+			{
+				if(rs.getInt("feeStatus")==1)
+					return true;
+				
+			}
+			
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public boolean submittedCourses(String studentId)
+	{
+		try {
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.SUBMITTED_COURSES);
+
+			ps.setString(1, studentId);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+			{
+				if(rs.getInt("isAlloted")==1)
+					return true;
+				
+			}
+			return false;
+		}
+		catch(SQLException e) {
 			e.printStackTrace();
 			return false;
 		}

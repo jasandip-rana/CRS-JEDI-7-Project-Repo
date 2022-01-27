@@ -20,4 +20,6 @@ public interface StudentInterface {
 	public float getTotalFee(String studentID);
 	public String makePayment(String studentID, String modeOfPayment,float totalFee);
 	public boolean isApproved(String studentId);
+	public boolean isRegistered(String studentId);
+	public boolean submittedCourses(String studentId);
 }

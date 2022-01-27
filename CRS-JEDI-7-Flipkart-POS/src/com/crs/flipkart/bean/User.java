@@ -13,7 +13,8 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
-	private int role;
+	private String contactNumber;
+	private String role;
 
 	
 	/**
@@ -23,14 +24,7 @@ public class User {
 	{
 		
 	}
-	public User(String userId, String name,String email, String password, int role)
-	{
-		this.userId=userId;
-		this.name=name;
-		this.email=email;
-		this.password=password;
-		this.role=role;
-	}
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -45,14 +39,14 @@ public class User {
 	/**
 	 * @return the role
 	 */
-	public int getRole() {
+	public String getRole() {
 		return role;
 	}
 
 	/**
 	 * @param role the role to set
 	 */
-	public void setRole(int role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
@@ -96,6 +90,20 @@ public class User {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	/**
+	 * @return the contactNumber
+	 */
+	public String getContactNumber() {
+		return contactNumber;
+	}
+
+	/**
+	 * @param contactNumber the contactNumber to set
+	 */
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
 	}
 
 }

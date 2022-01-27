@@ -9,7 +9,10 @@ public interface StudentDaoInterface {
 
 	String makePayment(Payment payment);
 	
-	 boolean isApproved(String studentId);
+	boolean isApproved(String studentId);
+	
+	boolean isRegistered(String studentId);
 
+	boolean submittedCourses(String studentId);
 
 }
