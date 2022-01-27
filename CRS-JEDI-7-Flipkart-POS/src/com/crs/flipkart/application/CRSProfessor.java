@@ -12,13 +12,17 @@ import com.crs.flipkart.business.ProfessorService;
 
 /**
  * @author jasan
- *
+ *Professor Application
  */
 public class CRSProfessor {
 
 	ProfessorInterface professorService=new ProfessorService();
 	Scanner sc=new Scanner(System.in);
 	public static String id;
+	
+	/**
+     * method for displaying the professor dashboard and selecting the available choices.
+     */
 	public void create_menu(String professorId)
 	{
 		Scanner sc = new Scanner(System.in);
@@ -76,7 +80,10 @@ public class CRSProfessor {
 			
 		}while(CRSApplication.loggedIn);
 	}
-
+    
+	 /**
+     * method for viewing available courses.
+     */
 	public void viewAvailableCourses() {
 		// TODO Auto-generated method stub
 		List<Course>courseList=professorService.viewCourses();
@@ -88,6 +95,9 @@ public class CRSProfessor {
 			
 	}
 	
+	 /**
+     * method for selected courses.
+     */
 	public void viewSelectedCourses(String professorId) {
 		List<Course>courseList=professorService.viewSelectedCourses(professorId);
 		for(Course course: courseList)
@@ -95,6 +105,10 @@ public class CRSProfessor {
 				System.out.println(course.getCourseId() +" : "+ course.getCourseName());
 		}
 	}
+	
+	/**
+     * method for selecting a course
+     */
 	public void selectCourses() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter course Id for selecting course: ");
@@ -102,7 +116,10 @@ public class CRSProfessor {
 		System.out.println(professorService.indicateCourse(id, courseId));
 		
 	}
-
+	
+	/**
+    * method for grading a student
+    */
 	public void gradeStudent() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter the semester :");
@@ -126,7 +143,10 @@ public class CRSProfessor {
 	   System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
 		
 	}
-
+     
+	/**
+     * method for viewing enrolled students in a course
+     */
 	public void viewEnrolledStudents() {
 		// TODO Auto-generated method stub
 		System.out.println("Enter course ID :");

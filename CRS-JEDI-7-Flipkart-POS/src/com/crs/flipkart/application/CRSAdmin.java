@@ -8,12 +8,16 @@ import com.crs.flipkart.business.*;
 
 /**
  * @author jasan
- *
+ *Admin Application
  */
 public class CRSAdmin {
 
 	AdminInterface adminService = new AdminService();
 	Scanner sc=new Scanner(System.in);
+	
+	/**
+     * method for displaying admin dashboard and selecting the available choices.
+     */
 	public void create_menu()
 	{
 		Scanner sc = new Scanner(System.in);
@@ -86,6 +90,10 @@ public class CRSAdmin {
 			
 		}while(CRSApplication.loggedIn);
 	}
+	
+	 /**
+     * method for viewing the courses
+     */
 	public void viewCourses() {
 		// TODO Auto-generated method stub
 		List<Course>courseList=adminService.viewCourse();
@@ -96,6 +104,10 @@ public class CRSAdmin {
 		}
 		
 	}
+	
+	/**
+     * method for adding a course
+     */
 	public void addCourse() {
 		// TODO Auto-generated method stub
 		Course course=new Course();
@@ -117,12 +129,20 @@ public class CRSAdmin {
 		course.setStudentCount(0);
 		System.out.println(adminService.addCourse(course));
 	}
+	
+	/**
+     * method for removing a course
+     */
 	public void dropCourse() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter the course Id :");
 		String courseId=sc.nextLine();
 		System.out.println(adminService.dropCourse(courseId));
 	}
+	
+	 /**
+     * method for approving student registration
+     */
 	public void approveStudent() {
 		// TODO Auto-generated method stub
 		System.out.println("List of students to be approved : ");
@@ -140,6 +160,10 @@ public class CRSAdmin {
 			System.out.println(adminService.approveStudent(studentList.get(studentIndex-1)));
 		}
 	}
+	
+	 /**
+     * method for adding a professor
+     */
 	public void addProfessor() {
 		// TODO Auto-generated method stub
 		Professor newProfessor = new Professor();
@@ -162,6 +186,9 @@ public class CRSAdmin {
 		System.out.println(adminService.addProfessor(newProfessor));
 	}
 	
+	 /**
+     * method for removing a professor
+     */
 	public void dropProfessor() {
 		// TODO Auto-generated method stub
 		viewProfessorList();
@@ -171,6 +198,10 @@ public class CRSAdmin {
 		System.out.println(adminService.dropProfessor(professorList.get(index-1).getProfessorId()));
 		
 	}
+	
+	 /**
+     * method for viewing all professors
+     */
 	public void viewProfessorList() {
 		// TODO Auto-generated method stub
 		List<Professor> professorList = adminService.viewProfessorList();
@@ -181,6 +212,10 @@ public class CRSAdmin {
 			i++;
 		}
 	}
+	
+	 /**
+     * method for generating the student grade card
+     */
 	public void generateGradeCard() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter the student Id :");
