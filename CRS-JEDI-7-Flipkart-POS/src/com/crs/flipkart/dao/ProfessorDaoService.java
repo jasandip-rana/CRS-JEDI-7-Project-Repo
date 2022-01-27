@@ -16,12 +16,17 @@ import com.crs.flipkart.utils.dbUtil;
 
 /**
  * @author Shubham
- *
+ * Implementation of Professor DAO services utilized by business services
  */
 public class ProfessorDaoService implements ProfessorDaoInterface {
 
 	public static Connection conn = dbUtil.getConnection();
 	
+	/**
+	 * Method to obtain a list of courses using SQL commands
+	 * 
+	 * @return returns the courses present in the database
+	 */
 	@Override
 	public List<Course> viewCourses() {
         try {
@@ -45,6 +50,13 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         }
     }
 	
+	/**
+	 * Method to check if the course is already alloted or not, and then to allot the course using SQL commands
+	 * 
+	 * @param professorId unique Id to represent a professor
+	 * @param courseId unique Id to represent a course
+	 * @return returns a string that indicates if the course is successfully alloted in the database
+	 */
 	@Override
 	public String selectCourse(String professorId, String courseId) {
         try {
@@ -76,6 +88,15 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         return "Course selection failed.";
     }
 
+	/**
+	 * Method for adding the grades of a student for a course in a semester using SQL commands
+	 * 
+	 * @param studentId unique Id to represent a student
+	 * @param courseId unique Id to represent a course
+	 * @param grade grade point provided for the student enrolled in the course taught by the professor
+	 * @param semester indicates the semester
+	 * @return returns a string indicating the if the grade was successfully added in the database
+	 */
 	@Override
 	public String addGrade(String studentId, String courseId, float grade, String semester) {
         try {
@@ -94,6 +115,12 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         return "Student grading failed.";
     }
 	
+	/**
+	 * Method for retrieving the students enrolled in a course using SQL commands
+	 * 
+	 * @param courseId unique Id to represent a course
+	 * @return returns a list of strings indicating the students enrolled in a course from the database
+	 */
 	@Override
 	public List<String> viewEnrolledStudents(String courseId)
 	{
