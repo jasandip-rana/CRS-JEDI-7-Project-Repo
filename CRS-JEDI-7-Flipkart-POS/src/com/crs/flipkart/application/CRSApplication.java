@@ -92,15 +92,17 @@ public class CRSApplication {
 			
 			CRSApplication.loggedIn=true;
 			
-			System.out.println("User successfully logged in at " + formattedDate );
 			
 			switch (user.getRole()) {
 			
 			case "Admin":
+
+				System.out.println("\n\nUser successfully logged in at " + formattedDate );
 				CRSAdmin admin=new CRSAdmin ();
 				admin.create_menu();
 				break;
 			case "Professor":
+				System.out.println("\n\nUser successfully logged in at " + formattedDate );
 				String professorId=user.getUserId();
 				CRSProfessor professor = new CRSProfessor();
 				professor.create_menu(professorId);
@@ -109,6 +111,7 @@ public class CRSApplication {
 				String studentId = user.getUserId();
 				boolean isApproved = studentService.isApproved(studentId);
 				if (isApproved) {
+					System.out.println("\n\nUser successfully logged in at " + formattedDate );
 					CRSStudent student = new CRSStudent();
 					student.create_menu(studentId);
 

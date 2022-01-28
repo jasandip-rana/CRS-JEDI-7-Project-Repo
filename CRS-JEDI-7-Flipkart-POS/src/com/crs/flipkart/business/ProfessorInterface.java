@@ -57,7 +57,7 @@ public interface ProfessorInterface {
 	 * @param courseId unique Id to represent a course
 	 * @return returns a list of all the students enrolled in the course
 	 */
-	public List<String> viewEnrolledStudents(String courseId);
+	public List<Student> viewEnrolledStudents(String courseId);
 	
 	/**
 	 * Method to check whether the course is taught by the professor or not

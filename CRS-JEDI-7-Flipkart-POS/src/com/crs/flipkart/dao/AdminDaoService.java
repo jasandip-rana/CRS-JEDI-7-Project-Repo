@@ -53,7 +53,7 @@ public class AdminDaoService implements AdminDaoInterface {
             }
             return courses;
         } catch (SQLException e) {
-        	logger.debug("Error: " + e.getMessage());
+        	logger.debug("Error: No course found");
         	return null;
         }
     }
@@ -77,7 +77,7 @@ public class AdminDaoService implements AdminDaoInterface {
             	return "Course added successfully.";
 
         } catch (SQLException e) {
-        	logger.debug("Error: " + e.getMessage());
+        	logger.debug("Error: Database error");
         }
         return "Course not added.";
     }
@@ -125,7 +125,7 @@ public class AdminDaoService implements AdminDaoInterface {
 	            }
 	            return studentList;
 	        } catch (SQLException e) {
-	        	logger.debug("Error: " + e.getMessage());
+	        	logger.debug("Error: Database failure");
 	        }
 		return null;
 	}
@@ -238,6 +238,32 @@ public class AdminDaoService implements AdminDaoInterface {
 	        	logger.error("Error: " + e.getMessage());
 	        }
 	    }
+	   
+	   /**
+	     * method for getting all students whose grade card is not yet generated
+	     *
+	     * @return List of students with pending grade card generation
+	     */
+		public List<Student> getPendingGradeStudents()
+		{
+			List<Student> studentList= new ArrayList<Student>();
+			 try {
+		            PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_PENDING_GRADE_STUDENTS);
+	
+		            ResultSet rs = ps.executeQuery(); 
+		            while(rs.next())
+		            {
+		            	Student student = new Student();
+		            	student.setStudentEnrollmentId(rs.getString("studentId"));
+		            	student.setName(rs.getString("name"));
+		            	studentList.add(student);
+		            }
+		            return studentList;
+		        } catch (SQLException e) {
+		        	logger.debug("Error: " + e.getMessage());
+		        }
+			return null;
+		}
 
 	   /**
 	     * method for generating grade card and calculating aggregate CGPA of student

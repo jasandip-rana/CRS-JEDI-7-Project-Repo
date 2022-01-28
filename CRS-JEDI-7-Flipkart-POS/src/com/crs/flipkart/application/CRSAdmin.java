@@ -100,11 +100,7 @@ public class CRSAdmin {
 		// TODO Auto-generated method stub
 		
 		List<Course>courseList=adminService.viewCourse();
-		for(Course course: courseList)
-		{
-			
-				System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
-		}
+		courseList.forEach(CRSStudent::printCourse);
 		
 	}
 	
@@ -243,11 +239,18 @@ public class CRSAdmin {
      */
 	public void generateGradeCard() {
 		// TODO Auto-generated method stub
-		System.out.print("Enter the student Id :");
-		String studentId=sc.next();
-		System.out.print("Enter the semester :");
+		List<Student> studentList = adminService.getPendingGradeStudents();
+		int i=1;
+		for(Student student:studentList)
+		{
+			System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"     Name : "+student.getName());
+			i++;
+		}
+		System.out.print("Enter the student index : ");
+		int index=sc.nextInt();
+		String studentId=studentList.get(index-1).getStudentEnrollmentId();
+		System.out.print("Enter the semester : ");
 		String semester=sc.next();
-		
 		try {			
 			adminService.generateGradeCard(studentId, semester);
 			System.out.println("GradeCard generated successfully.");

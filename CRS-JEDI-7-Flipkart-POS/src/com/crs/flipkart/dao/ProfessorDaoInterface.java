@@ -2,7 +2,7 @@ package com.crs.flipkart.dao;
 
 import java.util.List;
 
-import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.*;
 import com.crs.flipkart.exceptions.CourseNotAvailableException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 
@@ -45,6 +45,6 @@ public interface ProfessorDaoInterface {
 	 * @param courseId unique Id to represent a course
 	 * @return returns a list of strings indicating the students enrolled in a course from the database
 	 */
-	List<String> viewEnrolledStudents(String courseId);
+	List<Student> viewEnrolledStudents(String courseId);
 
 }

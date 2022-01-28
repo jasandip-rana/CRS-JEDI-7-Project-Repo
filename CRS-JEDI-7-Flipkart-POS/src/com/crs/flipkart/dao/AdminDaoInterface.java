@@ -73,6 +73,13 @@ public interface AdminDaoInterface {
 	public void dropProfessor(String professorId) throws UserNotFoundException;
 
 	/**
+     * method for getting all students whose grade card is not yet generated
+     *
+     * @return List of students with pending grade card generation
+     */
+	public List<Student> getPendingGradeStudents();
+	
+	/**
      * method for generating grade card and calculating aggregate CGPA of student
      *
      * @param studentId			unique Id to represent a student

@@ -34,6 +34,6 @@ public class GradeNotAllotedException extends Exception{
 	 
 	 public String getMessage() 
 	 {
-			return "Student with id: " + studentId + "has not been alloted all the grades";
+			return "Student with id: " + studentId + " has not been alloted all the grades";
 	 }
 }

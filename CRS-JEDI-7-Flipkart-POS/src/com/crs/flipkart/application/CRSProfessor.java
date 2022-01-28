@@ -6,7 +6,7 @@ package com.crs.flipkart.application;
 import java.util.List;
 import java.util.Scanner;
 
-import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.ProfessorInterface;
 import com.crs.flipkart.business.ProfessorService;
 import com.crs.flipkart.exceptions.CourseNotAvailableException;
@@ -82,6 +82,15 @@ public class CRSProfessor {
 			
 		}while(CRSApplication.loggedIn);
 	}
+	
+	/**
+	 * Method to print a course
+	 * @param course : which is to be printed
+	 */
+	public static void printCourse(Course course)
+	{
+		System.out.println(course.getCourseId() +" : "+ course.getCourseName());
+	}
     
 	 /**
      * method for viewing available courses.
@@ -89,11 +98,7 @@ public class CRSProfessor {
 	public void viewAvailableCourses() {
 		// TODO Auto-generated method stub
 		List<Course>courseList=professorService.viewCourses();
-		for(Course course: courseList)
-		{
-			
-				System.out.println(course.getCourseId() +" : "+ course.getCourseName());
-		}
+		courseList.forEach(CRSProfessor::printCourse);
 			
 	}
 	
@@ -102,10 +107,7 @@ public class CRSProfessor {
      */
 	public void viewSelectedCourses(String professorId) {
 		List<Course>courseList=professorService.viewSelectedCourses(professorId);
-		for(Course course: courseList)
-		{
-				System.out.println(course.getCourseId() +" : "+ course.getCourseName());
-		}
+		courseList.forEach(CRSProfessor::printCourse);
 	}
 	
 	/**
@@ -128,6 +130,7 @@ public class CRSProfessor {
 		
 	}
 	
+	
 	/**
     * method for grading a student
     */
@@ -142,8 +145,17 @@ public class CRSProfessor {
 			System.out.println("You don't teach this course");
 			return;
 		}
-		System.out.print("Enter the student ID :");
-		String studentId=sc.next();
+		List<Student> enrolledStudents = professorService.viewEnrolledStudents(courseId);
+		int i=1;
+		for(Student student:enrolledStudents)
+		{
+			System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"	Name : "+student.getName());
+			i++;
+		}
+		System.out.print("Enter the student index :");
+		int index=sc.nextInt();
+		sc.nextLine();
+		String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
 		if(!professorService.validateStudent(courseId, studentId))
 		{
 			System.out.println("Student not enrolled in this course");
@@ -162,14 +174,21 @@ public class CRSProfessor {
 		// TODO Auto-generated method stub
 		System.out.println("Enter course ID :");
 		String courseId=sc.next();
-		List<String>enrolledStudents=professorService.viewEnrolledStudents(courseId);
+		if(!professorService.validateCourse(courseId, id))
+		{
+			System.out.println("You don't teach this course");
+			return;
+		}
+		List<Student>enrolledStudents=professorService.viewEnrolledStudents(courseId);
 		if(enrolledStudents.size() == 0) {
 			System.out.println("No such course or Student found");
 			return;
 		}
-		for(String student:enrolledStudents)
-			System.out.println(student);
-		
+		int i=1;
+		for(Student student:enrolledStudents)
+		{
+			System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"	Name : "+student.getName());
+		}
 	}
 	
 	

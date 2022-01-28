@@ -89,6 +89,14 @@ public interface AdminInterface {
 	public void dropProfessor(String professorId) throws UserNotFoundException;
 	
 	/**
+     * method for getting all pending Grade card request
+     *
+     * @return List of Students whose Grade Card has not been generated
+     */
+	public List<Student> getPendingGradeStudents();
+
+	
+	/**
      * method for generating grade card and calculating aggregate CGPA of student
      *
      * @param studentId			unique Id to represent a student

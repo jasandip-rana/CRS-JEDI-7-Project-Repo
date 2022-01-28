@@ -57,6 +57,7 @@ public class SQLQueries {
 	public static final String VERIFY_EMAIL= "SELECT * FROM user where email = ?";
 	public static final String GET_STUDENT= "SELECT * FROM student where studentId= ?";
 	public static final String SUBMITTED_COURSES= "SELECT * FROM semesterregistration where studentId= ?";
+	public static final String GET_PENDING_GRADE_STUDENTS= "SELECT * FROM student where studentId not in (SELECT studentId from gradecard)";
 
 
 

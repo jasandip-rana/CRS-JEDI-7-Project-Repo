@@ -82,18 +82,25 @@ public class CRSStudent {
 	}
 	
 	/**
+	 * Method to print a course
+	 * @param course : which is to be printed
+	 */
+	public static void printCourse(Course course)
+	{
+		if(course.getProfessorId()==null)
+			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
+		else
+			System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
+	}
+	
+	/**
 	 * Method to display all the courses from the catalog
 	 */
 	public void viewCourses()
 	{
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewCourses();
-		
-		for(Course course: courseList)
-		{
-			if(course.getStudentCount()<10)
-				System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
-		}
+		courseList.forEach(CRSStudent::printCourse);
 	}
 	
 	/**
@@ -193,10 +200,7 @@ public class CRSStudent {
 	{
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewOptedCourses(studentID);
-		for(Course course: courseList)
-		{
-			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
-		}
+		courseList.forEach(CRSStudent::printCourse);
 	}
 	
 	/**
@@ -229,10 +233,7 @@ public class CRSStudent {
 		}
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = studentService.viewRegisteredCourses(studentID);
-		for(Course course: courseList)
-		{
-			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
-		}
+		courseList.forEach(CRSStudent::printCourse);
 		if(!feeStatus)
 		{
 			System.out.println("Please pay your fees as soon as possible.");
@@ -258,7 +259,7 @@ public class CRSStudent {
 			System.out.println("");
 			System.out.println("                            GRADE CARD                             ");          
 			System.out.println("___________________________________________________________________\n");
-			System.out.println("ID : "+gradeCard.getStudentEnrollmentId()+"\tSemester : "+gradeCard.getSemester());
+			System.out.println("ID : "+studentID+"\tSemester : "+gradeCard.getSemester());
 			for(Grade grade:gradeCard.getGradeList())
 			{
 				System.out.println(grade.getCourseId()+" - "+grade.getStudentGrade());

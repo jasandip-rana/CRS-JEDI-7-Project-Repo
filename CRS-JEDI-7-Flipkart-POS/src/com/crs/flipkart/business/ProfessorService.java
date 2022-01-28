@@ -103,7 +103,7 @@ public class ProfessorService implements ProfessorInterface {
 	 * @param courseId unique Id to represent a course
 	 * @return returns a list of all the students enrolled in the course
 	 */
-	public List<String> viewEnrolledStudents(String courseId)
+	public List<Student> viewEnrolledStudents(String courseId)
 	{
 		return professorService.viewEnrolledStudents(courseId);
 	}
@@ -137,11 +137,11 @@ public class ProfessorService implements ProfessorInterface {
 	 */
 	public boolean validateStudent(String courseId, String studentId) 
 	{
-		List<String> enrolledStudents = professorService.viewEnrolledStudents(courseId);
+		List<Student> enrolledStudents = professorService.viewEnrolledStudents(courseId);
 		
-		for(String student: enrolledStudents)
+		for(Student student: enrolledStudents)
 		{
-			if(studentId.equals(student.substring(0,9)))
+			if(studentId.equals(student.getStudentEnrollmentId()))
 				return true;
 		}
 		

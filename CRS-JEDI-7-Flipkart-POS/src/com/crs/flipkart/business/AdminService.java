@@ -117,6 +117,16 @@ public class AdminService implements AdminInterface {
 	}
 	
 	/**
+     * method for getting all pending Grade card requests
+     *
+     * @return List of Students whose Grade Card has not been generated
+     */
+	public List<Student> getPendingGradeStudents()
+	{
+		return adminDaoService.getPendingGradeStudents();
+	}
+	
+	/**
      * method for generating grade card and calculating aggregate CGPA of student
      *
      * @param studentId			unique Id to represent a student

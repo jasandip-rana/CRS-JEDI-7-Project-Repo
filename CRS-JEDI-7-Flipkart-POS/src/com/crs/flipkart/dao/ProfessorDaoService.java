@@ -124,10 +124,10 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
 	 * @return returns a list of strings indicating the students enrolled in a course from the database
 	 */
 	@Override
-	public List<String> viewEnrolledStudents(String courseId)
+	public List<Student> viewEnrolledStudents(String courseId)
 	{
 		try {
-			List<String> enrolledStudents = new ArrayList<String>();
+			List<Student> enrolledStudents = new ArrayList<Student>();
             PreparedStatement ps = conn.prepareStatement(SQLQueries.VIEW_ENROLLED_STUDENTS);
             ps.setString(1, courseId);
             ResultSet rs = ps.executeQuery(); 
@@ -136,7 +136,10 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
             }
             while(rs.next())
             {
-            	enrolledStudents.add(rs.getString("student.studentId") + " " + rs.getString("student.name"));
+            	Student student = new Student();
+            	student.setName(rs.getString("student.name"));
+            	student.setStudentEnrollmentId(rs.getString("student.studentId"));
+            	enrolledStudents.add(student);
             }
             
             return enrolledStudents;
