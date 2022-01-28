@@ -4,6 +4,9 @@ import java.util.*;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.dao.*;
+import com.crs.flipkart.exceptions.CourseAlreadyOptedException;
+import com.crs.flipkart.exceptions.CourseCountExceededException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 public class SemesterRegistrationService implements SemesterRegistrationInterface{
 
@@ -47,21 +50,22 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
      * @return returns String which represents the status of adding course 
      */
 	@Override
-	public String addCourse(String studentId, String courseId) {
+	public void addCourse(String studentId, String courseId) throws CourseNotFoundException, CourseCountExceededException, CourseAlreadyOptedException{
 		// TODO Auto-generated method stub
-		if(!verifyCourse(courseId))
-		{
-			return "No such course exists";
-		}
 		List<Course> optedCourses = semesterRegistrationDaoService.viewOptedCourses(studentId);
 		if (optedCourses.size() >= 6)
-			return "4 primary and 2 secondary courses have already been opted.";
+			throw new CourseCountExceededException(6);
 		for (Course optedCourse : optedCourses) {
 			if (optedCourse.getCourseId().equals(courseId)) {
-				return "Course already opted";
+				throw new CourseAlreadyOptedException(courseId);
 			}
 		}
-		return semesterRegistrationDaoService.addCourse(studentId, courseId);
+		try {			
+			semesterRegistrationDaoService.addCourse(studentId, courseId);
+		}
+		catch(CourseNotFoundException e) {
+			throw e;
+		}
 	}
 	
 	/**

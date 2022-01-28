@@ -3,6 +3,7 @@ package com.crs.flipkart.dao;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 public interface SemesterRegistrationDaoInterface {
 
@@ -13,7 +14,7 @@ public interface SemesterRegistrationDaoInterface {
 	 * @param course if of the course to be added
 	 * @return returns a string that indicates if the course is successfully opted
 	 */
-	String addCourse(String studentId, String courseId);
+	void addCourse(String studentId, String courseId) throws CourseNotFoundException;
 
 	/**
 	 * Method to return the opted course list for a given student

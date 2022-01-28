@@ -3,6 +3,8 @@ package com.crs.flipkart.dao;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.exceptions.CourseNotAvailableException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 /**
  * 
@@ -24,7 +26,7 @@ public interface ProfessorDaoInterface {
 	 * @param courseId unique Id to represent a course
 	 * @return returns a string that indicates if the course is successfully alloted in the database
 	 */
-	String selectCourse(String professorId, String courseId);
+	void selectCourse(String professorId, String courseId) throws CourseNotFoundException, CourseNotAvailableException;
 
 	/**
 	 * Method for adding the grades of a student for a course in a semester using SQL commands

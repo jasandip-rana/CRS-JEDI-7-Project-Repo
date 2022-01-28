@@ -3,6 +3,9 @@ package com.crs.flipkart.business;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.exceptions.CourseAlreadyOptedException;
+import com.crs.flipkart.exceptions.CourseCountExceededException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 public interface SemesterRegistrationInterface {
 
@@ -30,7 +33,7 @@ public interface SemesterRegistrationInterface {
      * @param courseId  unique Id to represent a course
      * @return returns String which represents the status of adding course 
      */
-	String addCourse(String studentId, String courseId);
+	void addCourse(String studentId, String courseId) throws CourseNotFoundException, CourseCountExceededException, CourseAlreadyOptedException;
 	
 	/**
      * method for dropping course for the student 

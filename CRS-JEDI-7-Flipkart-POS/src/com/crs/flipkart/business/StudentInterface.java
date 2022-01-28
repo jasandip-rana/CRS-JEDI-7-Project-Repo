@@ -8,6 +8,7 @@ import java.util.List;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.GradeCard;
 import com.crs.flipkart.bean.Payment;
+import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
 
 /**
  * @author jasan
@@ -29,7 +30,7 @@ public interface StudentInterface {
      * @param studentId  unique Id to represent a student
      * @return grade card of the student 
      */
-	public GradeCard viewGradeCard(String studentID);
+	public GradeCard viewGradeCard(String studentID) throws GradeCardNotGeneratedException;
 	
 	 /**
      * method for getting the total fee of all the courses opted by student

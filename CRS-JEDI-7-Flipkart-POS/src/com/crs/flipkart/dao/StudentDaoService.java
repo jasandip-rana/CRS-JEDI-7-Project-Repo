@@ -10,11 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Grade;
 import com.crs.flipkart.bean.GradeCard;
 import com.crs.flipkart.bean.Payment;
 import com.crs.flipkart.constants.SQLQueries;
+import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
 import com.crs.flipkart.utils.dbUtil;
 
 /**
@@ -23,6 +26,7 @@ import com.crs.flipkart.utils.dbUtil;
  */
 public class StudentDaoService implements StudentDaoInterface {
 
+	private static Logger logger = Logger.getLogger(StudentDaoService.class);
 	public static Connection conn = dbUtil.getConnection();
 	
 	
@@ -34,7 +38,7 @@ public class StudentDaoService implements StudentDaoInterface {
 	 * @return returns a grade card for the student
 	 */
 	@Override
-	public GradeCard viewGradeCard(String studentId) {
+	public GradeCard viewGradeCard(String studentId) throws GradeCardNotGeneratedException{
 		GradeCard gradeCard = new GradeCard();
 		try {
 
@@ -46,7 +50,7 @@ public class StudentDaoService implements StudentDaoInterface {
 
 			ResultSet rs1 = ps1.executeQuery();
 			if (!rs1.next()) {
-				return null;
+				throw new GradeCardNotGeneratedException(studentId);
 			}
 			gradeCard.setStudentCgpa(rs1.getFloat("gpa"));
 			gradeCard.setSemester(1);
@@ -71,7 +75,7 @@ public class StudentDaoService implements StudentDaoInterface {
 
 			return gradeCard;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return null;
 		}
 
@@ -108,7 +112,7 @@ public class StudentDaoService implements StudentDaoInterface {
 			}
 			return "Payment Successfull. Reference Id : " + payment.getReferenceId();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return "Payment unsuccessfull";
 		}
 
@@ -120,7 +124,7 @@ public class StudentDaoService implements StudentDaoInterface {
 	 * @param student id of the student
 	 * @return returns a boolean indication approval status
 	 */
-	public boolean isApproved(String studentId)
+	public boolean isApproved(String studentId) 
 	{
 		try {
 
@@ -138,7 +142,7 @@ public class StudentDaoService implements StudentDaoInterface {
 			
 			return false;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return false;
 		}
 	}
@@ -167,7 +171,7 @@ public class StudentDaoService implements StudentDaoInterface {
 			
 			return false;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return false;
 		}
 	}
@@ -196,7 +200,7 @@ public class StudentDaoService implements StudentDaoInterface {
 			return false;
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return false;
 		}
 	}

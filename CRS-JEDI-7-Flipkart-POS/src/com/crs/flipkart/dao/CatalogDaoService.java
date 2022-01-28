@@ -5,6 +5,9 @@ package com.crs.flipkart.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import java.sql.*;
 
 import com.crs.flipkart.bean.Course;
@@ -17,6 +20,7 @@ import com.crs.flipkart.constants.*;
  */
 public class CatalogDaoService implements CatalogDaoInterface {
 
+	private static Logger logger = Logger.getLogger(CatalogDaoService.class);
 	public static Connection conn = dbUtil.getConnection();
 	
 	/**
@@ -41,7 +45,7 @@ public class CatalogDaoService implements CatalogDaoInterface {
 				courseList.add(course);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 		}
 		return courseList;
 	}

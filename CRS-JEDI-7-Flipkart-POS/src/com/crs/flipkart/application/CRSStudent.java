@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
+import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
 
 /**
  * @author Shubham
@@ -87,6 +88,7 @@ public class CRSStudent {
 	{
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewCourses();
+		
 		for(Course course: courseList)
 		{
 			if(course.getStudentCount()<10)
@@ -159,8 +161,13 @@ public class CRSStudent {
 		System.out.print("Enter the course id : ");
 		sc.nextLine();
 		String courseID = sc.nextLine();
-		String status=semesterRegistrationService.addCourse(studentID,courseID);
-		System.out.println(status);
+		try {			
+			semesterRegistrationService.addCourse(studentID,courseID);
+			System.out.println("Course successfully opted!");
+		}
+		catch(Exception e) {
+			System.out.println("Error : " + e.getMessage());
+		}
 	}
 	
 	/**
@@ -244,23 +251,24 @@ public class CRSStudent {
 			System.out.println("You have not paid the fees yet.");
 			return;
 		}
-		GradeCard gradeCard = studentService.viewGradeCard(studentID);
-		if(gradeCard==null)
-		{
-			System.out.println("Grade card not yet generated");
-			return;
+		try {			
+			GradeCard gradeCard = studentService.viewGradeCard(studentID);
+			
+			System.out.println("\n\n___________________________________________________________________");
+			System.out.println("");
+			System.out.println("                            GRADE CARD                             ");          
+			System.out.println("___________________________________________________________________\n");
+			System.out.println("ID : "+gradeCard.getStudentEnrollmentId()+"\tSemester : "+gradeCard.getSemester());
+			for(Grade grade:gradeCard.getGradeList())
+			{
+				System.out.println(grade.getCourseId()+" - "+grade.getStudentGrade());
+			}
+			System.out.println("CGPA : "+gradeCard.getStudentCgpa());
+			System.out.println("\n___________________________________________________________________");
 		}
-		System.out.println("\n\n___________________________________________________________________");
-		System.out.println("");
-		System.out.println("                            GRADE CARD                             ");          
-		System.out.println("___________________________________________________________________\n");
-		System.out.println("ID : "+gradeCard.getStudentEnrollmentId()+"\tSemester : "+gradeCard.getSemester());
-		for(Grade grade:gradeCard.getGradeList())
-		{
-			System.out.println(grade.getCourseId()+" - "+grade.getStudentGrade());
+		catch(GradeCardNotGeneratedException e) {
+			System.out.println("Error : " + e.getMessage());
 		}
-		System.out.println("CGPA : "+gradeCard.getStudentCgpa());
-		System.out.println("\n___________________________________________________________________");
 	}
 	
 	

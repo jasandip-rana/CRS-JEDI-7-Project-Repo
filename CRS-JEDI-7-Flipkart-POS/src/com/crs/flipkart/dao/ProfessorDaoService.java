@@ -10,8 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.constants.SQLQueries;
+import com.crs.flipkart.exceptions.CourseNotAvailableException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.utils.dbUtil;
 
 /**
@@ -20,6 +24,7 @@ import com.crs.flipkart.utils.dbUtil;
  */
 public class ProfessorDaoService implements ProfessorDaoInterface {
 
+	private static Logger logger = Logger.getLogger(ProfessorDaoService.class);
 	public static Connection conn = dbUtil.getConnection();
 	
 	/**
@@ -45,7 +50,7 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
             }
             return courses;
         } catch (SQLException e) {
-        	e.printStackTrace();
+        	logger.debug("Error: " + e.getMessage());
         	return null;
         }
     }
@@ -58,19 +63,17 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
 	 * @return returns a string that indicates if the course is successfully alloted in the database
 	 */
 	@Override
-	public String selectCourse(String professorId, String courseId) {
+	public void selectCourse(String professorId, String courseId) throws CourseNotFoundException, CourseNotAvailableException{
         try {
         	PreparedStatement psCheck = conn.prepareStatement(SQLQueries.CHECK_VACANT_COURSE);
         	psCheck.setString(1, courseId);
         	ResultSet rs = psCheck.executeQuery();
         	if(!rs.next())
         	{	
-        		return "Course already alloted.";
+        		throw new CourseNotFoundException(courseId);
         	}
-        	else
-        	{
-        		if(rs.getString("professorId") != null)
-					return "Course already alloted";
+        	else if(rs.getString("professorId") != null) {
+        		throw new CourseNotAvailableException(courseId);
         	}
         	
         	
@@ -79,13 +82,12 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
             ps.setString(2, courseId);
             
             if(ps.executeUpdate() == 1)
-            	return "Course successfully alloted.";
+            	return;
             
  
         } catch (SQLException e) {
-        	e.printStackTrace();
+        	logger.debug("Error: " + e.getMessage());
         }
-        return "Course selection failed.";
     }
 
 	/**
@@ -110,7 +112,7 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
             	return "Student successfully graded.";
             
         } catch (SQLException e) {
-        	e.printStackTrace();
+        	logger.debug("Error: " + e.getMessage());
         }
         return "Student grading failed.";
     }
@@ -140,7 +142,7 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
             return enrolledStudents;
             
         } catch (SQLException e) {
-        	e.printStackTrace();
+        	logger.debug("Error: " + e.getMessage());
         }
         return null;
 	}

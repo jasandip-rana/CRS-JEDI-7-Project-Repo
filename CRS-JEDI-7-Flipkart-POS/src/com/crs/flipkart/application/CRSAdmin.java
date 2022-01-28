@@ -3,15 +3,17 @@ package com.crs.flipkart.application;
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
+import com.crs.flipkart.exceptions.*;
 
 /**
  * @author jasan
  *Admin Application
  */
 public class CRSAdmin {
-
 	AdminInterface adminService = new AdminService();
 	Scanner sc=new Scanner(System.in);
 	
@@ -96,6 +98,7 @@ public class CRSAdmin {
      */
 	public void viewCourses() {
 		// TODO Auto-generated method stub
+		
 		List<Course>courseList=adminService.viewCourse();
 		for(Course course: courseList)
 		{
@@ -113,21 +116,25 @@ public class CRSAdmin {
 		Course course=new Course();
 		System.out.print("Enter the course Id :");
 		course.setCourseId(sc.nextLine());
-		if(adminService.verifyCourse(course.getCourseId()))
-		{
-			System.out.println("Course already exists");
-			return;
+		
+		try {
+			adminService.verifyCourse(course.getCourseId());
+			System.out.print("Enter the course name :");
+			course.setCourseName(sc.nextLine());
+			System.out.print("Enter the course fee :");
+			course.setCourseFee(sc.nextFloat());
+			sc.nextLine();
+			System.out.print("Enter the department name :");
+			course.setDepartmentName(sc.nextLine());
+			course.setProfessorId(null);
+			course.setStudentCount(0);
+			System.out.println(adminService.addCourse(course));
 		}
-		System.out.print("Enter the course name :");
-		course.setCourseName(sc.nextLine());
-		System.out.print("Enter the course fee :");
-		course.setCourseFee(sc.nextFloat());
-		sc.nextLine();
-		System.out.print("Enter the department name :");
-		course.setDepartmentName(sc.nextLine());
-		course.setProfessorId(null);
-		course.setStudentCount(0);
-		System.out.println(adminService.addCourse(course));
+		catch (CourseAlreadyExistsException e){
+			System.out.println("Error: " + e.getMessage());
+		}
+		
+		
 	}
 	
 	/**
@@ -137,7 +144,14 @@ public class CRSAdmin {
 		// TODO Auto-generated method stub
 		System.out.print("Enter the course Id :");
 		String courseId=sc.nextLine();
-		System.out.println(adminService.dropCourse(courseId));
+		try {
+			adminService.dropCourse(courseId);
+			System.out.println("Course successfully dropped");
+		}
+		catch(CourseNotFoundException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		
 	}
 	
 	 /**
@@ -183,7 +197,13 @@ public class CRSAdmin {
 		newProfessor.setDoj(sc.nextLine());
 		System.out.print("Enter the contact number:");
 		newProfessor.setContactNumber(sc.nextLine());
-		System.out.println(adminService.addProfessor(newProfessor));
+		
+		try {
+			System.out.println(adminService.addProfessor(newProfessor));
+		}
+		catch(EmailAlreadyInUseException e) {
+			System.out.println("Error : " + e.getMessage());
+		}
 	}
 	
 	 /**
@@ -195,8 +215,13 @@ public class CRSAdmin {
 		List<Professor> professorList = adminService.viewProfessorList();
 		System.out.print("Enter the serial number :");
 		int index=sc.nextInt();
-		System.out.println(adminService.dropProfessor(professorList.get(index-1).getProfessorId()));
-		
+		try {
+			adminService.dropProfessor(professorList.get(index-1).getProfessorId());
+			System.out.println("Professor dropped successfully");
+		}
+		catch(UserNotFoundException e) {
+			System.out.println("Error : " + e.getMessage());
+		}
 	}
 	
 	 /**
@@ -222,7 +247,14 @@ public class CRSAdmin {
 		String studentId=sc.next();
 		System.out.print("Enter the semester :");
 		String semester=sc.next();
-		System.out.println(adminService.generateGradeCard(studentId, semester));
+		
+		try {			
+			adminService.generateGradeCard(studentId, semester);
+			System.out.println("GradeCard generated successfully.");
+		}
+		catch(GradeNotAllotedException e) {
+			System.out.println("Error  : " + e.getMessage() );
+		}
 	}
 	
 	

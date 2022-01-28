@@ -1,10 +1,13 @@
 package com.crs.flipkart.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.exceptions.*;
+
 
 public interface AdminDaoInterface {
 	
@@ -13,7 +16,7 @@ public interface AdminDaoInterface {
      *
      * @return returns List of all courses in the database
      */
-	List<Course> viewCourses();
+	public List<Course> viewCourses();
 
 	/**
      * method for adding course into database
@@ -29,7 +32,7 @@ public interface AdminDaoInterface {
      * @param courseId unique Id to represent a course
      * @return returns status of dropCourse operation as a string
      */
-	String dropCourse(String courseId);
+	public void dropCourse(String courseId) throws CourseNotFoundException;
 	
 	/**
      * method for getting all Pending admission requests
@@ -59,7 +62,7 @@ public interface AdminDaoInterface {
      * @param newProfessor	Professor object containing details of the professor
      * @return returns status of addProfessor operation as a string
      */
-	String addProfessor(Professor newProfessor);
+	String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException;
 	
 	/**
      * method for removing professor from the database
@@ -67,7 +70,7 @@ public interface AdminDaoInterface {
      * @param professorId		unique Id to represent a course
      * @return returns status of dropProfessor operation as a string
      */
-	String dropProfessor(String professorId);
+	public void dropProfessor(String professorId) throws UserNotFoundException;
 
 	/**
      * method for generating grade card and calculating aggregate CGPA of student
@@ -76,6 +79,6 @@ public interface AdminDaoInterface {
      * @param semester			semester for which gradeCard is to be generated
      * @return returns status of generateGradeCard operation as a string
      */
-	String generateGradeCard(String studentId, String semester);
+	public void generateGradeCard(String studentId, String semester) throws GradeNotAllotedException;
 
 }

@@ -9,8 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.User;
 import com.crs.flipkart.constants.SQLQueries;
+import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
+import com.crs.flipkart.exceptions.UserNotFoundException;
 import com.crs.flipkart.utils.dbUtil;
 
 /**
@@ -19,6 +23,7 @@ import com.crs.flipkart.utils.dbUtil;
  */
 public class UserDaoService implements UserDaoInterface {
 
+	private static Logger logger = Logger.getLogger(UserDaoService.class);
 	public static Connection conn = dbUtil.getConnection();
 
 	/**
@@ -29,7 +34,7 @@ public class UserDaoService implements UserDaoInterface {
 	 * @return returns a User containing user info id found in database or returns null
 	 */
 	@Override
-	public User login(String emailId, String password) {
+	public User login(String emailId, String password) throws UserNotFoundException{
 		try {
 			PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_USER_EMAIL_PASSWORD);
 			ps.setString(1, emailId);
@@ -41,11 +46,14 @@ public class UserDaoService implements UserDaoInterface {
 				user = new User();
 				user.setUserId(rs.getString("user.userId"));
 				user.setRole(rs.getString("role"));
+				return user;
 			}
-			return user;
+			else {
+				throw new UserNotFoundException(emailId);
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return null;
 		}
 	}
@@ -60,7 +68,7 @@ public class UserDaoService implements UserDaoInterface {
 	 * @return returns a string that indicates if the user is successfully entered in the database
 	 */
 	@Override
-	public String createUser(String name, String email, String password, String role) {
+	public String createUser(String name, String email, String password, String role) throws EmailAlreadyInUseException{
 
 		try {
 
@@ -71,11 +79,11 @@ public class UserDaoService implements UserDaoInterface {
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
-				return "Email already in use";
+				throw new EmailAlreadyInUseException(email);
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return "User not created";
 		}
 
@@ -95,7 +103,7 @@ public class UserDaoService implements UserDaoInterface {
 			ps.executeUpdate();
 			return userId;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return "User not created";
 		}
 	}
@@ -113,10 +121,10 @@ public class UserDaoService implements UserDaoInterface {
 	 * @return returns a string that indicates if the student is successfully entered in the database
 	 */
 	@Override
-	public String registerStudent(String name, String contactNumber, String email, String password, String branch, String batch) {
+	public String registerStudent(String name, String contactNumber, String email, String password, String branch, String batch) throws EmailAlreadyInUseException{
 		try {
 			String id = createUser(name, email, password, "Student");
-			if (id.equals("User not created") || id.equals("Email already in use")) {
+			if (id.equals("User not created")) {
 				return id;
 			} else {
 				PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_STUDENT);
@@ -133,8 +141,12 @@ public class UserDaoService implements UserDaoInterface {
 				if (ps.executeUpdate() == 1)
 					return "Account created";
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+		catch(EmailAlreadyInUseException e) {
+			throw e;
+		}
+		catch (Exception e) {
+			logger.debug("Error: " + e.getMessage());
 			return "User not created";
 		}
 		return "User not created";
@@ -150,7 +162,7 @@ public class UserDaoService implements UserDaoInterface {
 	 * @return returns a string that indicates if the password is changed successfully
 	 */
 	@Override
-	public String updatePassword(String email, String oldPassword, String newPassword) {
+	public String updatePassword(String email, String oldPassword, String newPassword) throws UserNotFoundException{
 		try {
 			PreparedStatement ps = conn.prepareStatement(SQLQueries.UPDATE_PASSWORD);
 			ps.setString(2, email);
@@ -159,10 +171,11 @@ public class UserDaoService implements UserDaoInterface {
 			int rowAffected = ps.executeUpdate();
 			if (rowAffected == 1)
 				return "Password Updated";
+			else 
+				throw new UserNotFoundException(email);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return "Password not updated";
 		}
-		return "Password not updated";
 	}
 }

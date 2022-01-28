@@ -12,6 +12,7 @@ import com.crs.flipkart.bean.Payment;
 import com.crs.flipkart.dao.*;
 import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoService;
+import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
 
 /**
  * @author Shubham
@@ -44,10 +45,14 @@ public class StudentService implements StudentInterface {
      * @return grade card of the student 
      */
 
-	public GradeCard viewGradeCard(String studentID) {
+	public GradeCard viewGradeCard(String studentID) throws GradeCardNotGeneratedException{
 		// TODO Auto-generated method stub
-
-		return studentDaoService.viewGradeCard(studentID);
+		try {
+			return studentDaoService.viewGradeCard(studentID);			
+		}
+		catch(GradeCardNotGeneratedException e) {
+			throw e;
+		}
 	}
 
 

@@ -3,13 +3,17 @@
  */
 package com.crs.flipkart.application;
 
-import java.util.Scanner;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.StudentInterface;
 import com.crs.flipkart.business.StudentService;
 import com.crs.flipkart.business.UserInterface;
 import com.crs.flipkart.business.UserService;
+import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
+import com.crs.flipkart.exceptions.UserNotFoundException;
 
 /**
  * @author Shubham
@@ -76,11 +80,20 @@ public class CRSApplication {
 		email = sc.next();
 		System.out.print("Password:");
 		password = sc.next();
-		User user = userService.login(email, password);
-		
-
-		if (user!=null) {
+		try {			
+			
+			 DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");  
+			 
+			 LocalDateTime myDateObj = LocalDateTime.now();
+			   
+			 String formattedDate = myDateObj.format(myFormatObj);  
+			
+			User user = userService.login(email, password);
+			
 			CRSApplication.loggedIn=true;
+			
+			System.out.println("User successfully logged in at " + formattedDate );
+			
 			switch (user.getRole()) {
 			
 			case "Admin":
@@ -105,10 +118,10 @@ public class CRSApplication {
 				}
 				break;
 			}
-
-		} else {
-			System.out.print("Invalid Credentials!");
 		}
+		catch(UserNotFoundException e) {
+			System.out.println("Invalid Credentials!");
+		}			
 
 	}
 	
@@ -138,7 +151,12 @@ public class CRSApplication {
 		System.out.print("Batch:");
 		batch = sc.nextLine();
 
-		System.out.println(userService.registerStudent(name,contactNumber,email, password, branchName, batch));
+		try {
+			System.out.println(userService.registerStudent(name,contactNumber,email, password, branchName, batch));
+		}
+		catch(EmailAlreadyInUseException e) {
+			System.out.println("Error : " + e.getMessage());
+		}
 
 	}
 	
@@ -160,7 +178,13 @@ public class CRSApplication {
 		oldPassword = sc.next();
 		System.out.print("New Password:");
 		newPassword = sc.next();
-		System.out.println(userService.updatePassword(email, oldPassword,newPassword));
+		
+		try {			
+			System.out.println(userService.updatePassword(email, oldPassword,newPassword));
+		}
+		catch(UserNotFoundException e) {
+			System.out.println("Email or password is incorrect!");
+		}
 	}
 
 }

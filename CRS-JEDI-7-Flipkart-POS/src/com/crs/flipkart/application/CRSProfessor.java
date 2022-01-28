@@ -9,6 +9,8 @@ import java.util.Scanner;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.business.ProfessorInterface;
 import com.crs.flipkart.business.ProfessorService;
+import com.crs.flipkart.exceptions.CourseNotAvailableException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 /**
  * @author jasan
@@ -113,7 +115,16 @@ public class CRSProfessor {
 		// TODO Auto-generated method stub
 		System.out.print("Enter course Id for selecting course: ");
 		String courseId=sc.next();
-		System.out.println(professorService.indicateCourse(id, courseId));
+		try {			
+			professorService.indicateCourse(id, courseId);
+			System.out.println("Course selected successfully");
+		}
+		catch(CourseNotFoundException e) {
+			System.out.println("Error : " + e.getMessage());
+		}
+		catch(CourseNotAvailableException e) {
+			System.out.println("Error : " + e.getMessage());
+		}
 		
 	}
 	

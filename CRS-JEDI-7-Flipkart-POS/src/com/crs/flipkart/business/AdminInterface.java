@@ -3,11 +3,15 @@
  */
 package com.crs.flipkart.business;
 
+import com.crs.flipkart.exceptions.*;
+
+import java.sql.SQLException;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.exceptions.*;
 
 /**
  * @author jasan
@@ -36,7 +40,7 @@ public interface AdminInterface {
      * @param courseId unique Id to represent a course
      * @return returns true if the course is present in the catalog
      */
-	public boolean verifyCourse(String courseId);
+	public void verifyCourse (String courseId) throws CourseAlreadyExistsException;
 	
 	/**
      * method for removing course from the catalog
@@ -44,7 +48,7 @@ public interface AdminInterface {
      * @param courseId unique Id to represent a course
      * @return returns status of dropCourse operation as a string
      */
-	public String dropCourse(String courseId);
+	public void dropCourse(String courseId) throws CourseNotFoundException;
 	
 	/**
      * method for getting all admission requests
@@ -74,7 +78,7 @@ public interface AdminInterface {
      * @param newProfessor	Professor object containing details of the professor
      * @return returns status of addProfessor operation as a string
      */
-	public String addProfessor(Professor newProfessor);
+	public String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException;
 	
 	/**
      * method for removing professor from the system
@@ -82,7 +86,7 @@ public interface AdminInterface {
      * @param professorId		unique Id to represent a course
      * @return returns status of dropProfessor operation as a string
      */
-	public String dropProfessor(String professorId);
+	public void dropProfessor(String professorId) throws UserNotFoundException;
 	
 	/**
      * method for generating grade card and calculating aggregate CGPA of student
@@ -91,6 +95,6 @@ public interface AdminInterface {
      * @param semester			semester for which gradeCard is to be generated
      * @return returns status of generateGradeCard operation as a string
      */
-	public String generateGradeCard(String studentId,String semester);
+	public void generateGradeCard(String studentId, String semester) throws GradeNotAllotedException;
 	
 }

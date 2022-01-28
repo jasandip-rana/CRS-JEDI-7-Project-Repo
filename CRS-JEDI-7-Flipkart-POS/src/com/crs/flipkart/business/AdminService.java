@@ -3,12 +3,19 @@
  */
 package com.crs.flipkart.business;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.dao.*;
+import com.crs.flipkart.exceptions.CourseAlreadyExistsException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
+import com.crs.flipkart.exceptions.GradeNotAllotedException;
+import com.crs.flipkart.exceptions.UserNotFoundException;
 
 /**
  * @author Shubham
@@ -34,16 +41,18 @@ public class AdminService implements AdminInterface {
      *
      * @param courseId unique Id to represent a course
      * @return returns true if the course is present in the catalog
+	 * @throws SQLException 
      */
-	public boolean verifyCourse(String courseId)
+	public void verifyCourse (String courseId) throws CourseAlreadyExistsException
 	{
-		List<Course> courseList=viewCourse();
-		for(Course course:courseList)
-		{
-			if(course.getCourseId().equals(courseId))
-				return true;
-		}
-		return false;
+
+			List<Course> courseList = viewCourse();
+			for(Course course:courseList)
+			{
+				if(course.getCourseId().equals(courseId))
+					throw new CourseAlreadyExistsException(courseId);
+			}
+		
 	}
 	
 	/**
@@ -63,9 +72,14 @@ public class AdminService implements AdminInterface {
      * @param courseId unique Id to represent a course
      * @return returns status of dropCourse operation as a string
      */
-	public String dropCourse(String courseId)
+	public void dropCourse(String courseId) throws CourseNotFoundException
 	{
-		return adminDaoService.dropCourse(courseId);
+		try {
+			adminDaoService.dropCourse(courseId);
+		}
+		catch(CourseNotFoundException e) {
+			throw e;
+		}
 	}
 	
 	/**
@@ -74,9 +88,15 @@ public class AdminService implements AdminInterface {
      * @param newProfessor	Professor object containing details of the professor
      * @return returns status of addProfessor operation as a string
      */
-	public String addProfessor(Professor newProfessor)
+	public String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException
 	{
-		return adminDaoService.addProfessor(newProfessor);
+		try {
+			return adminDaoService.addProfessor(newProfessor);
+		}
+		catch(EmailAlreadyInUseException e) {
+			throw e;
+		}
+		
 	}
 	
 	/**
@@ -85,9 +105,15 @@ public class AdminService implements AdminInterface {
      * @param professorId		unique Id to represent a course
      * @return returns status of dropProfessor operation as a string
      */
-	public String dropProfessor(String professorId)
+	public  void dropProfessor(String professorId) throws UserNotFoundException
 	{
-		return adminDaoService.dropProfessor(professorId);
+		try {
+			adminDaoService.dropProfessor(professorId);
+		}
+		
+		catch(UserNotFoundException e) {
+			throw e;
+		}
 	}
 	
 	/**
@@ -97,9 +123,14 @@ public class AdminService implements AdminInterface {
      * @param semester			semester for which gradeCard is to be generated
      * @return returns status of generateGradeCard operation as a string
      */
-	public String generateGradeCard(String studentId, String semester)
+	public void generateGradeCard(String studentId, String semester) throws GradeNotAllotedException
 	{
-		return adminDaoService.generateGradeCard(studentId, semester);
+		try {			
+			adminDaoService.generateGradeCard(studentId, semester);
+		}
+		catch(GradeNotAllotedException e) {
+			throw e;
+		}
 	}
 	
 	/**

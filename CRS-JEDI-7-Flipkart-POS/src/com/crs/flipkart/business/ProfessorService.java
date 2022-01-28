@@ -12,6 +12,8 @@ import com.crs.flipkart.dao.CatalogDaoInterface;
 import com.crs.flipkart.dao.CatalogDaoService;
 import com.crs.flipkart.dao.ProfessorDaoInterface;
 import com.crs.flipkart.dao.ProfessorDaoService;
+import com.crs.flipkart.exceptions.CourseNotAvailableException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 /**
  * @author Shubham
@@ -67,9 +69,18 @@ public class ProfessorService implements ProfessorInterface {
 	 * @param courseId unique Id to represent a course
 	 * @return returns a string indicating if a course is successfully alloted
 	 */
-	public String indicateCourse(String professorId,String courseId)
+	public void indicateCourse(String professorId,String courseId) throws CourseNotFoundException, CourseNotAvailableException
 	{
-		return professorService.selectCourse(professorId, courseId);
+		try {			
+			professorService.selectCourse(professorId, courseId);
+		}
+		catch(CourseNotFoundException e) {
+			throw e;
+		}
+		catch(CourseNotAvailableException e) {
+			throw e;
+		}
+		
 	}
 	
 	/**

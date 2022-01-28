@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.exceptions.CourseNotAvailableException;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 /**
  * @author jasan
@@ -36,7 +38,7 @@ public interface ProfessorInterface {
 	 * @param courseId unique Id to represent a course
 	 * @return returns a string indicating if a course is successfully alloted
 	 */
-	public String indicateCourse(String professorId,String courseId);
+	public void indicateCourse(String professorId,String courseId) throws CourseNotFoundException, CourseNotAvailableException;
 	
 	/**
 	 * Method for the professor to grade a student for a particular course

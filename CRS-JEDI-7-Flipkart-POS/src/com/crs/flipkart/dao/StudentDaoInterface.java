@@ -2,6 +2,7 @@ package com.crs.flipkart.dao;
 
 import com.crs.flipkart.bean.GradeCard;
 import com.crs.flipkart.bean.Payment;
+import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
 
 public interface StudentDaoInterface {
 
@@ -12,7 +13,7 @@ public interface StudentDaoInterface {
 	 * @param course if of the course to be added
 	 * @return returns a grade card for the student
 	 */
-	GradeCard viewGradeCard(String studentId);
+	GradeCard viewGradeCard(String studentId) throws GradeCardNotGeneratedException;
 
 	/**
 	 * Method to add payment made by a student to the payment database

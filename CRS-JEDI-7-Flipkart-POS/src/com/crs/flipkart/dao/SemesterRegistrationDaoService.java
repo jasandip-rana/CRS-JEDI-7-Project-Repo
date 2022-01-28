@@ -9,8 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.constants.SQLQueries;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.utils.dbUtil;
 
 /**
@@ -19,6 +22,7 @@ import com.crs.flipkart.utils.dbUtil;
  */
 public class SemesterRegistrationDaoService implements SemesterRegistrationDaoInterface {
 
+	private static Logger logger = Logger.getLogger(SemesterRegistrationDaoService.class);
 	CatalogDaoInterface catalogService = new CatalogDaoService();
 
 	public static Connection conn = dbUtil.getConnection();
@@ -32,7 +36,7 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 	 * @return returns a string that indicates if the course is successfully opted
 	 */
 	@Override
-	public String addCourse(String studentId, String courseId) {
+	public void addCourse(String studentId, String courseId) throws CourseNotFoundException{
 		// TODO Auto-generated method stub
 		try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_OPTED_COURSE);
@@ -41,12 +45,13 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
             ps.setString(3, courseId);
             int rs=ps.executeUpdate();
             if(rs==1)
-            	return "Successfully added";
+            	return;
+            else {
+            	throw new CourseNotFoundException(courseId);
+            }
         } catch (SQLException e) {
-        	e.printStackTrace();
-        	return "Database Error";
+        	logger.debug("Error: " + e.getMessage());
         }
-		return "Database Error";
 	}
 
 	/**
@@ -78,7 +83,7 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 			
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.debug("Error: " + e.getMessage());
 			return null;
 		}
 		return courseList;
@@ -103,7 +108,7 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
             if(rs==1)
             	return "Successfully dropped course";
         } catch (SQLException e) {
-        	e.printStackTrace();
+        	logger.debug("Error: " + e.getMessage());
         	return "Database Error";
         }
 		return "Database Error";
@@ -128,7 +133,7 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
             }
             return true;
         } catch (SQLException e) {
-        	e.printStackTrace();
+        	logger.debug("Error: " + e.getMessage());
         	return false;
         }
 	}
@@ -156,7 +161,7 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
                 	return "Successfully submitted courses";
             }
         } catch (SQLException e) {
-        	e.printStackTrace();
+        	logger.debug("Error: " + e.getMessage());
         	return "Database Error";
         }
 		return "Database Error";
