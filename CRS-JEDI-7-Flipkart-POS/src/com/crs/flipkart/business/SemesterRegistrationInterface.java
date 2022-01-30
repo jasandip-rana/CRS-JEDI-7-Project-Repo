@@ -6,6 +6,7 @@ import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.exceptions.CourseAlreadyOptedException;
 import com.crs.flipkart.exceptions.CourseCountExceededException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.CourseNotOptedException;
 
 public interface SemesterRegistrationInterface {
 
@@ -16,22 +17,15 @@ public interface SemesterRegistrationInterface {
     * @return list of course 
     */
 	List<Course> viewCourses();
-	
-	 /**
-     * method for verifying course exists or not in the catalog
-     * 
-     * @param courseId  unique Id to represent a course
-     * @return returns true if course exists in the catalog.
-     */
-
-	boolean verifyCourse(String courseId);
 
 	 /**
      * method for adding course for the student 
      *
      * @param studentId  unique Id to represent a student
      * @param courseId  unique Id to represent a course
-     * @return returns String which represents the status of adding course 
+     * @throws throws CourseNotFoundException if course with courseId not in the catalog
+     * @throws throws CourseCountExceededException if student has already opted 6 courses
+     * @throws throws CourseAlreadyOptedException if course is already opted by student
      */
 	void addCourse(String studentId, String courseId) throws CourseNotFoundException, CourseCountExceededException, CourseAlreadyOptedException;
 	
@@ -41,8 +35,10 @@ public interface SemesterRegistrationInterface {
      * @param studentId  unique Id to represent a student
      * @param courseId  unique Id to represent a course
      * @return returns String which represents the status of dropping course 
+	 * @throws CourseNotFoundException if courseId not present in the system
+     * @throws CourseNotOptedException if studentId has not opted courseId
      */
-	String dropCourse(String studentId, String courseId);
+	String dropCourse(String studentId, String courseId) throws CourseNotFoundException, CourseNotOptedException;
 	
 	/**
      * method for getting all opted courses by the student 
@@ -58,7 +54,6 @@ public interface SemesterRegistrationInterface {
      * @param studentId  unique Id to represent a student
      * @return returns String which represents the status of submitting course choices 
      */
-
 	String submitOptedCourses(String studentId);
 
 }

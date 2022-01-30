@@ -12,7 +12,6 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
-import com.crs.flipkart.business.UserInterface;
 import com.crs.flipkart.constants.SQLQueries;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
@@ -29,13 +28,7 @@ public class AdminDaoService implements AdminDaoInterface {
 	private static Logger logger = Logger.getLogger(AdminDaoService.class);
 	public static Connection conn = dbUtil.getConnection();
 	UserDaoInterface userDaoService = new UserDaoService();
-	
-	/**
-     * method for getting all courses in the database
-     *
-     * @return returns List of all courses in the database
-     */
-	@Override
+
 	public List<Course> viewCourses(){
         try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.FETCH_COURSES);
@@ -57,14 +50,7 @@ public class AdminDaoService implements AdminDaoInterface {
         	return null;
         }
     }
-	
-	/**
-     * method for adding course into database
-     *
-     * @param newCourse		Course object containing details of the course
-     * @return returns status of addCourse operation as a string
-     */
-	@Override
+
 	public String addCourse(Course newCourse){
         try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_COURSE);
@@ -81,14 +67,7 @@ public class AdminDaoService implements AdminDaoInterface {
         }
         return "Course not added.";
     }
-	
-	/**
-     * method for removing course from the database
-     *
-     * @param courseId unique Id to represent a course
-     * @return returns status of dropCourse operation as a string
-     */
-	@Override
+
 	public void dropCourse(String courseId) throws CourseNotFoundException{
         try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.DROP_COURSE);
@@ -103,12 +82,7 @@ public class AdminDaoService implements AdminDaoInterface {
         }
         
     }
-	
-	/**
-     * method for getting all Pending admission requests
-     *
-     * @return List of students with pending approval request
-     */
+
 	public List<Student> getPendingStudents()
 	{
 		List<Student> studentList= new ArrayList<Student>();
@@ -130,13 +104,6 @@ public class AdminDaoService implements AdminDaoInterface {
 		return null;
 	}
 	
-	/**
-     * method to approve a student by student id
-     *
-     * @param newStudent	Student object contains details of student to be approved
-     * @return returns status of approveStudent operation as a string
-     */
-	@Override
 	public String approveStudent(Student newStudent) {
         try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.APPROVE_ADDMISSION_REQUEST);
@@ -154,12 +121,30 @@ public class AdminDaoService implements AdminDaoInterface {
         return "Student not approved.";
     }
 	
+   public String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException{
+        try {
+    		String id = userDaoService.createUser(newProfessor.getName(), newProfessor.getEmail(), newProfessor.getPassword(), "Professor");
+    	
+            PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_PROFESSOR);
+            ps.setString(1, id);
+            ps.setString(2, newProfessor.getName());
+            ps.setString(3, newProfessor.getContactNumber());
+            ps.setFloat(4, newProfessor.getSalary());
+            ps.setString(5, newProfessor.getDepartment());
+            ps.setString(6, newProfessor.getDoj());
+
+            if(ps.executeUpdate() == 1)
+            	return "Professor added successfully. Professor id : "+id;
+
+        } catch (SQLException e) {
+        	logger.debug("Error: " + e.getMessage());
+        } catch(EmailAlreadyInUseException e) {
+        	throw e;
+        }
+        return "Professor not added.";
+    }
 	
-	/**
-     * method for getting all the professors
-     *
-     * @return List of Professors
-     */
+	
 	  @Override
 	public List<Professor> viewProfessorList() {
 		   try {
@@ -168,8 +153,6 @@ public class AdminDaoService implements AdminDaoInterface {
 	            ResultSet rs = ps.executeQuery(); 
 	            while(rs.next())
 	            {
-	            	//professorList.add(rs.getString("professor.professorID") + " " + rs.getString("user.name")+" "+rs.getString("user.email")
-	            	//+" "+rs.getString("professor.department"));
 	            	Professor professor = new Professor();
 	            	professor.setProfessorId(rs.getString("professorId"));
 	            	professor.setName(rs.getString("name"));
@@ -185,50 +168,15 @@ public class AdminDaoService implements AdminDaoInterface {
 	        return null;
 		}
 
-	  /**
-	     * method for adding professor into database
-	     *
-	     * @param newProfessor	Professor object containing details of the professor
-	     * @return returns status of addProfessor operation as a string
-	     */
-	   public String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException{
-	        try {
-	    		String id = userDaoService.createUser(newProfessor.getName(), newProfessor.getEmail(), newProfessor.getPassword(), "Professor");
-	    	
-	            PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_PROFESSOR);
-	            ps.setString(1, id);
-	            ps.setString(2, newProfessor.getName());
-	            ps.setString(3, newProfessor.getContactNumber());
-	            ps.setFloat(4, newProfessor.getSalary());
-	            ps.setString(5, newProfessor.getDepartment());
-	            ps.setString(6, newProfessor.getDoj());
-
-	            if(ps.executeUpdate() == 1)
-	            	return "Professor added successfully. Professor id : "+id;
-
-	        } catch (SQLException e) {
-	        	logger.debug("Error: " + e.getMessage());
-	        } catch(EmailAlreadyInUseException e) {
-	        	throw e;
-	        }
-	        return "Professor not added.";
-	    }
-	   
-	   /**
-	     * method for removing professor from the database
-	     *
-	     * @param professorId		unique Id to represent a course
-	     * @return returns status of dropProfessor operation as a string
-	     */
 	   public void dropProfessor(String professorId) throws UserNotFoundException{
 	        try {
 	            PreparedStatement ps = conn.prepareStatement(SQLQueries.REMOVE_USER);
 	            ps.setString(1, professorId);
-	            if(ps.executeUpdate()!=0)
+	            if(ps.executeUpdate() == 1)
 	            {
 	            	ps = conn.prepareStatement(SQLQueries.DROP_PROFESSOR);
 	            	ps.setString(1, professorId);
-	            	if(ps.executeUpdate()!=0)
+	            	if(ps.executeUpdate() == 1)
 	            		return;
 	            }
 	            else {
@@ -238,12 +186,7 @@ public class AdminDaoService implements AdminDaoInterface {
 	        	logger.error("Error: " + e.getMessage());
 	        }
 	    }
-	   
-	   /**
-	     * method for getting all students whose grade card is not yet generated
-	     *
-	     * @return List of students with pending grade card generation
-	     */
+
 		public List<Student> getPendingGradeStudents()
 		{
 			List<Student> studentList= new ArrayList<Student>();
@@ -265,14 +208,6 @@ public class AdminDaoService implements AdminDaoInterface {
 			return null;
 		}
 
-	   /**
-	     * method for generating grade card and calculating aggregate CGPA of student
-	     *
-	     * @param studentId			unique Id to represent a student
-	     * @param semester			semester for which gradeCard is to be generated
-	     * @return returns status of dropProfessor operation as a string
-	     */
-	   @Override
 	public void generateGradeCard(String studentId, String semester) throws GradeNotAllotedException
 	   {
 		   try {
@@ -284,7 +219,7 @@ public class AdminDaoService implements AdminDaoInterface {
 	            int countCourses = 0;
 	            while (rs.next()) {
 	                countCourses++;
-	                total += rs.getFloat("grade.gpa");
+	                total += rs.getFloat("gpa");
 	            }
 	            if(countCourses!=4)
 	            	throw new GradeNotAllotedException(studentId);

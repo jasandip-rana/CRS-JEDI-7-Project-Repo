@@ -3,8 +3,6 @@
  */
 package com.crs.flipkart.bean;
 
-import java.util.*;
-
 /**
  * @author Raj
  *
@@ -34,7 +32,6 @@ public class Course {
 	 */
 	public Course(String courseId, String courseName, float courseFee, String departmentName, String professorId,
 			int studentCount) {
-		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
 		this.courseFee = courseFee;

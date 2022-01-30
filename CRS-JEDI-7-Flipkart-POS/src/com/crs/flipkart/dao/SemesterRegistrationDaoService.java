@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.constants.SQLQueries;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.CourseNotOptedException;
 import com.crs.flipkart.utils.dbUtil;
 
 /**
@@ -27,39 +28,6 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 
 	public static Connection conn = dbUtil.getConnection();
 	
-
-	/**
-	 * Method to enter a course for the student into the opted course list
-	 * 
-	 * @param student id of the student
-	 * @param course if of the course to be added
-	 * @return returns a string that indicates if the course is successfully opted
-	 */
-	@Override
-	public void addCourse(String studentId, String courseId) throws CourseNotFoundException{
-		// TODO Auto-generated method stub
-		try {
-            PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_OPTED_COURSE);
-            ps.setString(1, studentId);
-            ps.setInt(2, 0);
-            ps.setString(3, courseId);
-            int rs=ps.executeUpdate();
-            if(rs==1)
-            	return;
-            else {
-            	throw new CourseNotFoundException(courseId);
-            }
-        } catch (SQLException e) {
-        	logger.debug("Error: " + e.getMessage());
-        }
-	}
-
-	/**
-	 * Method to return the opted course list for a given student
-	 * 
-	 * @param student id of the student
-	 * @return returns a list of courses that the student has opted
-	 */
 	@Override
 	public List<Course> viewOptedCourses(String studentId) {
 		List<Course> courseList = new ArrayList<Course>();
@@ -80,32 +48,70 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 				Course course = new Course(courseId,courseName,courseFee,department,professorId,studentCount);
 				courseList.add(course);
 			}
-			
+			return courseList;
 			
 		} catch (SQLException e) {
 			logger.debug("Error: " + e.getMessage());
 			return null;
 		}
-		return courseList;
-
 	}
 
-	/**
-	 * Method to remove a course from the opted course list for student
-	 * 
-	 * @param student id of the student
-	 * @param course if of the course to be added
-	 * @return returns a string that indicates if the course is dropped opted
-	 */
 	@Override
-	public String dropCourse(String studentId, String courseId) {
+	public void addCourse(String studentId, String courseId) throws CourseNotFoundException{
 		// TODO Auto-generated method stub
 		try {
-            PreparedStatement ps = conn.prepareStatement(SQLQueries.DROP_OPTED_COURSE);
+            PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_OPTED_COURSE);
             ps.setString(1, studentId);
             ps.setString(2, courseId);
             int rs=ps.executeUpdate();
             if(rs==1)
+            	return;
+            else {
+            	throw new CourseNotFoundException(courseId);
+            }
+        } catch (SQLException e) {
+        	logger.debug("Error: " + e.getMessage());
+        }
+	}
+
+	@Override
+	public String dropCourse(String studentId, String courseId) throws CourseNotFoundException, CourseNotOptedException{
+		// TODO Auto-generated method stub
+		try {
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.FETCH_COURSES);
+			ResultSet rs = ps.executeQuery();
+			boolean flag = false;
+			while(rs.next())
+			{
+				if(rs.getString("courseId").equals(courseId))
+				{
+					flag = true;
+					break;
+				}
+			}
+			if(!flag)
+				throw new CourseNotFoundException(courseId);
+			
+			ps = conn.prepareStatement(SQLQueries.FETCH_OPTED_COURSES);
+			ps.setString(1, studentId);
+			rs = ps.executeQuery();
+			
+			flag = false;
+			while(rs.next())
+			{
+				if(rs.getString("courseId").equals(courseId))
+				{
+					flag = true;
+					break;
+				}
+			}
+			if(!flag)
+				throw new CourseNotOptedException(courseId);
+			
+            ps = conn.prepareStatement(SQLQueries.DROP_OPTED_COURSE);
+            ps.setString(1, studentId);
+            ps.setString(2, courseId);
+            if(ps.executeUpdate()==1)
             	return "Successfully dropped course";
         } catch (SQLException e) {
         	logger.debug("Error: " + e.getMessage());
@@ -113,37 +119,7 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
         }
 		return "Database Error";
 	}
-
-	/**
-	 * Method to increase the student count when the student registers for the course successfully
-	 * 
-	 * @param student id of the student
-	 * @return returns a boolean that indicates if the course count is successfully incremented
-	 */
-	public boolean increaseStudentCount(String studentId) {
-		// TODO Auto-generated method stub
-		try {
-			List<Course> optedCourses = viewOptedCourses(studentId);
-            for(int i=0;i<4;i++)
-            {
-            	PreparedStatement ps = conn.prepareStatement(SQLQueries.INCREMENT_STUDENT_COUNT);
-            	ps.setInt(1, optedCourses.get(i).getStudentCount()+1);
-            	ps.setString(2, optedCourses.get(i).getCourseId());
-            	int rs=ps.executeUpdate();
-            }
-            return true;
-        } catch (SQLException e) {
-        	logger.debug("Error: " + e.getMessage());
-        	return false;
-        }
-	}
 	
-	/**
-	 * Method to submit the courses in the opted course list for a student
-	 * 
-	 * @param student id of the student
-	 * @return returns a string that indicates if the courses are successfully registered in
-	 */
 	@Override
 	public String submitOptedCourses(String studentId) {
 		// TODO Auto-generated method stub
@@ -167,4 +143,22 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
 		return "Database Error";
 	}
 
+	public boolean increaseStudentCount(String studentId) {
+		// TODO Auto-generated method stub
+		try {
+			List<Course> optedCourses = viewOptedCourses(studentId);
+            for(int i=0;i<4;i++)
+            {
+            	PreparedStatement ps = conn.prepareStatement(SQLQueries.INCREMENT_STUDENT_COUNT);
+            	ps.setInt(1, optedCourses.get(i).getStudentCount()+1);
+            	ps.setString(2, optedCourses.get(i).getCourseId());
+            	ps.executeUpdate();
+            }
+            return true;
+        } catch (SQLException e) {
+        	logger.debug("Error: " + e.getMessage());
+        	return false;
+        }
+	}
+	
 }

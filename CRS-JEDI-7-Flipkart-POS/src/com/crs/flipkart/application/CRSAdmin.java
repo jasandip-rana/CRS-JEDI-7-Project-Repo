@@ -15,7 +15,7 @@ import com.crs.flipkart.exceptions.*;
  */
 public class CRSAdmin {
 	AdminInterface adminService = new AdminService();
-	Scanner sc=new Scanner(System.in);
+	Scanner sc = new Scanner(System.in);
 	
 	/**
      * method for displaying admin dashboard and selecting the available choices.
@@ -129,8 +129,6 @@ public class CRSAdmin {
 		catch (CourseAlreadyExistsException e){
 			System.out.println("Error: " + e.getMessage());
 		}
-		
-		
 	}
 	
 	/**

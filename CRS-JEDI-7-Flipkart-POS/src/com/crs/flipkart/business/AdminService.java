@@ -3,8 +3,6 @@
  */
 package com.crs.flipkart.business;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.crs.flipkart.bean.Course;
@@ -26,23 +24,11 @@ public class AdminService implements AdminInterface {
 	
 	AdminDaoInterface adminDaoService=new AdminDaoService();
 	
-	/**
-     * method for viewing all courses in the catalog
-     *
-     * @return returns List of all courses from the catalog
-     */
 	public List<Course> viewCourse()
 	{
 		return adminDaoService.viewCourses();
 	}
 
-	/**
-     * method for verifying the presence of a course in the catalog
-     *
-     * @param courseId unique Id to represent a course
-     * @return returns true if the course is present in the catalog
-	 * @throws SQLException 
-     */
 	public void verifyCourse (String courseId) throws CourseAlreadyExistsException
 	{
 
@@ -55,23 +41,11 @@ public class AdminService implements AdminInterface {
 		
 	}
 	
-	/**
-     * method for adding course into the catalog
-     *
-     * @param newCourse		Course object containing details of the course
-     * @return returns status of addCourse operation as a string
-     */
 	public String addCourse(Course newCourse)
 	{
 		return adminDaoService.addCourse(newCourse);
 	}
 	
-	/**
-     * method for removing course from the catalog
-     *
-     * @param courseId unique Id to represent a course
-     * @return returns status of dropCourse operation as a string
-     */
 	public void dropCourse(String courseId) throws CourseNotFoundException
 	{
 		try {
@@ -82,12 +56,16 @@ public class AdminService implements AdminInterface {
 		}
 	}
 	
-	/**
-     * method for adding a new professor in the system
-     *
-     * @param newProfessor	Professor object containing details of the professor
-     * @return returns status of addProfessor operation as a string
-     */
+	public List<Student> getPendingStudents()
+	{
+		return adminDaoService.getPendingStudents();
+	}
+	
+	public String approveStudent(Student newStudent)
+	{
+		return adminDaoService.approveStudent(newStudent);
+	}
+	
 	public String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException
 	{
 		try {
@@ -99,12 +77,12 @@ public class AdminService implements AdminInterface {
 		
 	}
 	
-	/**
-     * method for removing professor from the system
-     *
-     * @param professorId		unique Id to represent a course
-     * @return returns status of dropProfessor operation as a string
-     */
+	@Override
+	public List<Professor> viewProfessorList() {
+		// TODO Auto-generated method stub
+		return adminDaoService.viewProfessorList();
+	}
+	
 	public  void dropProfessor(String professorId) throws UserNotFoundException
 	{
 		try {
@@ -114,25 +92,13 @@ public class AdminService implements AdminInterface {
 		catch(UserNotFoundException e) {
 			throw e;
 		}
-	}
+	}	
 	
-	/**
-     * method for getting all pending Grade card requests
-     *
-     * @return List of Students whose Grade Card has not been generated
-     */
 	public List<Student> getPendingGradeStudents()
 	{
 		return adminDaoService.getPendingGradeStudents();
 	}
 	
-	/**
-     * method for generating grade card and calculating aggregate CGPA of student
-     *
-     * @param studentId			unique Id to represent a student
-     * @param semester			semester for which gradeCard is to be generated
-     * @return returns status of generateGradeCard operation as a string
-     */
 	public void generateGradeCard(String studentId, String semester) throws GradeNotAllotedException
 	{
 		try {			
@@ -141,38 +107,6 @@ public class AdminService implements AdminInterface {
 		catch(GradeNotAllotedException e) {
 			throw e;
 		}
-	}
-	
-	/**
-     * method for getting all admission requests
-     *
-     * @return List of Students who made Admission Request
-     */
-	public List<Student> getPendingStudents()
-	{
-		return adminDaoService.getPendingStudents();
-	}
-	
-	/**
-     * method for approving students admission request.
-     *
-     * @param studentId unique Id for a student
-     * @return returns true if the student's request is approved successfully
-     */
-	public String approveStudent(Student newStudent)
-	{
-		return adminDaoService.approveStudent(newStudent);
-	}
-
-	/**
-     * method for getting all the professors
-     *
-     * @return List of Professors
-     */
-	@Override
-	public List<Professor> viewProfessorList() {
-		// TODO Auto-generated method stub
-		return adminDaoService.viewProfessorList();
 	}
 	
 }

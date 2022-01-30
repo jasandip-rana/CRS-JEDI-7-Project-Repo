@@ -12,6 +12,7 @@ public interface UserDaoInterface {
 	 * @param emailId of the user
 	 * @param password of the user
 	 * @return returns a User containing user info id found in database or returns null
+	 * @throws throws UserNotFoundException if user credentials aren't present in the database
 	 */
 	User login(String emailId, String password)  throws UserNotFoundException;
 
@@ -23,6 +24,7 @@ public interface UserDaoInterface {
 	 * @param password of the user
 	 * @param role of the user
 	 * @return returns a string that indicates if the user is successfully entered in the database
+	 * @throws throws EmailAlreadyInUseException if email is already present in the database
 	 */
 	String createUser(String name, String email, String password, String role) throws EmailAlreadyInUseException;
 
@@ -36,6 +38,7 @@ public interface UserDaoInterface {
 	 * @param branch of the user
 	 * @param batch of the user
 	 * @return returns a string that indicates if the student is successfully entered in the database
+	 * @throws throws EmailAlreadyInUseException if email is already present in the database
 	 */
 	String registerStudent(String name, String contactNumber, String email, String password, String branch, String batch) throws EmailAlreadyInUseException;
 
@@ -46,6 +49,7 @@ public interface UserDaoInterface {
 	 * @param old password of the user
 	 * @param new password of the user
 	 * @return returns a string that indicates if the password is changed successfully
+	 * @throws throws UserNotFoundException if user credentials aren't present in the database
 	 */
 	String updatePassword(String email, String oldPassword, String newPassword) throws UserNotFoundException;
 

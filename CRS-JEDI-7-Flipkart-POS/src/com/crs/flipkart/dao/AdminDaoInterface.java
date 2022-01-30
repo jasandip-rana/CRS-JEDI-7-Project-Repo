@@ -16,7 +16,7 @@ public interface AdminDaoInterface {
      *
      * @return returns List of all courses in the database
      */
-	public List<Course> viewCourses();
+	List<Course> viewCourses();
 
 	/**
      * method for adding course into database
@@ -30,9 +30,9 @@ public interface AdminDaoInterface {
      * method for removing course from the database
      *
      * @param courseId unique Id to represent a course
-     * @return returns status of dropCourse operation as a string
+     * @throws throws CourseNotFoundException if the course is not present in the database
      */
-	public void dropCourse(String courseId) throws CourseNotFoundException;
+	void dropCourse(String courseId) throws CourseNotFoundException;
 	
 	/**
      * method for getting all Pending admission requests
@@ -50,6 +50,15 @@ public interface AdminDaoInterface {
 	String approveStudent(Student newStudent);
 
 	/**
+     * method for adding professor into database
+     *
+     * @param newProfessor	Professor object containing details of the professor
+     * @return returns status of addProfessor operation as a string
+     * @throws throws EmailAlreadyInUseException if email is already in use
+     */
+	String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException;
+	
+	/**
      * method for getting all the professors
      *
      * @return List of Professors
@@ -57,35 +66,29 @@ public interface AdminDaoInterface {
 	List<Professor> viewProfessorList();
 	
 	/**
-     * method for adding professor into database
-     *
-     * @param newProfessor	Professor object containing details of the professor
-     * @return returns status of addProfessor operation as a string
-     */
-	String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException;
-	
-	/**
      * method for removing professor from the database
      *
      * @param professorId		unique Id to represent a course
      * @return returns status of dropProfessor operation as a string
+     * @throws throws UserNotFoundException if professor not present in the database
      */
-	public void dropProfessor(String professorId) throws UserNotFoundException;
+	void dropProfessor(String professorId) throws UserNotFoundException;
 
 	/**
      * method for getting all students whose grade card is not yet generated
      *
      * @return List of students with pending grade card generation
      */
-	public List<Student> getPendingGradeStudents();
+	List<Student> getPendingGradeStudents();
 	
 	/**
      * method for generating grade card and calculating aggregate CGPA of student
      *
      * @param studentId			unique Id to represent a student
      * @param semester			semester for which gradeCard is to be generated
-     * @return returns status of generateGradeCard operation as a string
+     * @return returns status of dropProfessor operation as a string
+     * @throws throws GradeNotAllotedException if student hasn't been graded for all subjects
      */
-	public void generateGradeCard(String studentId, String semester) throws GradeNotAllotedException;
+	void generateGradeCard(String studentId, String semester) throws GradeNotAllotedException;
 
 }

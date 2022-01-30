@@ -21,50 +21,33 @@ import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
 public class StudentService implements StudentInterface {
 
 	StudentDaoInterface studentDaoService = new StudentDaoService();
-	SemesterRegistrationInterface semesterRegistrationService = new SemesterRegistrationService();
+	SemesterRegistrationDaoInterface semesterRegistrationDaoService = new SemesterRegistrationDaoService();
 
+	public boolean isApproved(String studentId)
+	{
+		return studentDaoService.isApproved(studentId);
+	}
+	
+	public boolean submittedCourses(String studentId)
+	{
+		return studentDaoService.submittedCourses(studentId);
+	}
 
-    /**
-     * method for getting all the registered courses for the student
-     * 
-     * @param studentId  unique Id to represent a student
-     * @return list of courses registered by student 
-     */
+	public boolean getFeeStatus(String studentId)
+	{
+		return studentDaoService.getFeeStatus(studentId);
+	}
+
 	public List<Course> viewRegisteredCourses(String studentID) {
 		// TODO Auto-generated method stub
 		
-		return semesterRegistrationService.viewOptedCourses(studentID);
+		return semesterRegistrationDaoService.viewOptedCourses(studentID);
 		
 	}
 	
-
-    /**
-     * method for viewing  grade card of the student
-     * 
-     * @param studentId  unique Id to represent a student
-     * @return grade card of the student 
-     */
-
-	public GradeCard viewGradeCard(String studentID) throws GradeCardNotGeneratedException{
-		// TODO Auto-generated method stub
-		try {
-			return studentDaoService.viewGradeCard(studentID);			
-		}
-		catch(GradeCardNotGeneratedException e) {
-			throw e;
-		}
-	}
-
-
-    /**
-     * method for getting the total fee of all the courses opted by student
-     * 
-     * @param studentId  unique Id to represent a student
-     * @return total fee of all the courses opted by student 
-     */
 	public float getTotalFee(String studentID) {
 		// TODO Auto-generated method stub
-		List<Course> registeredCourses =  semesterRegistrationService.viewOptedCourses(studentID);
+		List<Course> registeredCourses =  semesterRegistrationDaoService.viewOptedCourses(studentID);
 		float totalFee = 0;
 		for(int i = 0;i<4;i++)
 		{	
@@ -72,15 +55,6 @@ public class StudentService implements StudentInterface {
 		}
 		return totalFee;
 	}
-	
-	/**
-     * method for paying fee
-     *
-     * @param studentId  unique Id to represent a student
-     * @param modeOfPayment represents the mode of payment
-     * @param totalFee represents amount to be paid
-     * @return returns string which represents the status of the payment
-     */
 
 	public String makePayment(String studentID, String modeOfPayment,float totalFee) {
 	
@@ -101,39 +75,13 @@ public class StudentService implements StudentInterface {
 		
 	}
 
-
-	/**
-     * method for checking that student is approved by administrator or not
-     *
-     * @param studentId  unique Id to represent a student
-     * @return returns true if student is approved by administrator
-     */
-	public boolean isApproved(String studentId)
-	{
-		return studentDaoService.isApproved(studentId);
-	}
-	
-	/**
-     * method for getting the fee status of the student
-     *
-     * @param studentId  unique Id to represent a student
-     * @return returns true if student paid the fees
-     */
-	
-	public boolean getFeeStatus(String studentId)
-	{
-		return studentDaoService.getFeeStatus(studentId);
-	}
-	
-	
-	 /**
-     * method for checking that student has already submitted their course choices or not
-     * 
-     * @param studentId  unique Id to represent a student
-     * @return returns true if course choices already submitted by student
-     */
-	public boolean submittedCourses(String studentId)
-	{
-		return studentDaoService.submittedCourses(studentId);
+	public GradeCard viewGradeCard(String studentID) throws GradeCardNotGeneratedException{
+		// TODO Auto-generated method stub
+		try {
+			return studentDaoService.viewGradeCard(studentID);			
+		}
+		catch(GradeCardNotGeneratedException e) {
+			throw e;
+		}
 	}
 }

@@ -28,7 +28,6 @@ public class CRSProfessor {
 	public void create_menu(String professorId)
 	{
 		Scanner sc = new Scanner(System.in);
-		boolean loggedIn = true;
 		id=professorId;
 		int choice;
 		do {
@@ -99,7 +98,6 @@ public class CRSProfessor {
 		// TODO Auto-generated method stub
 		List<Course>courseList=professorService.viewCourses();
 		courseList.forEach(CRSProfessor::printCourse);
-			
 	}
 	
 	 /**
@@ -121,10 +119,7 @@ public class CRSProfessor {
 			professorService.indicateCourse(id, courseId);
 			System.out.println("Course selected successfully");
 		}
-		catch(CourseNotFoundException e) {
-			System.out.println("Error : " + e.getMessage());
-		}
-		catch(CourseNotAvailableException e) {
+		catch(Exception e) {
 			System.out.println("Error : " + e.getMessage());
 		}
 		
@@ -156,14 +151,9 @@ public class CRSProfessor {
 		int index=sc.nextInt();
 		sc.nextLine();
 		String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
-		if(!professorService.validateStudent(courseId, studentId))
-		{
-			System.out.println("Student not enrolled in this course");
-			return;
-		}
 		System.out.println("Enter the grade :");
 		float grade=sc.nextFloat();
-	   System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
+	    System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
 		
 	}
      
@@ -181,13 +171,14 @@ public class CRSProfessor {
 		}
 		List<Student>enrolledStudents=professorService.viewEnrolledStudents(courseId);
 		if(enrolledStudents.size() == 0) {
-			System.out.println("No such course or Student found");
+			System.out.println("No student enrolled for this course!");
 			return;
 		}
 		int i=1;
 		for(Student student:enrolledStudents)
 		{
 			System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"	Name : "+student.getName());
+			i++;
 		}
 	}
 	

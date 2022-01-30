@@ -90,7 +90,7 @@ public class CRSApplication {
 			
 			User user = userService.login(email, password);
 			
-			CRSApplication.loggedIn=true;
+			loggedIn=true;
 			
 			
 			switch (user.getRole()) {

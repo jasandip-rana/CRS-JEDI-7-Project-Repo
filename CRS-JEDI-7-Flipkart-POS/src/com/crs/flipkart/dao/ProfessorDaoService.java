@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.constants.SQLQueries;
+import com.crs.flipkart.exceptions.CourseAlreadyIndicatedException;
 import com.crs.flipkart.exceptions.CourseNotAvailableException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.utils.dbUtil;
@@ -26,12 +27,7 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
 
 	private static Logger logger = Logger.getLogger(ProfessorDaoService.class);
 	public static Connection conn = dbUtil.getConnection();
-	
-	/**
-	 * Method to obtain a list of courses using SQL commands
-	 * 
-	 * @return returns the courses present in the database
-	 */
+
 	@Override
 	public List<Course> viewCourses() {
         try {
@@ -54,16 +50,9 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         	return null;
         }
     }
-	
-	/**
-	 * Method to check if the course is already alloted or not, and then to allot the course using SQL commands
-	 * 
-	 * @param professorId unique Id to represent a professor
-	 * @param courseId unique Id to represent a course
-	 * @return returns a string that indicates if the course is successfully alloted in the database
-	 */
+
 	@Override
-	public void selectCourse(String professorId, String courseId) throws CourseNotFoundException, CourseNotAvailableException{
+	public void selectCourse(String professorId, String courseId) throws CourseNotFoundException, CourseNotAvailableException, CourseAlreadyIndicatedException{
         try {
         	PreparedStatement psCheck = conn.prepareStatement(SQLQueries.CHECK_VACANT_COURSE);
         	psCheck.setString(1, courseId);
@@ -73,7 +62,10 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         		throw new CourseNotFoundException(courseId);
         	}
         	else if(rs.getString("professorId") != null) {
-        		throw new CourseNotAvailableException(courseId);
+        		if(rs.getString("professorId").equals(professorId))
+        			throw new CourseAlreadyIndicatedException(courseId);
+        			
+        		throw new CourseNotAvailableException(courseId);       			
         	}
         	
         	
@@ -90,15 +82,34 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         }
     }
 
-	/**
-	 * Method for adding the grades of a student for a course in a semester using SQL commands
-	 * 
-	 * @param studentId unique Id to represent a student
-	 * @param courseId unique Id to represent a course
-	 * @param grade grade point provided for the student enrolled in the course taught by the professor
-	 * @param semester indicates the semester
-	 * @return returns a string indicating the if the grade was successfully added in the database
-	 */
+	@Override
+	public List<Student> viewEnrolledStudents(String courseId)
+	{
+		try {
+			List<Student> enrolledStudents = new ArrayList<Student>();
+            PreparedStatement ps = conn.prepareStatement(SQLQueries.VIEW_ENROLLED_STUDENTS);
+            ps.setString(1, courseId);
+            ResultSet rs = ps.executeQuery(); 
+            if(!rs.next()) {
+            	return null;
+            }
+            
+            while(rs.next())
+            {
+            	Student student = new Student();
+            	student.setName(rs.getString("student.name"));
+            	student.setStudentEnrollmentId(rs.getString("student.studentId"));
+            	enrolledStudents.add(student);
+            }
+            
+            return enrolledStudents;
+            
+        } catch (SQLException e) {
+        	logger.debug("Error: " + e.getMessage());
+        }
+        return null;
+	}
+
 	@Override
 	public String addGrade(String studentId, String courseId, float grade, String semester) {
         try {
@@ -116,38 +127,5 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         }
         return "Student grading failed.";
     }
-	
-	/**
-	 * Method for retrieving the students enrolled in a course using SQL commands
-	 * 
-	 * @param courseId unique Id to represent a course
-	 * @return returns a list of strings indicating the students enrolled in a course from the database
-	 */
-	@Override
-	public List<Student> viewEnrolledStudents(String courseId)
-	{
-		try {
-			List<Student> enrolledStudents = new ArrayList<Student>();
-            PreparedStatement ps = conn.prepareStatement(SQLQueries.VIEW_ENROLLED_STUDENTS);
-            ps.setString(1, courseId);
-            ResultSet rs = ps.executeQuery(); 
-            if(rs == null) {
-            	return null;
-            }
-            while(rs.next())
-            {
-            	Student student = new Student();
-            	student.setName(rs.getString("student.name"));
-            	student.setStudentEnrollmentId(rs.getString("student.studentId"));
-            	enrolledStudents.add(student);
-            }
-            
-            return enrolledStudents;
-            
-        } catch (SQLException e) {
-        	logger.debug("Error: " + e.getMessage());
-        }
-        return null;
-	}
 	
 }

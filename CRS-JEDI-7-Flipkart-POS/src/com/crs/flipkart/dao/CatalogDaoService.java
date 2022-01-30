@@ -44,9 +44,11 @@ public class CatalogDaoService implements CatalogDaoInterface {
 				Course course = new Course(courseId,courseName,courseFee,department,professorId,studentCount);
 				courseList.add(course);
 			}
+			
+			return courseList;
 		} catch (SQLException e) {
 			logger.debug("Error: No course found");
 		}
-		return courseList;
+		return null;
 	}
 }

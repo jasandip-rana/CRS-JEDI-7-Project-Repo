@@ -16,29 +16,45 @@ import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
  */
 public interface StudentInterface {
 
+	/**
+     * method for checking that student is approved by administrator or not
+     *
+     * @param studentId  unique Id to represent a student
+     * @return returns true if student is approved by administrator
+     */
+	boolean isApproved(String studentId);
+	
+	 /**
+     * method for checking that student has already submitted their course choices or not
+     * 
+     * @param studentId  unique Id to represent a student
+     * @return returns true if course choices already submitted by student
+     */
+	boolean submittedCourses(String studentId);
+	
+	/**
+     * method for getting the fee status of the student
+     *
+     * @param studentId  unique Id to represent a student
+     * @return returns true if student paid the fees
+     */
+	boolean getFeeStatus(String studentId);
+	
 	 /**
      * method for getting all the registered courses for the student
      * 
      * @param studentId  unique Id to represent a student
      * @return list of courses registered by student 
      */
-	public List<Course> viewRegisteredCourses(String studentID);
+	List<Course> viewRegisteredCourses(String studentID);
 	
 	/**
-     * method for viewing  grade card of the student
-     * 
-     * @param studentId  unique Id to represent a student
-     * @return grade card of the student 
-     */
-	public GradeCard viewGradeCard(String studentID) throws GradeCardNotGeneratedException;
-	
-	 /**
      * method for getting the total fee of all the courses opted by student
      * 
      * @param studentId  unique Id to represent a student
      * @return total fee of all the courses opted by student 
      */
-	public float getTotalFee(String studentID);
+	float getTotalFee(String studentID);
 	
 	/**
      * method for paying fee
@@ -48,30 +64,13 @@ public interface StudentInterface {
      * @param totalFee represents amount to be paid
      * @return returns string which represents the status of the payment
      */
-	public String makePayment(String studentID, String modeOfPayment,float totalFee);
+	String makePayment(String studentID, String modeOfPayment,float totalFee);
 	
 	/**
-     * method for checking that student is approved by administrator or not
-     *
-     * @param studentId  unique Id to represent a student
-     * @return returns true if student is approved by administrator
-     */
-	public boolean isApproved(String studentId);
-	
-	
-	/**
-     * method for getting the fee status of the student
-     *
-     * @param studentId  unique Id to represent a student
-     * @return returns true if student paid the fees
-     */
-	public boolean getFeeStatus(String studentId);
-	
-	 /**
-     * method for checking that student has already submitted their course choices or not
+     * method for viewing  grade card of the student
      * 
      * @param studentId  unique Id to represent a student
-     * @return returns true if course choices already submitted by student
+     * @return grade card of the student 
      */
-	public boolean submittedCourses(String studentId);
+	GradeCard viewGradeCard(String studentID) throws GradeCardNotGeneratedException;
 }
