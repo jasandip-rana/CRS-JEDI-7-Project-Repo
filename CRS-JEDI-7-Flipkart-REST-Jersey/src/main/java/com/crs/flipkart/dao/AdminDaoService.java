@@ -72,7 +72,7 @@ public class AdminDaoService implements AdminDaoInterface {
         try {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.DROP_COURSE);
             ps.setString(1, courseId);
-            if(ps.executeUpdate() == 1)
+            if(ps.executeUpdate()!=0)
             	logger.info("Course dropped successfully.\n");
             else
             	throw new CourseNotFoundException(courseId);

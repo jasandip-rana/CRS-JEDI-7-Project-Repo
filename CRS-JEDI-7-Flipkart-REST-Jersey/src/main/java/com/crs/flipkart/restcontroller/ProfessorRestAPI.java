@@ -4,7 +4,6 @@
 package com.crs.flipkart.restcontroller;
 
 import java.util.*;
-import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -13,8 +12,6 @@ import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
-import com.crs.flipkart.dao.StudentDaoService;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
 /**
  * @author Shubham

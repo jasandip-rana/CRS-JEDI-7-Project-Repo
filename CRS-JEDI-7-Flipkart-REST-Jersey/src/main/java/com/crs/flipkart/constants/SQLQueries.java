@@ -25,7 +25,7 @@ public class SQLQueries {
 	
 	public static final String ADD_COURSE = "insert into course(courseId, courseName, courseFee, department, professorId, studentCount) values (?, ?, ?, ?,null,0)";
 	
-	public static final String DROP_COURSE = "delete from Course where courseId = ?";
+	public static final String DROP_COURSE = "delete from course where courseId = ?";
 	
 	public static final String GET_PENDING_STUDENTS = "SELECT name,studentId from student where student.verificationStatus=0";
 	
