@@ -115,7 +115,6 @@ public class StudentRestAPI {
         if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
         	return Response.status(500).entity("User not authenticated").build();
         }
-        System.out.println(studentService.submittedCourses(UserService.user.getUserId()));
         if(studentService.submittedCourses(UserService.user.getUserId()))
 		{
         	return Response.status(500).entity("You have finalized the courses!").build();
@@ -167,7 +166,7 @@ public class StudentRestAPI {
         	return Response.status(500).entity("You have already paid the fees!").build();
 		}
         try {
-        	String status = studentService.makePayment(payment.getStudentEnrollmentId(),payment.getPaymentType(),payment.getAmount());
+        	String status = studentService.makePayment(UserService.user.getUserId(),payment.getPaymentType(),payment.getAmount());
             return Response.status(201).entity(status).build();
         } catch (Exception e) {
         	return Response.status(500).entity("Something went wrong").build();
