@@ -84,7 +84,7 @@ public class UserRestAPI {
 						boolean isApproved=studentService.isApproved(studentId);
 						if(!isApproved)	
 						{
-							return Response.status(200).entity("Login unsuccessful! Student "+studentId+" has not been approved by the administration!" ).build();
+							return Response.status(200).entity("Login unsuccessful! Student has not been approved by the administration!" ).build();
 						}
 						break;
 					}

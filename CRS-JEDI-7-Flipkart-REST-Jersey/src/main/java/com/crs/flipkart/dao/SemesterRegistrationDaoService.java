@@ -71,6 +71,7 @@ public class SemesterRegistrationDaoService implements SemesterRegistrationDaoIn
             }
         } catch (SQLException e) {
         	logger.debug("Error: " + e.getMessage());
+        	throw new CourseNotFoundException(courseId);
         }
 	}
 
