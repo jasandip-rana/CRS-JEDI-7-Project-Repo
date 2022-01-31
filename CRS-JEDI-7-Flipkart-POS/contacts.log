@@ -1,3 +1,0 @@
-17:34:40,579 DEBUG ProfessorDaoService,main:115 - Error: Duplicate entry 'S19295094-101' for key 1
-22:16:28,492 DEBUG ProfessorDaoService,main:126 - Error: Duplicate entry 'S12592479-101' for key 1
-11:27:35,090 DEBUG UserDaoService,main:74 - Error: Before start of result set

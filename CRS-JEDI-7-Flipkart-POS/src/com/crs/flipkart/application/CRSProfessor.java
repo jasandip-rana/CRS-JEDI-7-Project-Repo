@@ -144,6 +144,7 @@ public class CRSProfessor {
 			return;
 		}
 		List<Student> enrolledStudents = professorService.viewEnrolledStudents(courseId);
+
 		if(enrolledStudents.size() == 0) {
 			System.err.println("No student left to be graded!");
 			return;
@@ -156,13 +157,12 @@ public class CRSProfessor {
 			System.out.println(String.format("%10s %20s %20s",i,student.getStudentEnrollmentId(), student.getName()));
 			i++;
 		}
-		System.out.print("Enter the student index :");
-		int index=sc.nextInt();
-		sc.nextLine();
-		String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
-		System.out.println("Enter the grade :");
-		float grade=sc.nextFloat();
-	    System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
+			int index=sc.nextInt();
+			sc.nextLine();
+			String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
+			System.out.println("Enter the grade :");
+			float grade=sc.nextFloat();
+		    System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
 		
 	}
      
