@@ -57,6 +57,8 @@ public class SQLQueries {
 	
 	public static final String GET_STUDENT= "SELECT * FROM student where studentId= ?";
 	
+	public static final String GET_PROFESSOR= "SELECT * FROM professor where professorId= ?";
+	
 	public static final String SUBMITTED_COURSES= "SELECT * FROM semesterregistration where studentId= ?";
 	
 	public static final String FETCH_OPTED_COURSES = "Select course.courseId as courseId,courseName,courseFee,department,professorId,studentCount from course join optedcourses where course.courseId = optedcourses.courseId and studentId = ? order by optedcourses.optedNumber";

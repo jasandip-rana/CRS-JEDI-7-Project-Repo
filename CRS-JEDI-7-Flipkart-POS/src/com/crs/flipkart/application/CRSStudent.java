@@ -87,10 +87,7 @@ public class CRSStudent {
 	 */
 	public static void printCourse(Course course)
 	{
-		if(course.getProfessorId()==null)
-			System.out.println(course.getCourseId() +" : "+ course.getCourseName());
-		else
-			System.out.println(course.getCourseId() +" : "+ course.getCourseName()+" taught by : "+course.getProfessorId());
+		System.out.println(String.format("%20s %20s %20s",course.getCourseId(), course.getCourseName(),course.getProfessorId()));
 	}
 	
 	/**
@@ -98,8 +95,10 @@ public class CRSStudent {
 	 */
 	public void viewCourses()
 	{
+		
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewCourses();
+		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
 		courseList.forEach(CRSStudent::printCourse);
 	}
 	
@@ -112,7 +111,7 @@ public class CRSStudent {
 	{
 		if(submittedCourses)
 		{
-			System.out.println("You have already finalized your courses.");
+			System.err.println("You have already finalized your courses.");
 			return;
 		}
 		int choice;
@@ -172,7 +171,7 @@ public class CRSStudent {
 			System.out.println("Course successfully opted!");
 		}
 		catch(Exception e) {
-			System.out.println("Error : " + e.getMessage());
+			System.err.println("Error : " + e.getMessage());
 		}
 	}
 	
@@ -192,7 +191,7 @@ public class CRSStudent {
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error: " + e.getMessage());
+			System.err.println("Error: " + e.getMessage());
 		}
 	}
 	
@@ -205,6 +204,7 @@ public class CRSStudent {
 	{
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewOptedCourses(studentID);
+		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
 		courseList.forEach(CRSStudent::printCourse);
 	}
 	
@@ -233,15 +233,16 @@ public class CRSStudent {
 	{
 		if(!submittedCourses)
 		{
-			System.out.println("You have not yet finalized the courses.");
+			System.err.println("You have not yet finalized the courses.");
 			return;
 		}
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = studentService.viewRegisteredCourses(studentID);
+		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
 		courseList.forEach(CRSStudent::printCourse);
 		if(!feeStatus)
 		{
-			System.out.println("Please pay your fees as soon as possible.");
+			System.err.println("Please pay your fees as soon as possible.");
 		}
 	}
 	
@@ -254,7 +255,7 @@ public class CRSStudent {
 	{
 		if(!submittedCourses)
 		{
-			System.out.println("You have not yet finalized the courses.");
+			System.err.println("You have not yet finalized the courses.");
 			return;
 		}
 		if(feeStatus)
@@ -291,7 +292,7 @@ public class CRSStudent {
 	{
 		if(!feeStatus)
 		{
-			System.out.println("You have not paid the fees yet.");
+			System.err.println("You have not paid the fees yet.");
 			return;
 		}
 		try {			
@@ -301,16 +302,18 @@ public class CRSStudent {
 			System.out.println("");
 			System.out.println("                            GRADE CARD                             ");          
 			System.out.println("___________________________________________________________________\n");
-			System.out.println("ID : "+studentID+"\tSemester : "+gradeCard.getSemester());
+			System.out.println("ID : "+studentID+"\t\t\t\t\tSemester : "+gradeCard.getSemester() + "\n");
+//			System.out.println(String.format("%10s %10s ",studentID,"GPA"));
+			System.out.println(String.format("%25s %25s ","COURSE ID","GPA"));
 			for(Grade grade:gradeCard.getGradeList())
 			{
-				System.out.println(grade.getCourseId()+" - "+grade.getStudentGrade());
+				System.out.println(String.format("%25s %25s ",grade.getCourseId(),grade.getStudentGrade()));
 			}
-			System.out.println("CGPA : "+gradeCard.getStudentCgpa());
+			System.out.println("\n\t\t\t\tCGPA : "+gradeCard.getStudentCgpa());
 			System.out.println("\n___________________________________________________________________");
 		}
 		catch(GradeCardNotGeneratedException e) {
-			System.out.println("Error : " + e.getMessage());
+			System.err.println("Error : " + e.getMessage());
 		}
 	}
 	

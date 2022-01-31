@@ -40,6 +40,13 @@ public class UserDaoService implements UserDaoInterface {
 				user = new User();
 				user.setUserId(rs.getString("user.userId"));
 				user.setRole(rs.getString("role"));
+				
+				if(user.getRole().equals("Student")) {
+					user.setName(getStudentName(user.getUserId()));
+				}
+				if(user.getRole().equals("Professor")) {
+					user.setName(getProfessorName(user.getUserId()));
+				}
 				return user;
 			}
 			else {
@@ -52,6 +59,43 @@ public class UserDaoService implements UserDaoInterface {
 		}
 	}
 
+	
+	
+	public String getStudentName(String studentId){
+		try {
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_STUDENT);
+			ps.setString(1, studentId);
+			ResultSet rs = ps.executeQuery();
+
+
+			if(rs.next()) {
+				return rs.getString("name");
+			}
+			return null;
+
+		} catch (SQLException e) {
+			logger.debug("Error: " + e.getMessage());
+			return null;
+		}
+	}
+	
+	
+	public String getProfessorName(String professorId){
+		try {
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.GET_PROFESSOR);
+			ps.setString(1, professorId);
+			ResultSet rs = ps.executeQuery();
+
+			if(rs.next()) {
+				return rs.getString("name");
+			}
+			return null;
+
+		} catch (SQLException e) {
+			logger.debug("Error: " + e.getMessage());
+			return null;
+		}
+	}
 	
 	@Override
 	public String createUser(String name, String email, String password, String role) throws EmailAlreadyInUseException{

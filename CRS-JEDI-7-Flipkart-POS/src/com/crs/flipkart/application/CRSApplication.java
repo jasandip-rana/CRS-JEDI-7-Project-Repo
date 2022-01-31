@@ -97,12 +97,13 @@ public class CRSApplication {
 			
 			case "Admin":
 
-				System.out.println("\n\nUser successfully logged in at " + formattedDate );
+				System.out.println("\n\nAdmin successfully logged in at " + formattedDate );
 				CRSAdmin admin=new CRSAdmin ();
 				admin.create_menu();
 				break;
 			case "Professor":
-				System.out.println("\n\nUser successfully logged in at " + formattedDate );
+				
+				System.out.println("\n\n" + user.getName() +" successfully logged in at " + formattedDate );
 				String professorId=user.getUserId();
 				CRSProfessor professor = new CRSProfessor();
 				professor.create_menu(professorId);
@@ -111,19 +112,19 @@ public class CRSApplication {
 				String studentId = user.getUserId();
 				boolean isApproved = studentService.isApproved(studentId);
 				if (isApproved) {
-					System.out.println("\n\nUser successfully logged in at " + formattedDate );
+					System.out.println("\n\n" + user.getName() +" successfully logged in at " + formattedDate );
 					CRSStudent student = new CRSStudent();
 					student.create_menu(studentId);
 
 				} else {
-					System.out.print("Failed to login, you have not been approved by the administration!");
+					System.err.print("Failed to login, you have not been approved by the administration!");
 					loggedIn = false;
 				}
 				break;
 			}
 		}
 		catch(UserNotFoundException e) {
-			System.out.println("Invalid Credentials!");
+			System.err.println("Invalid Credentials!");
 		}			
 
 	}
@@ -158,7 +159,7 @@ public class CRSApplication {
 			System.out.println(userService.registerStudent(name,contactNumber,email, password, branchName, batch));
 		}
 		catch(EmailAlreadyInUseException e) {
-			System.out.println("Error : " + e.getMessage());
+			System.err.println("Error : " + e.getMessage());
 		}
 
 	}
@@ -186,7 +187,7 @@ public class CRSApplication {
 			System.out.println(userService.updatePassword(email, oldPassword,newPassword));
 		}
 		catch(UserNotFoundException e) {
-			System.out.println("Email or password is incorrect!");
+			System.err.println("Email or password is incorrect!");
 		}
 	}
 

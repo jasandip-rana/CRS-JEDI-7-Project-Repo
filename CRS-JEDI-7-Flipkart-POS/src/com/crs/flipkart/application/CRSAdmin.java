@@ -100,6 +100,7 @@ public class CRSAdmin {
 		// TODO Auto-generated method stub
 		
 		List<Course>courseList=adminService.viewCourse();
+		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
 		courseList.forEach(CRSStudent::printCourse);
 		
 	}
@@ -127,7 +128,7 @@ public class CRSAdmin {
 			System.out.println(adminService.addCourse(course));
 		}
 		catch (CourseAlreadyExistsException e){
-			System.out.println("Error: " + e.getMessage());
+			System.err.println("Error: " + e.getMessage());
 		}
 	}
 	
@@ -143,7 +144,7 @@ public class CRSAdmin {
 			System.out.println("Course successfully dropped");
 		}
 		catch(CourseNotFoundException e) {
-			System.out.println("Error: " + e.getMessage());
+			System.err.println("Error: " + e.getMessage());
 		}
 		
 	}
@@ -155,10 +156,17 @@ public class CRSAdmin {
 		// TODO Auto-generated method stub
 		System.out.println("List of students to be approved : ");
 		List<Student> studentList = adminService.getPendingStudents();
+		
+		if(studentList.size() == 0) {
+			System.err.println("No student left to be approved!");
+			return;
+		}
 		int i=1;
+		
+		System.out.println(String.format("%10s %20s %20s","INDEX","STUDENT ID", "STUDENT NAME"));
 		for(Student student:studentList)
 		{
-			System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"     Name : "+student.getName());
+			System.out.println(String.format("%10s %20s %20s",i,student.getStudentEnrollmentId(), student.getName()));
 			i++;
 		}
 		System.out.print("Serial number of student to approve or 0 : ");
@@ -196,7 +204,7 @@ public class CRSAdmin {
 			System.out.println(adminService.addProfessor(newProfessor));
 		}
 		catch(EmailAlreadyInUseException e) {
-			System.out.println("Error : " + e.getMessage());
+			System.err.println("Error : " + e.getMessage());
 		}
 	}
 	
@@ -207,6 +215,11 @@ public class CRSAdmin {
 		// TODO Auto-generated method stub
 		viewProfessorList();
 		List<Professor> professorList = adminService.viewProfessorList();
+		
+		if(professorList.size() == 0) {
+			System.err.println("No professor in the system!");
+			return ;
+		}
 		System.out.print("Enter the serial number :");
 		int index=sc.nextInt();
 		try {
@@ -214,7 +227,7 @@ public class CRSAdmin {
 			System.out.println("Professor dropped successfully");
 		}
 		catch(UserNotFoundException e) {
-			System.out.println("Error : " + e.getMessage());
+			System.err.println("Error : " + e.getMessage());
 		}
 	}
 	
@@ -224,10 +237,13 @@ public class CRSAdmin {
 	public void viewProfessorList() {
 		// TODO Auto-generated method stub
 		List<Professor> professorList = adminService.viewProfessorList();
+		
 		int i=1;
+		
+		System.out.println(String.format("%10s %20s %20s %20s","INDEX","PROFESSOR ID", "PROFESSOR NAME", "DEPARTMENT"));
 		for(Professor professor:professorList)
 		{
-			System.out.println(i+". ID : "+professor.getProfessorId()+"     Name : "+professor.getName()+"    Department : "+professor.getDepartment());
+			System.out.println(String.format("%10s %20s %20s %20s",i,professor.getProfessorId(), professor.getName(), professor.getDepartment()));
 			i++;
 		}
 	}
@@ -238,12 +254,20 @@ public class CRSAdmin {
 	public void generateGradeCard() {
 		// TODO Auto-generated method stub
 		List<Student> studentList = adminService.getPendingGradeStudents();
+		
+		if(studentList.size() == 0) {
+			System.err.println("No more grade card left to be generated");
+			return;
+		}
 		int i=1;
+		
+		System.out.println(String.format("%10s %20s %20s","INDEX","STUDENT ID", "STUDENT NAME"));
 		for(Student student:studentList)
 		{
-			System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"     Name : "+student.getName());
+			System.out.println(String.format("%10s %20s %20s",i,student.getStudentEnrollmentId(), student.getName()));
 			i++;
 		}
+		
 		System.out.print("Enter the student index : ");
 		int index=sc.nextInt();
 		String studentId=studentList.get(index-1).getStudentEnrollmentId();
@@ -254,7 +278,7 @@ public class CRSAdmin {
 			System.out.println("GradeCard generated successfully.");
 		}
 		catch(GradeNotAllotedException e) {
-			System.out.println("Error  : " + e.getMessage() );
+			System.err.println("Error  : " + e.getMessage() );
 		}
 	}
 	

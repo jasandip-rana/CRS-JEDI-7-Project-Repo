@@ -15,6 +15,22 @@ public interface UserDaoInterface {
 	 * @throws throws UserNotFoundException if user credentials aren't present in the database
 	 */
 	User login(String emailId, String password)  throws UserNotFoundException;
+	
+	/**
+	 * Method to get the name of the student
+	 * 
+	 * @param studentId of the student
+	 * @return returns the name of the student
+	 */
+	String getStudentName(String studentId);
+	
+	/**
+	 * Method to get the name of the professor
+	 * 
+	 * @param professorId of the professor
+	 * @return returns the name of the professor
+	 */
+	String getProfessorName(String professorId);
 
 	/**
 	 * Method to enter a new user in the database
@@ -52,5 +68,6 @@ public interface UserDaoInterface {
 	 * @throws throws UserNotFoundException if user credentials aren't present in the database
 	 */
 	String updatePassword(String email, String oldPassword, String newPassword) throws UserNotFoundException;
+	
 
 }
