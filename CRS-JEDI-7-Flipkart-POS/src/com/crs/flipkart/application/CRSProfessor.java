@@ -141,19 +141,24 @@ public class CRSProfessor {
 			return;
 		}
 		List<Student> enrolledStudents = professorService.viewEnrolledStudents(courseId);
-		int i=1;
-		for(Student student:enrolledStudents)
+		if(enrolledStudents!=null)
 		{
-			System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"	Name : "+student.getName());
-			i++;
+			int i=1;
+			for(Student student:enrolledStudents)
+			{
+				System.out.println(i+". ID : "+student.getStudentEnrollmentId()+"	Name : "+student.getName());
+				i++;
+			}
+			System.out.print("Enter the student index :");
+			int index=sc.nextInt();
+			sc.nextLine();
+			String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
+			System.out.println("Enter the grade :");
+			float grade=sc.nextFloat();
+		    System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
 		}
-		System.out.print("Enter the student index :");
-		int index=sc.nextInt();
-		sc.nextLine();
-		String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
-		System.out.println("Enter the grade :");
-		float grade=sc.nextFloat();
-	    System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
+		else
+			System.out.println("No student enrolled for this course!");
 		
 	}
      
