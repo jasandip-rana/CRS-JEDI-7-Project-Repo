@@ -138,17 +138,20 @@ public class StudentDaoService implements StudentDaoInterface {
 			}
 			gradeCard.setStudentCgpa(rs1.getFloat("gpa"));
 			gradeCard.setSemester(1);
+			gradeCard.setStudentEnrollmentId(rs1.getString("studentId"));
 			ResultSet rs = ps.executeQuery();
 			List<Grade> gradeList = new ArrayList<Grade>();
 
 			while (rs.next()) {
 				String courseId = rs.getString("courseId");
 				String studentID = rs.getString("studentId");
+				String semester = rs.getString("semester");
 				float gpa = rs.getFloat("gpa");
 
 				Grade grade = new Grade();
 				grade.setCourseId(courseId);
 				grade.setStudentEnrollmentId(studentID);
+				grade.setSemester(semester);
 				grade.setStudentGrade(gpa);
 
 				gradeList.add(grade);

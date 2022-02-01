@@ -18,6 +18,11 @@ public class AdminRestAPI {
 
 	AdminInterface adminService = new AdminService();
 	
+	/**
+	 * Endpoint for view courses
+	 * 
+	 * @return 201, and list of courses if user logged in, else 500 in case of error
+	 */
 	@GET
     @Path("/viewCourses")
     @Produces(MediaType.APPLICATION_JSON)
@@ -32,6 +37,12 @@ public class AdminRestAPI {
         return Response.ok(entity).build();
     }
 	
+	/**
+	 * Endpoint for adding a course
+	 * 
+	 * @param course
+	 * @return 201, if course successfully added, else 500 in case of error
+	 */
 	@POST
 	@Path("/addCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -50,6 +61,12 @@ public class AdminRestAPI {
 		}
 	}
 	
+	/**
+	 * Endpoint for dropping the course
+	 * 
+	 * @param course
+	 * @return 201, if course successfully dropped, else 500 in case of error
+	 */
 	@DELETE
 	@Path("/dropCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -69,6 +86,30 @@ public class AdminRestAPI {
 		}
 	}
 	
+	/**
+	 * Endpoint for getting the list of approval pending students
+	 * 
+	 * @return 201, list of students if user logged in, else 500 in case of error
+	 */
+	@GET
+	@Path("/approvalPendingStudents")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPendingStudents() {
+		
+        if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	return Response.status(500).entity("User not authenticated").build();
+        }
+        List<Student> studentList = adminService.getPendingStudents();
+        GenericEntity<List<Student>> entity = new GenericEntity<List<Student>>(studentList) {};
+        return Response.ok(entity).build();
+    }
+	
+	/**
+	 * Endpoint for approving the student
+	 * 
+	 * @param student
+	 * @return 201, if student successfully approved, else 500 in case of error
+	 */
 	@PUT
 	@Path("/approveStudent")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -92,6 +133,12 @@ public class AdminRestAPI {
 		return Response.status(500).entity("Student not approved").build();
 	}
 	
+	/**
+	 * Endpoint for adding the professor
+	 * 
+	 * @param professor
+	 * @return 201, if professor successfully added, else 500 in case of error
+	 */
 	@POST
 	@Path("/addProfessor")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -109,6 +156,12 @@ public class AdminRestAPI {
 		}
 	}
 	
+	/**
+	 * Endpoint for deleting the professor
+	 * 
+	 * @param professor
+	 * @return 201, if professor successfully dropped, else 500 in case of error
+	 */
 	@DELETE
 	@Path("/dropProfessor")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -128,6 +181,11 @@ public class AdminRestAPI {
 		}
 	}
 	
+	/**
+	 * Endpoint for Getting the list of professors
+	 * 
+	 * @return 201, list of professors if user logged in, else 500 in case of error
+	 */
 	@GET
 	@Path("/viewProfessorList")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -142,7 +200,30 @@ public class AdminRestAPI {
         return Response.ok(entity).build();
 	}
 	
+	/**
+	 * Endpoint for Getting the list of students whose grade card is not yet generated
+	 * 
+	 * @return 201, list of students if user logged in, else 500 in case of error
+	 */
+	@GET
+	@Path("/pendingGradeCardStudents")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPendingCardStudents() {
+		
+        if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	return Response.status(500).entity("User not authenticated").build();
+        }
+        List<Student> studentList = adminService.getPendingGradeStudents();
+        GenericEntity<List<Student>> entity = new GenericEntity<List<Student>>(studentList) {};
+        return Response.ok(entity).build();
+    }
 	
+	/**
+	 * Endpoint for Generating the grade card of student
+	 * 
+	 * @param student
+	 * @return 201, if gradecard successfully generated, else 500 in case of error
+	 */
 	@POST
 	@Path("/generateGradeCard")
 	@Consumes(MediaType.APPLICATION_JSON)

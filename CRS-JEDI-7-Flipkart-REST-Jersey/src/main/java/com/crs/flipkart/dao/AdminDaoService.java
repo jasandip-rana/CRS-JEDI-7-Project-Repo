@@ -154,8 +154,16 @@ public class AdminDaoService implements AdminDaoInterface {
 	            while(rs.next())
 	            {
 	            	Professor professor = new Professor();
-	            	professor.setProfessorId(rs.getString("professorId"));
+	            	String userId=rs.getString("professorId");
+	            	professor.setUserId(userId);
+	            	professor.setProfessorId(userId);
+	            	professor.setContactNumber(rs.getString("contactNumber"));
+	            	professor.setDoj(rs.getString("doj"));
+	            	professor.setRole("Professor");
 	            	professor.setName(rs.getString("name"));
+	            	professor.setSalary(rs.getFloat("salary"));
+	            	professor.setEmail("********");
+	            	professor.setPassword("********");
 	            	professor.setDepartment(rs.getString("department"));
 	            	professorList.add(professor);
 	            }

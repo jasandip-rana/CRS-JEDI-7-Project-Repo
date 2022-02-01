@@ -13,6 +13,8 @@ public class SQLQueries {
 	
 	public static final String VERIFY_EMAIL= "SELECT * FROM user where email = ?";
 	
+	public static final String ALL_USER_ID= "SELECT userId FROM user";
+	
 	public static final String ADD_USER_QUERY = "insert into user(userId,email,password) values (?,?, ?)";
 	
 	public static final String ADD_USER_ROLE = "insert into role(userId,role) values (?,?)";
@@ -35,7 +37,7 @@ public class SQLQueries {
 	
 	public static final String ADD_PROFESSOR = "insert into professor values (?,?,?,?,?,?)";
 	
-	public static final String LIST_PROFESSORS = "SELECT professorId, name, department FROM professor";
+	public static final String LIST_PROFESSORS = "SELECT * FROM professor";
 	
 	public static final String REMOVE_USER = "delete from user where userId = ?";
 	

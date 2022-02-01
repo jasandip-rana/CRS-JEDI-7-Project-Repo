@@ -24,6 +24,7 @@ public class UserRestAPI {
 	StudentInterface studentService = new StudentService();
 	
 	/**
+	 * Endpoint for Updating the password
 	 * 
 	 * @param email: email address of the user
 	 * @param oldPassword: old password to be stored in db.
@@ -56,40 +57,39 @@ public class UserRestAPI {
 	
 	
 	/**
+	 * Endpoint for Logging in
 	 * 
 	 * @param email
 	 * @param password
-	 * @return 
+	 * @return 200 if logged in successfully, else 500
 	 */
 	@POST
-	@Path("/login/{email}/{password}")
-	public Response verifyCredentials(
-			@NotNull
-			@PathParam("email") String email,
-			@NotNull
-			@PathParam("password") String password) {
+	@Path("/login")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response verifyCredentials(User loginUser) {
 			
 		try 
 		{
-			System.out.println(email+" "+ password);
+			String email=loginUser.getEmail();
+			String password=loginUser.getPassword();
 			User user=userService.login(email, password);
-			
-					System.out.println("logged in");
-					String role=user.getRole();
-					System.out.println("got role");
-					switch(role)
-					{
-					case "Student":
-						String studentId=user.getUserId();
-						boolean isApproved=studentService.isApproved(studentId);
-						if(!isApproved)	
-						{
-							return Response.status(200).entity("Login unsuccessful! Student has not been approved by the administration!" ).build();
-						}
-						break;
-					}
-					UserService.user=user;
-					return Response.status(200).entity("Login successful").build();
+
+			System.out.println("logged in");
+			String role=user.getRole();
+			System.out.println("got role");
+			switch(role)
+			{
+			case "Student":
+				String studentId=user.getUserId();
+				boolean isApproved=studentService.isApproved(studentId);
+				if(!isApproved)	
+				{
+					return Response.status(200).entity("Login unsuccessful! Student has not been approved by the administration!" ).build();
+				}
+				break;
+			}
+			UserService.user=user;
+			return Response.status(200).entity("Login successful").build();
 		}
 		catch (UserNotFoundException e) 
 		{
@@ -99,6 +99,7 @@ public class UserRestAPI {
 }
 	
 	/**
+	 * Endpoint for Student Self Registration
 	 * 
 	 * @param student
 	 * @return 201, if user is created, else 500 in case of error
@@ -122,7 +123,11 @@ public class UserRestAPI {
 		return Response.status(201).entity("Registration Successful for "+student.getName()).build(); 
 	}
 	
-	
+	/**
+	 * Endpoint for logout
+	 * 
+	 * @return 200, if user is logged out
+	 */
 	@POST
     @Path("/logout")
     public Response logout() {

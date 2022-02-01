@@ -35,6 +35,12 @@ public class StudentRestAPI {
 	StudentInterface studentService = new StudentService();
 	SemesterRegistrationInterface semesterRegistrationService = new SemesterRegistrationService();
 	
+	
+	/**
+	 * Endpoint for View all courses
+	 * 
+	 * @return 201,List of courses if student is logged in, otherwise 500
+	 */
 	@GET
     @Path("/viewCourses")
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,6 +57,12 @@ public class StudentRestAPI {
         }
     }
 	
+	/**
+	 * Endpoint for add course to opted courses list
+	 * 
+	 * @param course
+	 * @return 201, if course is opted successfully, else 500
+	 */
 	@POST
     @Path("/addCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -70,6 +82,12 @@ public class StudentRestAPI {
         }
     }
 	
+	/**
+	 * Endpoint for drop course from opted courses
+	 * 
+	 * @param course
+	 * @return 201, if course is dropped successfully, else 500 in case of error
+	 */
 	@DELETE
     @Path("/dropCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -89,6 +107,11 @@ public class StudentRestAPI {
         }
     }
 	
+	/**
+	 * Endpoint for view opted courses
+	 * 
+	 * @return 201, and list of courses if user logged in, else 500 in case of error
+	 */
 	@GET
     @Path("/viewOptedCourses")
     @Produces(MediaType.APPLICATION_JSON)
@@ -109,6 +132,11 @@ public class StudentRestAPI {
         }
     }
 	
+	/**
+	 * Endpoint for Submit opted courses
+	 * 
+	 * @return 201, if courses submitted successfully, else 500 in case of error
+	 */
 	@PUT
     @Path("/submitChoices")
     public Response submitChoices() {
@@ -129,7 +157,11 @@ public class StudentRestAPI {
         }
     }
 	
-	
+	/**
+	 * Endpoint for view Registered courses
+	 * 
+	 * @return 201, and list of courses if user logged in, else 500 in case of error
+	 */
 	@GET
     @Path("/viewRegisteredCourses")
     @Produces(MediaType.APPLICATION_JSON)
@@ -150,6 +182,12 @@ public class StudentRestAPI {
         }
     }
 	
+	/**
+	 * Endpoint for Make payment
+	 * 
+	 * @param payment
+	 * @return 201, if payment is successful, else 500 in case of error
+	 */
 	@POST
     @Path("/makePayment")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -173,7 +211,11 @@ public class StudentRestAPI {
         }
     }
 	
-	
+	/**
+	 * Endpoint for Student Self Registration
+	 * 
+	 * @return 201, and gradeCard if user is logged in, else 500 in case of error
+	 */
 	@GET
     @Path("/gradeCard")
     @Produces(MediaType.APPLICATION_JSON)

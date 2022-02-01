@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
@@ -118,11 +119,23 @@ public class UserDaoService implements UserDaoInterface {
 		}
 
 		try {
-
-			PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_USER_QUERY);
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.ALL_USER_ID);
+			ResultSet rs=ps.executeQuery();
+			List<String> userIds=new ArrayList<String>();
+			while(rs.next())
+			{
+				userIds.add(rs.getString("userId"));
+			}
 			Random rand = new Random();
-			long id = 10000000 + rand.nextInt(10000000);
-			String userId = role.charAt(0) + Long.toString(id);
+			String userId;
+			while(true)
+			{
+				long id = 10000000 + rand.nextInt(10000000);
+				userId = role.charAt(0) + Long.toString(id);
+				if(!userIds.contains(userId))
+					break;
+			}
+			ps = conn.prepareStatement(SQLQueries.ADD_USER_QUERY);
 			ps.setString(1, userId);
 			ps.setString(2, email);
 			ps.setString(3, password);

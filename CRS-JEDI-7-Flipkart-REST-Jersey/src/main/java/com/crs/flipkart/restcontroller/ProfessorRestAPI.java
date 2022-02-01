@@ -23,6 +23,11 @@ public class ProfessorRestAPI {
 	private static Logger logger = Logger.getLogger(ProfessorRestAPI.class);
 	ProfessorInterface professorService = new ProfessorService();
 	
+	/**
+	 * Endpoint for View available courses for professor
+	 * 
+	 * @return 201, list of courses if user is logged in, else 500 in case of error
+	 */
 	@GET
     @Path("/viewAvailableCourses")
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,6 +44,11 @@ public class ProfessorRestAPI {
         }
     }
 	
+	/**
+	 * Endpoint for View selected courses for professor
+	 * 
+	 * @return 201, list of courses if user is logged in, else 500 in case of error
+	 */
 	@GET
     @Path("/viewSelectedCourses")
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,6 +65,12 @@ public class ProfessorRestAPI {
         }
     }
 	
+	/**
+	 * Endpoint for Indicating courses
+	 * 
+	 * @param course
+	 * @return 201, if course successfully selected by professor, else 500 in case of error
+	 */
 	@PUT
 	@Path("/selectCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -73,6 +89,12 @@ public class ProfessorRestAPI {
 		
 	}
 	
+	/**
+	 * Endpoint for View enrolled students in a course
+	 * 
+	 * @param courseId
+	 * @return 201, list of students if user is logged in and teaches the given course, else 500 in case of error
+	 */
 	@GET
     @Path("/viewEnrolledStudents/{courseId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -95,7 +117,12 @@ public class ProfessorRestAPI {
         }
     }
 
-
+	/**
+	 * Endpoint for Grading the student
+	 * 
+	 * @param grade
+	 * @return 201, if grade successfully added, else 500 in case of error
+	 */
 	@POST
 	@Path("/gradeStudent")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -107,8 +134,23 @@ public class ProfessorRestAPI {
 		try {	
 			if(!professorService.validateCourse(grade.getCourseId(), UserService.user.getUserId()))
     		{
-            	return Response.status(500).entity("You do not teach this code").build();
+            	return Response.status(500).entity("You do not teach this course").build();
     		}
+			List<Student> enrolledStudents = professorService.viewEnrolledStudents(grade.getCourseId());
+			boolean flag=false;
+			for(Student student:enrolledStudents)
+			{
+				System.out.println(student.getStudentEnrollmentId());
+				if(student.getStudentEnrollmentId().equals(grade.getStudentEnrollmentId()))
+				{
+					flag=true;
+					break;
+				}
+			}
+			if(!flag)
+			{
+            	return Response.status(500).entity("Student have not enrolled in this course").build();
+			}
 			List<Student> ungradedStudents = professorService.viewUngradedStudents(grade.getCourseId());
 			for(Student student:ungradedStudents)
 			{
@@ -119,7 +161,7 @@ public class ProfessorRestAPI {
 					return Response.status(201).entity("Student has been graded").build();
 				}
 			}
-			return Response.status(500).entity("This student cannot be graded").build();
+			return Response.status(500).entity("This student has been graded").build();
 		}
 		catch(Exception e) {
 			return Response.status(500).entity("Error : " + e.getMessage()).build();
