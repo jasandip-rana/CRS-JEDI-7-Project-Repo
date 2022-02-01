@@ -25,6 +25,7 @@ public class Administrator extends User {
 	 * @param adminId the adminId to set
 	 */
 	public void setAdminId(String adminId) {
+		this.setUserId(adminId);
 		this.adminId = adminId;
 	}
 

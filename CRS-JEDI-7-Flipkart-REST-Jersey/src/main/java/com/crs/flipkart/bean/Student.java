@@ -31,6 +31,7 @@ public class Student extends User {
 	 * @param studentEnrollmentId the studentEnrollmentId to set
 	 */
 	public void setStudentEnrollmentId(String studentEnrollmentId) {
+		this.setUserId(studentEnrollmentId);
 		this.studentEnrollmentId = studentEnrollmentId;
 	}
 
