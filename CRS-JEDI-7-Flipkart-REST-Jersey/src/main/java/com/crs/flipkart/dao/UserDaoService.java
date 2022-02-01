@@ -179,7 +179,7 @@ public class UserDaoService implements UserDaoInterface {
 		}
 		catch (Exception e) {
 			logger.debug("Error: " + e.getMessage());
-			return "User not created";
+			return "Error: Something went wrong. " + e.getMessage();
 		}
 		return "User not created";
 	}

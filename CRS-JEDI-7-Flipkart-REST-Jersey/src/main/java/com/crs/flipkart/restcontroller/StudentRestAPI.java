@@ -212,7 +212,7 @@ public class StudentRestAPI {
     }
 	
 	/**
-	 * Endpoint for Student Self Registration
+	 * Endpoint for viewing grade card
 	 * 
 	 * @return 201, and gradeCard if user is logged in, else 500 in case of error
 	 */

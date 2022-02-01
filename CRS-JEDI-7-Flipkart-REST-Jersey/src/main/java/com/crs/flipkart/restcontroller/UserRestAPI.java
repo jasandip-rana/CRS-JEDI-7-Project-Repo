@@ -112,11 +112,13 @@ public class UserRestAPI {
 		
 		try
 		{
-			userService.registerStudent(student.getName(),student.getContactNumber(), student.getEmail(), student.getPassword(), student.getBranch(), student.getBatch());
+			String status=userService.registerStudent(student.getName(),student.getContactNumber(), student.getEmail(), student.getPassword(), student.getBranch(), student.getBatch());
+			if(!status.equals("Account created"))
+				return Response.status(500).entity(status).build();
 		}
 		catch(Exception ex)
 		{
-			return Response.status(500).entity("Something went wrong! Please try again.").build(); 
+			return Response.status(500).entity("Something went wrong! Please try again. " + ex.getMessage()).build(); 
 		}
 		
 		
