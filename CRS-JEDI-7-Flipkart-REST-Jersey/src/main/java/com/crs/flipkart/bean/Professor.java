@@ -31,6 +31,7 @@ public class Professor extends User{
 	 * @param professorId the professorId to set
 	 */
 	public void setProfessorId(String professorId) {
+		this.setUserId(professorId);
 		this.professorId = professorId;
 	}
 
