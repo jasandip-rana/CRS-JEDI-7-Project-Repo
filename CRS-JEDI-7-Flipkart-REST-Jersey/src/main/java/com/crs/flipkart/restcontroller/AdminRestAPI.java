@@ -7,6 +7,8 @@ import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
 /**
@@ -16,6 +18,7 @@ import com.crs.flipkart.business.*;
 @Path("/administrator")
 public class AdminRestAPI {
 
+	private static Logger logger = Logger.getLogger(AdminRestAPI.class);
 	AdminInterface adminService = new AdminService();
 	
 	/**
@@ -29,11 +32,13 @@ public class AdminRestAPI {
     public Response viewCourses() {
 		
         if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
         
         List<Course> courseList = adminService.viewCourse();
         GenericEntity<List<Course>> entity = new GenericEntity<List<Course>>(courseList) {};
+        logger.info("List of courses returned");
         return Response.ok(entity).build();
     }
 	
@@ -49,14 +54,17 @@ public class AdminRestAPI {
 	public Response addCourse(Course course)
 	{
 		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
 		try {	
 			adminService.verifyCourse(course.getCourseId());
 			adminService.addCourse(course);
+			logger.info("Course successfully added");
 			return Response.status(200).entity("Course successfully added").build();
 		}
 		catch(Exception e) {
+			logger.error("Error : "+e.getMessage());
 			return Response.status(500).entity("Error : " + e.getMessage()).build();
 		}
 	}
@@ -73,15 +81,18 @@ public class AdminRestAPI {
 	public Response dropCourse(Course course)
 	{
 		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
 		
 		try {
 			adminService.dropCourse(course.getCourseId());
+			logger.info("Course dropped successfully");
 			return Response.status(200).entity("Course dropped successfully").build();
 		}
 		catch(Exception e)
 		{
+			logger.error("Error : "+e.getMessage());
 			return Response.status(500).entity("Error : " + e.getMessage()).build();
 		}
 	}
@@ -97,10 +108,12 @@ public class AdminRestAPI {
 	public Response getPendingStudents() {
 		
         if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
         List<Student> studentList = adminService.getPendingStudents();
         GenericEntity<List<Student>> entity = new GenericEntity<List<Student>>(studentList) {};
+        logger.info("List of approval pending students");
         return Response.ok(entity).build();
     }
 	
@@ -116,6 +129,7 @@ public class AdminRestAPI {
 	public Response approveStudent(Student student)
 	{
 		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
 		
@@ -126,6 +140,7 @@ public class AdminRestAPI {
 			if(s.getStudentEnrollmentId().equals(student.getStudentEnrollmentId()))
 			{
 				adminService.approveStudent(student);
+				logger.info("Student approved successfully");
 				return Response.status(200).entity("Student approved successfully").build();
 			}
 		}
@@ -145,13 +160,16 @@ public class AdminRestAPI {
 	public Response addProfessor(Professor professor)
 	{
 		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
 		try {	
 			adminService.addProfessor(professor);
+			logger.info("Professor successfully added");
 			return Response.status(200).entity("Professor successfully added").build();
 		}
 		catch(Exception e) {
+			logger.error("Error : "+e.getMessage());
 			return Response.status(500).entity("Error : " + e.getMessage()).build();
 		}
 	}
@@ -168,15 +186,18 @@ public class AdminRestAPI {
 	public Response dropProfessor(Professor professor)
 	{
 		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
 
 		try {
 			adminService.dropProfessor(professor.getProfessorId());
+			logger.info("Professor dropped successfully");
 			return Response.status(200).entity("Professor dropped successfully").build();
 		}
 		catch(Exception e)
 		{
+			logger.error("Error : "+e.getMessage());
 			return Response.status(500).entity("Error : " + e.getMessage()).build();
 		}
 	}
@@ -192,11 +213,13 @@ public class AdminRestAPI {
 	public Response viewProfessorList()
 	{
 		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
 		
 		List<Professor> professorList = adminService.viewProfessorList();
         GenericEntity<List<Professor>> entity = new GenericEntity<List<Professor>>(professorList) {};
+        logger.info("List of professors returned");
         return Response.ok(entity).build();
 	}
 	
@@ -211,10 +234,12 @@ public class AdminRestAPI {
 	public Response getPendingCardStudents() {
 		
         if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
         List<Student> studentList = adminService.getPendingGradeStudents();
         GenericEntity<List<Student>> entity = new GenericEntity<List<Student>>(studentList) {};
+        logger.info("List of students whose Grade card hasn't been returned");
         return Response.ok(entity).build();
     }
 	
@@ -230,6 +255,7 @@ public class AdminRestAPI {
 	public Response generateGradeCard(Student student)
 	{
 		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
 
@@ -241,15 +267,17 @@ public class AdminRestAPI {
 			{
 				try {
 					adminService.generateGradeCard(student.getStudentEnrollmentId(), "1");
+					logger.info("GradeCard generated successfully");
 					return Response.status(200).entity("GradeCard generated successfully").build();
 				}
 				catch(Exception e)
 				{
+					logger.error("Error : "+e.getMessage());
 					return Response.status(500).entity("Error : " + e.getMessage()).build();
 				}
 			}
 		}
-		
+		logger.debug("GradeCard already generated for student");
 		return Response.status(500).entity("GradeCard already generated for student").build();
 	}
 }

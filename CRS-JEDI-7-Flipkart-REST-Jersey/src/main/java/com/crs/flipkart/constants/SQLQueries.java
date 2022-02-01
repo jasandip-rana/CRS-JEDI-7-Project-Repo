@@ -6,6 +6,7 @@ package com.crs.flipkart.constants;
 /**
  * @author Shubham
  *
+ * SQLQueries class contains the Query constants for database
  */
 public class SQLQueries {
 	

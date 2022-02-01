@@ -9,6 +9,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
 import com.crs.flipkart.exceptions.UserNotFoundException;
@@ -19,7 +21,7 @@ import com.crs.flipkart.exceptions.UserNotFoundException;
  */
 @Path("/user")
 public class UserRestAPI {
-	
+	private static Logger logger = Logger.getLogger(UserRestAPI.class);
 	UserInterface userService=new UserService();
 	StudentInterface studentService = new StudentService();
 	
@@ -47,10 +49,12 @@ public class UserRestAPI {
 			{
 				UserService.user.setPassword(newPassword);
 			}
+			logger.info("Password updated successfully!");
 			return Response.status(201).entity("Password updated successfully! ").build();
 		}
 		catch(UserNotFoundException e)
 		{
+			logger.error("Error : "+e.getMessage());
 			return Response.status(500).entity("Email or password is incorrect!").build();
 		}
 	}
@@ -66,8 +70,12 @@ public class UserRestAPI {
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response verifyCredentials(User loginUser) {
-			
+	public Response verifyCredentials(@NotNull User loginUser) {
+			if(UserService.user!=null)
+			{
+				logger.error("You need to logout first");
+				return Response.status(500).entity("You need to logout first!").build();
+			}
 		try 
 		{
 			String email=loginUser.getEmail();
@@ -84,15 +92,18 @@ public class UserRestAPI {
 				boolean isApproved=studentService.isApproved(studentId);
 				if(!isApproved)	
 				{
+					logger.info("Student not approved");
 					return Response.status(200).entity("Login unsuccessful! Student has not been approved by the administration!" ).build();
 				}
 				break;
 			}
 			UserService.user=user;
+			logger.info("Login successful");
 			return Response.status(200).entity("Login successful").build();
 		}
 		catch (UserNotFoundException e) 
 		{
+			logger.error("Error : "+e.getMessage());
 			return Response.status(500).entity("Invalid credentials!").build();
 		}		
 		
@@ -109,19 +120,21 @@ public class UserRestAPI {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response register(Student student)
 	{
-		
 		try
 		{
 			String status=userService.registerStudent(student.getName(),student.getContactNumber(), student.getEmail(), student.getPassword(), student.getBranch(), student.getBatch());
 			if(!status.equals("Account created"))
+			{
+				logger.error("Account already created");
 				return Response.status(500).entity(status).build();
+			}
 		}
 		catch(Exception ex)
 		{
+			logger.error("Error : "+ex.getMessage());
 			return Response.status(500).entity("Something went wrong! Please try again. " + ex.getMessage()).build(); 
 		}
-		
-		
+		logger.info("Registration successful for "+student.getName());
 		return Response.status(201).entity("Registration Successful for "+student.getName()).build(); 
 	}
 	
@@ -134,6 +147,7 @@ public class UserRestAPI {
     @Path("/logout")
     public Response logout() {
         UserService.user=null;
+        logger.info("Logged out successfully");
         return Response.status(200).entity("User logged out Successfully").build();
     }
 }

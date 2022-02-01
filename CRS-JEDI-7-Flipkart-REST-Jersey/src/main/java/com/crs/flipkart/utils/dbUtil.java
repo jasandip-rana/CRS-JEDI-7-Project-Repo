@@ -11,6 +11,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+
+
+// dbUtil class is Utility class for Database which creates the connection to the database.
+
 public class dbUtil {
 	
 	private static Connection connection = null;
