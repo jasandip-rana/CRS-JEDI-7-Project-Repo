@@ -1,13 +1,46 @@
 package com.crs.flipkart.dropwizard;
 
-/**
- * Hello world!
- *
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.crs.flipkart.dropwizard.App;
+import com.crs.flipkart.restcontroller.*;
+
+import io.dropwizard.Application;
+import io.dropwizard.Configuration;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+
+
+/*
+ * App class extending Application class to register the API RestControllers
  */
-public class App 
+public class App extends Application<Configuration>
 {
-    public static void main( String[] args )
+	private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+	 
+	@Override
+    public void initialize(Bootstrap<Configuration> b) {
+    }
+ 
+	@Override
+    public void run(Configuration c, Environment e) throws Exception {
+        LOGGER.info("Registering REST resources");
+        
+        //Registering User REST API
+        e.jersey().register(new UserRestAPI());
+        
+        //Registering Student REST API
+        e.jersey().register(new StudentRestAPI());
+        
+        //Registering Professor REST API
+        e.jersey().register(new ProfessorRestAPI());
+        
+        //Registering Admin REST API
+        e.jersey().register(new AdminRestAPI());
+    }
+    public static void main( String[] args ) throws Exception
     {
-        System.out.println( "Hello World!" );
+    	new App().run(args);
     }
 }
