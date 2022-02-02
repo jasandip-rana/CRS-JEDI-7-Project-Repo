@@ -13,6 +13,7 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.User;
+import com.crs.flipkart.constants.Roles;
 import com.crs.flipkart.constants.SQLQueries;
 import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
 import com.crs.flipkart.exceptions.UserNotFoundException;
@@ -99,7 +100,7 @@ public class UserDaoService implements UserDaoInterface {
 	}
 	
 	@Override
-	public String createUser(String name, String email, String password, String role) throws EmailAlreadyInUseException{
+	public String createUser(String name, String email, String password, Roles role) throws EmailAlreadyInUseException{
 
 		try {
 
@@ -131,7 +132,7 @@ public class UserDaoService implements UserDaoInterface {
 			while(true)
 			{
 				long id = 10000000 + rand.nextInt(10000000);
-				userId = role.charAt(0) + Long.toString(id);
+				userId = Roles.nameToString(role).charAt(0) + Long.toString(id);
 				if(!userIds.contains(userId))
 					break;
 			}
@@ -142,7 +143,7 @@ public class UserDaoService implements UserDaoInterface {
 			ps.executeUpdate();
 			ps = conn.prepareStatement(SQLQueries.ADD_USER_ROLE);
 			ps.setString(1,userId);
-			ps.setString(2, role);
+			ps.setString(2, Roles.nameToString(role));
 			ps.executeUpdate();
 			return userId;
 		} catch (SQLException e) {
@@ -155,7 +156,7 @@ public class UserDaoService implements UserDaoInterface {
 	@Override
 	public String registerStudent(String name, String contactNumber, String email, String password, String branch, String batch) throws EmailAlreadyInUseException{
 		try {
-			String id = createUser(name, email, password, "Student");
+			String id = createUser(name, email, password, Roles.STUDENT);
 			if (id.equals("User not created")) {
 				return id;
 			} else {

@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
+import com.crs.flipkart.validators.ProfessorValidator;
 
 /**
  * @author Shubham
@@ -32,7 +33,7 @@ public class ProfessorRestAPI {
     @Path("/viewAvailableCourses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewAvailableCourses() {
-        if (UserService.user == null || !UserService.user.getRole().equals("Professor")) {
+        if (!ProfessorValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -56,7 +57,7 @@ public class ProfessorRestAPI {
     @Path("/viewSelectedCourses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewSelectedCourses() {
-        if (UserService.user == null || !UserService.user.getRole().equals("Professor")) {
+        if (!ProfessorValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -80,9 +81,9 @@ public class ProfessorRestAPI {
 	@PUT
 	@Path("/selectCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response selectCourse(Course course)
+	public Response selectCourse(@NotNull Course course)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Professor")) {
+		if (!ProfessorValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -110,7 +111,7 @@ public class ProfessorRestAPI {
     public Response viewEnrolledStudents(
     		@NotNull
 			@PathParam("courseId") String courseId) {
-        if (UserService.user == null || !UserService.user.getRole().equals("Professor")) {
+        if (!ProfessorValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -142,7 +143,7 @@ public class ProfessorRestAPI {
     public Response viewUngradedStudents(
     		@NotNull
 			@PathParam("courseId") String courseId) {
-        if (UserService.user == null || !UserService.user.getRole().equals("Professor")) {
+        if (!ProfessorValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -171,9 +172,9 @@ public class ProfessorRestAPI {
 	@POST
 	@Path("/gradeStudent")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response gradeStudent(Grade grade)
+	public Response gradeStudent(@NotNull Grade grade)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Professor")) {
+		if (!ProfessorValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }

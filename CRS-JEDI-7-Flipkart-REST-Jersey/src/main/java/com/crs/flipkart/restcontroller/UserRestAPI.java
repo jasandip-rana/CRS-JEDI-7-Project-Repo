@@ -13,7 +13,9 @@ import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
+import com.crs.flipkart.constants.Roles;
 import com.crs.flipkart.exceptions.UserNotFoundException;
+import com.crs.flipkart.validators.StudentValidator;
 
 /**
  * @author Shubham
@@ -83,13 +85,13 @@ public class UserRestAPI {
 			User user=userService.login(email, password);
 
 			System.out.println("logged in");
-			String role=user.getRole();
+			Roles role = Roles.stringToName(user.getRole());
 			System.out.println("got role");
 			switch(role)
 			{
-			case "Student":
+			case STUDENT:
 				String studentId=user.getUserId();
-				boolean isApproved=studentService.isApproved(studentId);
+				boolean isApproved=StudentValidator.isApproved(studentId);
 				if(!isApproved)	
 				{
 					logger.info("Student not approved");
@@ -118,7 +120,7 @@ public class UserRestAPI {
 	@POST
 	@Path("/studentRegistration")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response register(Student student)
+	public Response register(@NotNull Student student)
 	{
 		try
 		{

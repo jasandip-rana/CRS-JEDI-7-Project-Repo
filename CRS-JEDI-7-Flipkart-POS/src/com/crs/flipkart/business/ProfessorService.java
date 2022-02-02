@@ -14,6 +14,7 @@ import com.crs.flipkart.dao.ProfessorDaoInterface;
 import com.crs.flipkart.dao.ProfessorDaoService;
 import com.crs.flipkart.exceptions.CourseNotAvailableException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.validators.ProfessorValidator;
 import com.crs.flipkart.exceptions.CourseAlreadyIndicatedException;
 
 /**
@@ -66,13 +67,7 @@ public class ProfessorService implements ProfessorInterface {
 	{
 		List<Course> courseList = professorDaoService.viewCourses();
 		
-		for(Course course : courseList)
-		{
-			if(course.getProfessorId() != null && course.getProfessorId().equals(professorId) && course.getCourseId().equals(courseId))
-				return true;
-		}
-		
-		return false;
+		return ProfessorValidator.validateCourse(courseId, professorId, courseList);
 	}
 	
 	public List<Student> viewEnrolledStudents(String courseId)

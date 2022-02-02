@@ -5,6 +5,7 @@ package com.crs.flipkart.restcontroller;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 /**
  * @author Shubham
  *
@@ -15,17 +16,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.crypto.URIReferenceException;
 
 import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
+import com.crs.flipkart.validators.StudentValidator;
 
 
 @Path("/student")
@@ -45,7 +45,7 @@ public class StudentRestAPI {
     @Path("/viewCourses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewCourses() {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -69,12 +69,12 @@ public class StudentRestAPI {
 	@POST
     @Path("/addCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
-    public Response addCourse(Course course) {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+    public Response addCourse(@NotNull Course course) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(studentService.submittedCourses(UserService.user.getUserId()))
+        if(StudentValidator.submittedCourses(UserService.user.getUserId()))
 		{
         	logger.debug("You have finalized the courses!");
         	return Response.status(500).entity("You have finalized the courses!").build();
@@ -97,12 +97,12 @@ public class StudentRestAPI {
 	@DELETE
     @Path("/dropCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
-    public Response dropCourse(Course course) {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+    public Response dropCourse(@NotNull Course course) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(studentService.submittedCourses(UserService.user.getUserId()))
+        if(StudentValidator.submittedCourses(UserService.user.getUserId()))
 		{
         	logger.debug("You have finalized the courses!");
         	return Response.status(500).entity("You have finalized the courses!").build();
@@ -125,11 +125,11 @@ public class StudentRestAPI {
     @Path("/viewOptedCourses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewOptedCourses() {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(studentService.submittedCourses(UserService.user.getUserId()))
+        if(StudentValidator.submittedCourses(UserService.user.getUserId()))
 		{
         	logger.debug("You have finalized the courses!");
         	return Response.status(500).entity("You have finalized the courses!").build();
@@ -152,11 +152,11 @@ public class StudentRestAPI {
 	@PUT
     @Path("/submitChoices")
     public Response submitChoices() {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(studentService.submittedCourses(UserService.user.getUserId()))
+        if(StudentValidator.submittedCourses(UserService.user.getUserId()))
 		{
         	logger.debug("You have finalized the courses!");
         	return Response.status(500).entity("You have finalized the courses!").build();
@@ -181,11 +181,11 @@ public class StudentRestAPI {
     @Path("/viewRegisteredCourses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewRegisteredCourses() {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(!studentService.submittedCourses(UserService.user.getUserId()))
+        if(!StudentValidator.submittedCourses(UserService.user.getUserId()))
 		{
         	logger.debug("You have not finalized the courses!");
         	return Response.status(500).entity("You have not finalized the courses!").build();
@@ -208,16 +208,16 @@ public class StudentRestAPI {
 	@GET
     @Path("/getTotalFee")
     public Response getTotalFee(){
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(!studentService.submittedCourses(UserService.user.getUserId()))
+        if(!StudentValidator.submittedCourses(UserService.user.getUserId()))
 		{
         	logger.debug("You have not finalized the courses!");
         	return Response.status(500).entity("You have not finalized the courses!").build();
 		}
-        if(studentService.getFeeStatus(UserService.user.getUserId()))
+        if(StudentValidator.getFeeStatus(UserService.user.getUserId()))
 		{
         	logger.debug("You have already paid the fees!");
         	return Response.status(500).entity("You have already paid the fees!").build();
@@ -240,21 +240,27 @@ public class StudentRestAPI {
 	@POST
     @Path("/makePayment")
 	@Consumes(MediaType.APPLICATION_JSON)
-    public Response makePayment(Payment payment) {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+    public Response makePayment(@NotNull Payment payment) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(!studentService.submittedCourses(UserService.user.getUserId()))
+        if(!StudentValidator.submittedCourses(UserService.user.getUserId()))
 		{
         	logger.debug("You have not finalized the courses!");
         	return Response.status(500).entity("You have not finalized the courses!").build();
 		}
-        if(studentService.getFeeStatus(UserService.user.getUserId()))
+        if(StudentValidator.getFeeStatus(UserService.user.getUserId()))
 		{
         	logger.debug("You have already paid the fees!");
         	return Response.status(500).entity("You have already paid the fees!").build();
 		}
+        if(!StudentValidator.verifyFeeAmount(studentService.getTotalFee(UserService.user.getUserId()), payment.getAmount()))
+		{
+			logger.debug("Incorrect amount entered!");
+        	return Response.status(500).entity("Incorrect amount entered!").build();
+		}
+
         try {
         	String status = studentService.makePayment(UserService.user.getUserId(),payment.getPaymentType(),payment.getAmount());
             return Response.status(201).entity(status).build();
@@ -273,11 +279,11 @@ public class StudentRestAPI {
     @Path("/gradeCard")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewGradeCard() {
-        if (UserService.user == null || !UserService.user.getRole().equals("Student")) {
+        if (!StudentValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
-        if(!studentService.getFeeStatus(UserService.user.getUserId()))
+        if(!StudentValidator.getFeeStatus(UserService.user.getUserId()))
 		{
         	logger.debug("You have not paid the fees!");
         	return Response.status(500).entity("You have not paid the fees!").build();

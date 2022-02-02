@@ -10,6 +10,7 @@ import java.util.Scanner;
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
 import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
+import com.crs.flipkart.validators.StudentValidator;
 
 /**
  * @author Shubham
@@ -32,8 +33,8 @@ public class CRSStudent {
 		int choice;
 		do {
 
-				submittedCourses = studentService.submittedCourses(studentId);
-				feeStatus = studentService.getFeeStatus(studentId);
+				submittedCourses = StudentValidator.submittedCourses(studentId);
+				feeStatus = StudentValidator.getFeeStatus(studentId);
 				System.out.println("\n\n_____________________________________________________________________________");
 				System.out.println("");
 				System.out.println("                              STUDENT DASHBOARD                              ");

@@ -81,6 +81,8 @@ public class SQLQueries {
 	
 	public static final String UPDATE_PAYMENT_STATUS = "UPDATE student set feeStatus=1 where studentId=?";
 	
+	public static final String ADD_NOTIFICATION = "insert into notification values (?, ?, ?)";
+	
 	public static final String FETCH_GRADECARD = "SELECT * FROM gradecard WHERE studentId = ? ";
 	
 	public static final String FETCH_GRADE= "SELECT * FROM grade WHERE studentId = ? ";

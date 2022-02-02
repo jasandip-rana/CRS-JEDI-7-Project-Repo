@@ -12,6 +12,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
+import com.crs.flipkart.constants.Roles;
 import com.crs.flipkart.constants.SQLQueries;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
@@ -123,7 +124,7 @@ public class AdminDaoService implements AdminDaoInterface {
 	
    public String addProfessor(Professor newProfessor) throws EmailAlreadyInUseException{
         try {
-    		String id = userDaoService.createUser(newProfessor.getName(), newProfessor.getEmail(), newProfessor.getPassword(), "Professor");
+    		String id = userDaoService.createUser(newProfessor.getName(), newProfessor.getEmail(), newProfessor.getPassword(), Roles.PROFESSOR);
     	
             PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_PROFESSOR);
             ps.setString(1, id);

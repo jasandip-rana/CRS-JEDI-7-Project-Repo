@@ -1,6 +1,7 @@
 package com.crs.flipkart.dao;
 
 import com.crs.flipkart.bean.User;
+import com.crs.flipkart.constants.Roles;
 import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
 import com.crs.flipkart.exceptions.UserNotFoundException;
 
@@ -42,7 +43,7 @@ public interface UserDaoInterface {
 	 * @return returns a string that indicates if the user is successfully entered in the database
 	 * @throws throws EmailAlreadyInUseException if email is already present in the database
 	 */
-	String createUser(String name, String email, String password, String role) throws EmailAlreadyInUseException;
+	String createUser(String name, String email, String password, Roles role) throws EmailAlreadyInUseException;
 
 	/**
 	 * Method to enter a new student in the database
