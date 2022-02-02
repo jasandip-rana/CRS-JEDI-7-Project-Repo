@@ -42,7 +42,7 @@ public class CRSProfessor {
 				System.out.println("4. Grade Student");
 				System.out.println("5. View Enrolled Students");
 				System.out.println("6. Logout");
-				System.out.println("Option : ");
+				System.out.print("Option : ");
 			
 				choice = sc.nextInt();
 			
@@ -97,6 +97,13 @@ public class CRSProfessor {
 	public void viewAvailableCourses() {
 		// TODO Auto-generated method stub
 		List<Course>courseList=professorService.viewCourses();
+		
+		if(courseList.size() == 0)
+		{
+			System.err.println("No available courses in the system");
+			return;
+		}
+		
 		System.out.println(String.format("%20s %20s ","COURSE ID","COURSE NAME"));
 		courseList.forEach(CRSProfessor::printCourse);
 	}
@@ -107,6 +114,13 @@ public class CRSProfessor {
 	public void viewSelectedCourses(String professorId) {
 		
 		List<Course>courseList=professorService.viewSelectedCourses(professorId);
+		
+		if(courseList.size() == 0)
+		{
+			System.err.println("You haven't selected any course yet");
+			return;
+		}
+		
 		System.out.println(String.format("%20s %20s ","COURSE ID","COURSE NAME"));
 		courseList.forEach(CRSProfessor::printCourse);
 	}
@@ -134,16 +148,16 @@ public class CRSProfessor {
     */
 	public void gradeStudent() {
 		// TODO Auto-generated method stub
-		System.out.print("Enter the semester :");
+		System.out.print("Enter the semester : ");
 		String semester=sc.next();
-		System.out.println("Enter course ID :");
+		System.out.print("Enter course ID : ");
 		String courseId=sc.next();
 		if(!professorService.validateCourse(courseId, id))
 		{
 			System.err.println("You don't teach this course");
 			return;
 		}
-		List<Student> enrolledStudents = professorService.viewEnrolledStudents(courseId);
+		List<Student> enrolledStudents = professorService.viewUngradedStudents(courseId);
 
 		if(enrolledStudents.size() == 0) {
 			System.err.println("No student left to be graded!");
@@ -157,12 +171,21 @@ public class CRSProfessor {
 			System.out.println(String.format("%10s %20s %20s",i,student.getStudentEnrollmentId(), student.getName()));
 			i++;
 		}
-			int index=sc.nextInt();
-			sc.nextLine();
-			String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
-			System.out.println("Enter the grade :");
-			float grade=sc.nextFloat();
-		    System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
+		
+		System.out.print("Enter the student index : ");
+		
+		int index=sc.nextInt();
+			
+		if(index<=0 || index>=i)
+		{
+			System.err.println("Invalid index... Returning to previous menu");
+			return;
+		}
+			
+		String studentId=enrolledStudents.get(index-1).getStudentEnrollmentId();
+		System.out.print("Enter the grade : ");
+		float grade=sc.nextFloat();
+		System.out.println(professorService.gradeStudent(studentId, courseId, grade, semester));
 		
 	}
      
@@ -171,7 +194,7 @@ public class CRSProfessor {
      */
 	public void viewEnrolledStudents() {
 		// TODO Auto-generated method stub
-		System.out.println("Enter course ID :");
+		System.out.print("Enter course ID :");
 		String courseId=sc.next();
 		if(!professorService.validateCourse(courseId, id))
 		{

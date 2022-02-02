@@ -80,6 +80,11 @@ public class ProfessorService implements ProfessorInterface {
 		return professorDaoService.viewEnrolledStudents(courseId);
 	}
 	
+	public List<Student> viewUngradedStudents(String courseId)
+	{
+		return professorDaoService.viewUngradedStudents(courseId);
+	}
+	
 	public String gradeStudent(String studentId, String courseId, float grade,String semester)
 	{
 		return professorDaoService.addGrade(studentId, courseId, grade, semester);

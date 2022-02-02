@@ -100,6 +100,13 @@ public class CRSAdmin {
 		// TODO Auto-generated method stub
 		
 		List<Course>courseList=adminService.viewCourse();
+		
+		if(courseList.size()==0)
+		{
+			System.err.println("No courses in the system");
+			return;
+		}
+		
 		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
 		courseList.forEach(CRSStudent::printCourse);
 		
@@ -169,12 +176,17 @@ public class CRSAdmin {
 			System.out.println(String.format("%10s %20s %20s",i,student.getStudentEnrollmentId(), student.getName()));
 			i++;
 		}
-		System.out.print("Serial number of student to approve or 0 : ");
+		System.out.print("Serial number of student to approve: ");
 		int studentIndex=sc.nextInt();
-		if(studentIndex>0)
+		
+		if(studentIndex<=0 || studentIndex>=i)
 		{
-			System.out.println(adminService.approveStudent(studentList.get(studentIndex-1)));
+			System.err.println("Invalid index... Returning to previous menu");
+			return;
 		}
+		
+		System.out.println(adminService.approveStudent(studentList.get(studentIndex-1)));
+		
 	}
 	
 	 /**
@@ -185,7 +197,6 @@ public class CRSAdmin {
 		Professor newProfessor = new Professor();
 		System.out.print("Enter the professor name :");
 		newProfessor.setName(sc.nextLine());
-		sc.nextLine();
 		System.out.print("Enter email : ");
 		newProfessor.setEmail(sc.nextLine());
 		System.out.print("Enter password : ");
@@ -222,6 +233,13 @@ public class CRSAdmin {
 		}
 		System.out.print("Enter the serial number :");
 		int index=sc.nextInt();
+		
+		if(index <=0 || index >professorList.size())
+		{
+			System.err.println("Invalid index... Returning to previous menu");
+			return;
+		}
+		
 		try {
 			adminService.dropProfessor(professorList.get(index-1).getProfessorId());
 			System.out.println("Professor dropped successfully");
@@ -237,6 +255,12 @@ public class CRSAdmin {
 	public void viewProfessorList() {
 		// TODO Auto-generated method stub
 		List<Professor> professorList = adminService.viewProfessorList();
+		
+		if(professorList.size()==0)
+		{
+			System.err.println("No professors present in the database");
+			return;
+		}
 		
 		int i=1;
 		
@@ -256,7 +280,7 @@ public class CRSAdmin {
 		List<Student> studentList = adminService.getPendingGradeStudents();
 		
 		if(studentList.size() == 0) {
-			System.err.println("No more grade card left to be generated");
+			System.err.println("No more grade cards left to be generated");
 			return;
 		}
 		int i=1;
@@ -270,6 +294,13 @@ public class CRSAdmin {
 		
 		System.out.print("Enter the student index : ");
 		int index=sc.nextInt();
+		
+		if(index<=0 || index>=i)
+		{
+			System.err.println("Invalid index... Returning to previous menu");
+			return;
+		}
+		
 		String studentId=studentList.get(index-1).getStudentEnrollmentId();
 		System.out.print("Enter the semester : ");
 		String semester=sc.next();

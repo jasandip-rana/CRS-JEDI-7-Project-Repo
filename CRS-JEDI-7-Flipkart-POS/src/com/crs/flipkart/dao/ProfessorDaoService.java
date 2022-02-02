@@ -90,9 +90,6 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
             PreparedStatement ps = conn.prepareStatement(SQLQueries.VIEW_ENROLLED_STUDENTS);
             ps.setString(1, courseId);
             ResultSet rs = ps.executeQuery(); 
-            if(!rs.next()) {
-            	return null;
-            }
             
             while(rs.next())
             {
@@ -110,6 +107,31 @@ public class ProfessorDaoService implements ProfessorDaoInterface {
         return null;
 	}
 
+	@Override
+	public List<Student> viewUngradedStudents(String courseId)
+	{
+		try {
+			List<Student> ungradedStudents = new ArrayList<Student>();
+            PreparedStatement ps = conn.prepareStatement(SQLQueries.VIEW_UNGRADED_STUDENTS);
+            ps.setString(1, courseId);
+            ps.setString(2, courseId);
+            ResultSet rs = ps.executeQuery(); 
+            while(rs.next())
+            {
+            	Student student = new Student();
+            	student.setStudentEnrollmentId(rs.getString("studentId"));
+            	student.setName(rs.getString("name"));
+            	ungradedStudents.add(student);
+            }
+            
+            return ungradedStudents;
+            
+        } catch (SQLException e) {
+        	logger.debug("Error: " + e.getMessage());
+        }
+        return null;
+	}
+	
 	@Override
 	public String addGrade(String studentId, String courseId, float grade, String semester) {
         try {

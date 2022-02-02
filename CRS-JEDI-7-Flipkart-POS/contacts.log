@@ -1,0 +1,8 @@
+12:09:06,898 DEBUG SemesterRegistrationDaoService,main:73 - Error: Cannot add or update a child row: a foreign key constraint fails (`crs_database/optedcourses`, CONSTRAINT `courseId` FOREIGN KEY (`courseId`) REFERENCES `course` (`courseId`) ON DELETE CASCADE ON UPDATE CASCADE)
+12:09:52,438 DEBUG SemesterRegistrationDaoService,main:73 - Error: Cannot add or update a child row: a foreign key constraint fails (`crs_database/optedcourses`, CONSTRAINT `courseId` FOREIGN KEY (`courseId`) REFERENCES `course` (`courseId`) ON DELETE CASCADE ON UPDATE CASCADE)
+12:20:12,114 DEBUG ProfessorDaoService,main:126 - Error: Duplicate entry 'S19295094-101' for key 1
+12:26:25,335  INFO AdminDaoService,main:76 - Course dropped successfully.
+
+12:27:23,071  INFO AdminDaoService,main:76 - Course dropped successfully.
+
+13:12:57,899 DEBUG ProfessorDaoService,main:130 - Error: Column 'studentId' in IN/ALL/ANY subquery is ambiguous

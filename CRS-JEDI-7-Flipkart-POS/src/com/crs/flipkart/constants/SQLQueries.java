@@ -13,6 +13,8 @@ public class SQLQueries {
 	
 	public static final String VERIFY_EMAIL= "SELECT * FROM user where email = ?";
 	
+	public static final String ALL_USER_ID= "SELECT userId FROM user";
+	
 	public static final String ADD_USER_QUERY = "insert into user(userId,email,password) values (?,?, ?)";
 	
 	public static final String ADD_USER_ROLE = "insert into role(userId,role) values (?,?)";
@@ -52,6 +54,8 @@ public class SQLQueries {
 	public static final String SELECT_COURSE_FOR_PROF = "UPDATE course SET professorId = ? WHERE courseId = ?";
 	
 	public static final String VIEW_ENROLLED_STUDENTS = "SELECT student.studentId, student.name from student INNER JOIN optedCourses ON student.studentId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ?"; 
+	
+	public static final String VIEW_UNGRADED_STUDENTS = "SELECT student.studentId as studentId, name from optedCourses JOIN student on student.studentId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ? AND optedCourses.studentId not in (SELECT studentId from grade where courseId = ?)"; 
 	
 	public static final String ADD_GRADE = "INSERT INTO grade(studentId, courseId, gpa, semester) values(?, ?, ?, ?)";
 	

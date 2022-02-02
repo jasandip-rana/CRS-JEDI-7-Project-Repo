@@ -40,6 +40,15 @@ public interface ProfessorDaoInterface {
 	 */
 	List<Student> viewEnrolledStudents(String courseId);
 	
+	
+	/**
+	 * Method for retrieving the ungraded students enrolled in a course using SQL commands
+	 * 
+	 * @param courseId unique Id to represent a course
+	 * @return returns a list of strings indicating the ungraded students enrolled in a course from the database
+	 */
+	List<Student> viewUngradedStudents(String courseId);
+	
 	/**
 	 * Method for adding the grades of a student for a course in a semester using SQL commands
 	 * 
