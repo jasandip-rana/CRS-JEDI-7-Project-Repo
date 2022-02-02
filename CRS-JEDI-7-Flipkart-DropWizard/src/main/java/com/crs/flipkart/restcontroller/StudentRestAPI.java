@@ -224,7 +224,7 @@ public class StudentRestAPI {
 		}
         try {
         	float fee = studentService.getTotalFee(UserService.user.getUserId());
-            return Response.status(201).entity(fee).build();
+            return Response.status(201).entity("Fee : "+fee).build();
         } catch (Exception e) {
         	logger.error("Error : "+e.getMessage());
         	return Response.status(500).entity("Something went wrong").build();
