@@ -39,6 +39,13 @@ public interface StudentDaoInterface {
 	String makePayment(Payment payment);
 	
 	/**
+	 * Method to generate payment notification and store the reference id in the database
+	 * 
+	 * @param payment object contains the payment details
+	 */
+	void generatePaymentNotification(Payment payment);
+	
+	/**
 	 * Method to view grade card for a student
 	 * 
 	 * @param student id of the student
@@ -46,5 +53,7 @@ public interface StudentDaoInterface {
 	 * @return returns a grade card for the student
 	 */
 	GradeCard viewGradeCard(String studentId) throws GradeCardNotGeneratedException;
+
+	
 
 }

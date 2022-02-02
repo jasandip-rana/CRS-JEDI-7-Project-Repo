@@ -23,21 +23,6 @@ public class StudentService implements StudentInterface {
 	StudentDaoInterface studentDaoService = new StudentDaoService();
 	SemesterRegistrationDaoInterface semesterRegistrationDaoService = new SemesterRegistrationDaoService();
 
-	public boolean isApproved(String studentId)
-	{
-		return studentDaoService.isApproved(studentId);
-	}
-	
-	public boolean submittedCourses(String studentId)
-	{
-		return studentDaoService.submittedCourses(studentId);
-	}
-
-	public boolean getFeeStatus(String studentId)
-	{
-		return studentDaoService.getFeeStatus(studentId);
-	}
-
 	public List<Course> viewRegisteredCourses(String studentID) {
 		// TODO Auto-generated method stub
 		

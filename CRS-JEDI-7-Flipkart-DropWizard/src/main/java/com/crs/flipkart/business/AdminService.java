@@ -14,6 +14,7 @@ import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
 import com.crs.flipkart.exceptions.GradeNotAllotedException;
 import com.crs.flipkart.exceptions.UserNotFoundException;
+import com.crs.flipkart.validators.AdminValidator;
 
 /**
  * @author Shubham
@@ -33,11 +34,9 @@ public class AdminService implements AdminInterface {
 	{
 
 			List<Course> courseList = viewCourse();
-			for(Course course:courseList)
-			{
-				if(course.getCourseId().equals(courseId))
-					throw new CourseAlreadyExistsException(courseId);
-			}
+			
+			if(AdminValidator.verifyCourse(courseList, courseId))
+				throw new CourseAlreadyExistsException(courseId);
 		
 	}
 	

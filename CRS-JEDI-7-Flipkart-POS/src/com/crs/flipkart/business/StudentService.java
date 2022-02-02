@@ -23,11 +23,6 @@ public class StudentService implements StudentInterface {
 	StudentDaoInterface studentDaoService = new StudentDaoService();
 	SemesterRegistrationDaoInterface semesterRegistrationDaoService = new SemesterRegistrationDaoService();
 
-	public boolean isApproved(String studentId)
-	{
-		return studentDaoService.isApproved(studentId);
-	}
-	
 	public boolean submittedCourses(String studentId)
 	{
 		return studentDaoService.submittedCourses(studentId);
@@ -71,10 +66,15 @@ public class StudentService implements StudentInterface {
 		payment.setPaymentStatus(true);
 		payment.setReferenceId(refId);
 		
-		return studentDaoService.makePayment(payment);
+		String status = studentDaoService.makePayment(payment);
+		
+		if(!status.equals("Payment unsuccessful"))
+			studentDaoService.generatePaymentNotification(payment);
+		
+		return status;
 		
 	}
-
+	
 	public GradeCard viewGradeCard(String studentID) throws GradeCardNotGeneratedException{
 		// TODO Auto-generated method stub
 		try {

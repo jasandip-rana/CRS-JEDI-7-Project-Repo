@@ -122,6 +122,25 @@ public class StudentDaoService implements StudentDaoInterface {
 	}
 
 	@Override
+	public void generatePaymentNotification(Payment payment)
+	{
+		try {
+
+			PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD_NOTIFICATION);
+
+			ps.setString(2, payment.getStudentEnrollmentId());
+			ps.setString(1, payment.getReferenceId());
+			ps.setString(3, "Payment Successful!");
+
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.debug("Error: " + e.getMessage());
+		}
+
+	}
+	
+	@Override
 	public GradeCard viewGradeCard(String studentId) throws GradeCardNotGeneratedException{
 		GradeCard gradeCard = new GradeCard();
 		try {

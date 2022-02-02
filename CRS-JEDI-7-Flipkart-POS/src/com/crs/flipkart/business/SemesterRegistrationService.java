@@ -10,6 +10,7 @@ import com.crs.flipkart.exceptions.CourseAlreadyOptedException;
 import com.crs.flipkart.exceptions.CourseCountExceededException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.exceptions.CourseNotOptedException;
+import com.crs.flipkart.validators.StudentValidator;
 
 public class SemesterRegistrationService implements SemesterRegistrationInterface{
 
@@ -28,11 +29,10 @@ public class SemesterRegistrationService implements SemesterRegistrationInterfac
 		List<Course> optedCourses = semesterRegistrationDaoService.viewOptedCourses(studentId);
 		if (optedCourses.size() >= 6)
 			throw new CourseCountExceededException(6);
-		for (Course optedCourse : optedCourses) {
-			if (optedCourse.getCourseId().equals(courseId)) {
-				throw new CourseAlreadyOptedException(courseId);
-			}
-		}
+		
+		if(StudentValidator.isCourseOpted(optedCourses, courseId))
+			throw new CourseAlreadyOptedException(courseId);
+		
 		try {			
 			semesterRegistrationDaoService.addCourse(studentId, courseId);
 		}

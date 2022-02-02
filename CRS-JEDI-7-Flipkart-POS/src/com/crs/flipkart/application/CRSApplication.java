@@ -14,6 +14,8 @@ import com.crs.flipkart.business.UserInterface;
 import com.crs.flipkart.business.UserService;
 import com.crs.flipkart.exceptions.EmailAlreadyInUseException;
 import com.crs.flipkart.exceptions.UserNotFoundException;
+import com.crs.flipkart.validators.StudentValidator;
+import com.crs.flipkart.constants.Roles;
 
 /**
  * @author Shubham
@@ -92,25 +94,26 @@ public class CRSApplication {
 			
 			loggedIn=true;
 			
+			Roles userRole = Roles.stringToName(user.getRole());
 			
-			switch (user.getRole()) {
+			switch (userRole) {
 			
-			case "Admin":
+			case ADMIN:
 
 				System.out.println("\n\nAdmin successfully logged in at " + formattedDate );
 				CRSAdmin admin=new CRSAdmin ();
 				admin.create_menu();
 				break;
-			case "Professor":
+			case PROFESSOR:
 				
 				System.out.println("\n\n" + user.getName() +" successfully logged in at " + formattedDate );
 				String professorId=user.getUserId();
 				CRSProfessor professor = new CRSProfessor();
 				professor.create_menu(professorId);
 				break;
-			case "Student":
+			case STUDENT:
 				String studentId = user.getUserId();
-				boolean isApproved = studentService.isApproved(studentId);
+				boolean isApproved = StudentValidator.isApproved(studentId);
 				if (isApproved) {
 					System.out.println("\n\n" + user.getName() +" successfully logged in at " + formattedDate );
 					CRSStudent student = new CRSStudent();

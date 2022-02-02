@@ -5,8 +5,8 @@ package com.crs.flipkart.constants;
 
 /**
  * @author Shubham
- *
- * SQLQueries class contains the Query constants for database
+ * 
+ * SQL Constant
  */
 public class SQLQueries {
 	
@@ -28,7 +28,7 @@ public class SQLQueries {
 	
 	public static final String ADD_COURSE = "insert into course(courseId, courseName, courseFee, department, professorId, studentCount) values (?, ?, ?, ?,null,0)";
 	
-	public static final String DROP_COURSE = "delete from course where courseId = ?";
+	public static final String DROP_COURSE = "delete from Course where courseId = ?";
 	
 	public static final String GET_PENDING_STUDENTS = "SELECT name,studentId from student where student.verificationStatus=0";
 	
@@ -38,7 +38,7 @@ public class SQLQueries {
 	
 	public static final String ADD_PROFESSOR = "insert into professor values (?,?,?,?,?,?)";
 	
-	public static final String LIST_PROFESSORS = "SELECT * FROM professor";
+	public static final String LIST_PROFESSORS = "SELECT professorId, name, department FROM professor";
 	
 	public static final String REMOVE_USER = "delete from user where userId = ?";
 	
@@ -55,8 +55,8 @@ public class SQLQueries {
 	public static final String SELECT_COURSE_FOR_PROF = "UPDATE course SET professorId = ? WHERE courseId = ?";
 	
 	public static final String VIEW_ENROLLED_STUDENTS = "SELECT student.studentId, student.name from student INNER JOIN optedCourses ON student.studentId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ?"; 
-
-	public static final String VIEW_UNGRADED_STUDENTS = "SELECT studentId from optedCourses WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ? AND studentId not in (SELECT studentId from grade where courseId = ?)"; 
+	
+	public static final String VIEW_UNGRADED_STUDENTS = "SELECT student.studentId as studentId, name from optedCourses JOIN student on student.studentId = optedCourses.studentId WHERE optedCourses.isAlloted = 1 AND optedCourses.courseId = ? AND optedCourses.studentId not in (SELECT studentId from grade where courseId = ?)"; 
 	
 	public static final String ADD_GRADE = "INSERT INTO grade(studentId, courseId, gpa, semester) values(?, ?, ?, ?)";
 	
@@ -82,12 +82,10 @@ public class SQLQueries {
 	
 	public static final String UPDATE_PAYMENT_STATUS = "UPDATE student set feeStatus=1 where studentId=?";
 	
+	public static final String ADD_NOTIFICATION = "insert into notification values (?, ?, ?)";
+	
 	public static final String FETCH_GRADECARD = "SELECT * FROM gradecard WHERE studentId = ? ";
 	
 	public static final String FETCH_GRADE= "SELECT * FROM grade WHERE studentId = ? ";
-	
-	
-	
-	
 
 }

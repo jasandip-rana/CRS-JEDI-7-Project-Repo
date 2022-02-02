@@ -15,30 +15,6 @@ import com.crs.flipkart.exceptions.GradeCardNotGeneratedException;
  *
  */
 public interface StudentInterface {
-
-	/**
-     * method for checking that student is approved by administrator or not
-     *
-     * @param studentId  unique Id to represent a student
-     * @return returns true if student is approved by administrator
-     */
-	boolean isApproved(String studentId);
-	
-	 /**
-     * method for checking that student has already submitted their course choices or not
-     * 
-     * @param studentId  unique Id to represent a student
-     * @return returns true if course choices already submitted by student
-     */
-	boolean submittedCourses(String studentId);
-	
-	/**
-     * method for getting the fee status of the student
-     *
-     * @param studentId  unique Id to represent a student
-     * @return returns true if student paid the fees
-     */
-	boolean getFeeStatus(String studentId);
 	
 	 /**
      * method for getting all the registered courses for the student

@@ -4,6 +4,8 @@
 package com.crs.flipkart.restcontroller;
 
 import java.util.*;
+
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -11,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.crs.flipkart.bean.*;
 import com.crs.flipkart.business.*;
+import com.crs.flipkart.validators.AdminValidator;
 /**
  * @author Shubham
  *
@@ -30,6 +33,12 @@ public class AdminRestAPI {
     @Path("/viewCourses")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewCourses() {
+		
+		if(!AdminValidator.validateUser(UserService.user))
+		{
+			logger.debug("User not authenticated");
+        	return Response.status(500).entity("User not authenticated").build();
+		}
 		
         if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
         	logger.debug("User not authenticated");
@@ -51,9 +60,9 @@ public class AdminRestAPI {
 	@POST
 	@Path("/addCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addCourse(Course course)
+	public Response addCourse(@NotNull Course course)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+		if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -78,9 +87,9 @@ public class AdminRestAPI {
 	@DELETE
 	@Path("/dropCourse")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response dropCourse(Course course)
+	public Response dropCourse(@NotNull Course course)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+		if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -107,7 +116,7 @@ public class AdminRestAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPendingStudents() {
 		
-        if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -126,9 +135,9 @@ public class AdminRestAPI {
 	@PUT
 	@Path("/approveStudent")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response approveStudent(Student student)
+	public Response approveStudent(@NotNull Student student)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+		if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -157,9 +166,9 @@ public class AdminRestAPI {
 	@POST
 	@Path("/addProfessor")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addProfessor(Professor professor)
+	public Response addProfessor(@NotNull Professor professor)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+		if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -183,9 +192,9 @@ public class AdminRestAPI {
 	@DELETE
 	@Path("/dropProfessor")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response dropProfessor(Professor professor)
+	public Response dropProfessor(@NotNull Professor professor)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+		if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -212,7 +221,7 @@ public class AdminRestAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response viewProfessorList()
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+		if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -233,7 +242,7 @@ public class AdminRestAPI {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPendingCardStudents() {
 		
-        if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+        if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }
@@ -252,9 +261,9 @@ public class AdminRestAPI {
 	@POST
 	@Path("/generateGradeCard")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response generateGradeCard(Student student)
+	public Response generateGradeCard(@NotNull Student student)
 	{
-		if (UserService.user == null || !UserService.user.getRole().equals("Admin")) {
+		if (!AdminValidator.validateUser(UserService.user)) {
         	logger.debug("User not authenticated");
         	return Response.status(500).entity("User not authenticated").build();
         }

@@ -13,8 +13,9 @@ import java.util.Properties;
 
 
 
-// dbUtil class is Utility class for Database which creates the connection to the database.
-
+/**
+ * dbUtil class is Utility class for Database which creates the connection to the database.
+ */
 public class dbUtil {
 	
 	private static Connection connection = null;
@@ -48,6 +49,10 @@ public class dbUtil {
 
     }
 
+	
+	/**
+	 * Default function to close connections
+	 */
 	public static boolean closeConnection() {
         try {
             if (connection != null)
