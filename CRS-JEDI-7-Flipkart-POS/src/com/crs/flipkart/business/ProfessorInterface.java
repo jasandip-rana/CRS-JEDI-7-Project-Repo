@@ -62,6 +62,14 @@ public interface ProfessorInterface {
 	List<Student> viewEnrolledStudents(String courseId);
 	
 	/**
+	 * Method for retrieving the ungraded students enrolled in a course using SQL commands
+	 * 
+	 * @param courseId unique Id to represent a course
+	 * @return returns a list of strings indicating the ungraded students enrolled in a course from the database
+	 */
+	List<Student> viewUngradedStudents(String courseId);
+	
+	/**
 	 * Method for the professor to grade a student for a particular course
 	 * 
 	 * @param studentId unique Id to represent a student

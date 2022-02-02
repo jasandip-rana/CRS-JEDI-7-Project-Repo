@@ -87,7 +87,10 @@ public class CRSStudent {
 	 */
 	public static void printCourse(Course course)
 	{
-		System.out.println(String.format("%20s %20s %20s",course.getCourseId(), course.getCourseName(),course.getProfessorId()));
+		if(course.getProfessorId() == null)
+			System.out.println(String.format("%20s %20s %20s",course.getCourseId(), course.getCourseName()," "));
+		else
+			System.out.println(String.format("%20s %20s %20s",course.getCourseId(), course.getCourseName(),course.getProfessorId()));
 	}
 	
 	/**
@@ -98,6 +101,13 @@ public class CRSStudent {
 		
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewCourses();
+		
+		if(courseList.size()==0)
+		{
+			System.err.println("No course exists in the system yet");
+			return;
+		}
+		
 		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
 		courseList.forEach(CRSStudent::printCourse);
 	}
@@ -127,7 +137,7 @@ public class CRSStudent {
 			System.out.println("4. View Opted Courses");
 			System.out.println("5. Submit the choices");
 			System.out.println("6. Exit");
-			System.out.println("Option : ");
+			System.out.print("Option : ");
 			choice = sc.nextInt();
 			switch(choice)
 			{
@@ -149,7 +159,7 @@ public class CRSStudent {
 			case 6:
 				break;
 			default:
-				System.out.println("Invalid option");
+				System.err.println("Invalid option");
 			}
 			if(submittedCourses)
 				break;
@@ -204,6 +214,13 @@ public class CRSStudent {
 	{
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = semesterRegistrationService.viewOptedCourses(studentID);
+		
+		if(courseList.size()==0)
+		{
+			System.err.println("No courses opted yet");
+			return;
+		}
+		
 		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
 		courseList.forEach(CRSStudent::printCourse);
 	}
@@ -238,12 +255,20 @@ public class CRSStudent {
 		}
 		List<Course> courseList = new ArrayList<Course>();
 		courseList = studentService.viewRegisteredCourses(studentID);
-		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
-		courseList.forEach(CRSStudent::printCourse);
+		
 		if(!feeStatus)
 		{
 			System.err.println("Please pay your fees as soon as possible.");
 		}
+		
+		if(courseList.size()==0)
+		{
+			System.err.println("No courses registered yet");
+			return;
+		}
+		
+		System.out.println(String.format("%20s %20s %20s","COURSE ID","COURSE NAME","PROFESSOR ID" ));
+		courseList.forEach(CRSStudent::printCourse);
 	}
 	
 	/**

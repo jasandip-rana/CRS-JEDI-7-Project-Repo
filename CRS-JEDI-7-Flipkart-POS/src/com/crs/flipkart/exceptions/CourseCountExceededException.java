@@ -26,6 +26,6 @@ public class CourseCountExceededException extends Exception{
 	@Override
 	public String getMessage() 
 	{
-		return "You have already registered for " + num + " courses";
+		return "You have already opted for " + num + " courses";
 	}
 }
