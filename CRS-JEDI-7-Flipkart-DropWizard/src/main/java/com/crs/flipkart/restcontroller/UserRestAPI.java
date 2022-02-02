@@ -132,7 +132,7 @@ public class UserRestAPI {
 		catch(Exception ex)
 		{
 			logger.error("Error : "+ex.getMessage());
-			return Response.status(500).entity("Something went wrong! Please try again. " + ex.getMessage()).build(); 
+			return Response.status(500).entity("Error : " + ex.getMessage()).build(); 
 		}
 		logger.info("Registration successful for "+student.getName());
 		return Response.status(201).entity("Registration Successful for "+student.getName()).build(); 
